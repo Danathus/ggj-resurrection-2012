@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ggj_resurrection
 {
-    class GameObject
+    public abstract class GameObject
     {
     }
 }

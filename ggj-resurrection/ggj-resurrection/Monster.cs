@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ggj_resurrection
 {
-    class Monster
+    class Monster : GameObject
     {
     }
 }
