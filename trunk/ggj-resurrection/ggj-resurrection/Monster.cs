@@ -26,20 +26,27 @@ namespace ggj_resurrection
         private DIRECTION currentDirection;
         private double timeElapsed;
         static Random mRand = new Random();
+        Player mPlayer;
 
-        public Monster(World world, Vector2 initPos)
+        public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
         {
             timeElapsed = 0;
-            currentDirection = DIRECTION.RIGHT;
+            
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f);
             mBody.BodyType = BodyType.Dynamic;
             mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat3;
             mBody.OnCollision += monsterOnCollision;
+           
+            //Correct for meters vs pixels
             mPosition /= 64f;
             mBody.Position = mPosition;
             mBody.UserData = "Monster";
+            setRandDirection();
+
+            //reference to the player
+            mPlayer = player;
         }
 
         public bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -54,7 +61,13 @@ namespace ggj_resurrection
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
+            float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
+
+            if (proximity < 1000)
+            {
             spriteBatch.Draw(mTexture, mFixture.Body.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -64,7 +77,47 @@ namespace ggj_resurrection
             if (timeElapsed > 1000)
             {
                 timeElapsed = 0;
+                setRandDirection();
+            }
+
+            Vector2 multiply = new Vector2(0, 0);
+            
+            switch (currentDirection)
+            {
+
+                case DIRECTION.UP:
+                    multiply.Y = 1f; 
+                    break;
+
+                
+                case DIRECTION.RIGHT:
+                    multiply.X = 1f;
+                    break;
+
+                
+                case DIRECTION.DOWN:
+                    multiply.Y = -1f;
+                    break;
+
+                
+                case DIRECTION.LEFT:
+                    multiply.X = -1f;
+                    break;
+            }
+
+            mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
+
+        }
+
+        public static void LoadData(Game myGame)
+        {
+            mTexture = myGame.Content.Load<Texture2D>("monster");
+        }
+
+        private void setRandDirection() {
+                
                 int randomNumber = mRand.Next(1, 5);
+            
                 switch (randomNumber)
                 {
                     //up
@@ -87,53 +140,6 @@ namespace ggj_resurrection
                         currentDirection = DIRECTION.LEFT;
                         break;
                 }
-            }
-
-            Vector2 multiply = new Vector2(0, 0);
-            
-            switch (currentDirection)
-            {
-
-                case DIRECTION.UP:
-                    if (mFixture.Body.Position.Y <= 500 / 64f) 
-                    {
-                        multiply.Y = 1f;
-                      //  mPosition.Y += 3; 
-                    }
-                    break;
-
-                
-                case DIRECTION.RIGHT:
-                    if (mFixture.Body.Position.X <= 700 / 64f)
-                    {
-                        multiply.X = 1f;
-                    }
-                    break;
-
-                
-                case DIRECTION.DOWN:
-                    if (mFixture.Body.Position.Y >= 100 / 64f)
-                    {
-                        multiply.Y = -1f;
-                    }
-                    break;
-
-                
-                case DIRECTION.LEFT:
-                    if (mFixture.Body.Position.X >= 100 / 64f)
-                    {
-                        multiply.X = -1f;
-                    }
-                    break;
-            }
-
-            mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
-
-        }
-
-        public static void LoadData(Game myGame)    //i don't htink this should be static because every monster has a different "physics" body.
-        {
-            mTexture = myGame.Content.Load<Texture2D>("monster");
         }
     }
 }
