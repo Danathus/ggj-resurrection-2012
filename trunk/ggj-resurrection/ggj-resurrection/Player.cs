@@ -14,11 +14,13 @@ namespace ggj_resurrection
     public class Player : GameObject
     {
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
+        float mSlashTimeout;
 
         public Player(GraphicsDeviceManager gdm)
             : base(gdm)
         {
             mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
+            mSlashTimeout = 0.0f;
         }
         ~Player()
         {
@@ -27,6 +29,12 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+            if (mSlashTimeout > 0)
+            {
+                Vector2 pos = new Vector2(50, 0);
+                pos += mPosition;
+                spriteBatch.Draw(mTexture, pos, Color.YellowGreen);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -40,6 +48,14 @@ namespace ggj_resurrection
             if (mCurrKeyboardState.IsKeyDown(Keys.Up)) direction.Y -= 1.0f;
             if (mCurrKeyboardState.IsKeyDown(Keys.Down)) direction.Y += 1.0f;
             if (direction.Length() > 0) direction.Normalize();
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Z) && mPrevKeyboardState.IsKeyDown(Keys.Z))
+            {
+                mSlashTimeout = 0.1f;
+            }
+
+            mSlashTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (mSlashTimeout < 0.0f) mSlashTimeout = 0.0f;
 
             const float speed = 300.0f;
             mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
