@@ -13,8 +13,30 @@ namespace ggj_resurrection
 {
     public abstract class GameObject
     {
-        public abstract void Draw(SpriteBatch SpriteBatch);
+        protected Vector2   mPosition;
+        protected Texture2D mTexture;
+
+        public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
         public abstract void LoadData(Game myGame);
+
+        public GameObject(GraphicsDeviceManager gdm)
+        {
+            mPosition = new Vector2(0, 0);
+            Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
+        }
+
+        protected Texture2D CreateRectangle(GraphicsDevice graphicsDevice, int width, int height, Color colori)
+        {
+            Texture2D rectangleTexture = new Texture2D(graphicsDevice, width, height, false, SurfaceFormat.Color);
+            Color[] color = new Color[width * height];//set the color to the amount of pixels in the textures
+            for (int i = 0; i < color.Length; i++)//loop through all the colors setting them to whatever values we want
+            {
+                color[i] = colori;
+            }
+            rectangleTexture.SetData(color);//set the color data on the texture
+            return rectangleTexture;//return the texture
+        }
     };
 }

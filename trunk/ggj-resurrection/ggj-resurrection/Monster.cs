@@ -13,13 +13,17 @@ namespace ggj_resurrection
 {
     class Monster : GameObject
     {
-
-
-        public override void Draw(SpriteBatch SpriteBatch)
+        public Monster(GraphicsDeviceManager gdm)
+            : base(gdm)
         {
-                   
            //mSpriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+        }
+        ~Monster()
+        {
+        }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
         }
 
         public override void Update(GameTime gameTime)
