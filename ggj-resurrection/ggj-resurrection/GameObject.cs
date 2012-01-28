@@ -24,9 +24,10 @@ namespace ggj_resurrection
         {
             mPosition = new Vector2(0, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
+            //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
         }
 
+        /*
         protected Texture2D CreateRectangle(GraphicsDevice graphicsDevice, int width, int height, Color colori)
         {
             Texture2D rectangleTexture = new Texture2D(graphicsDevice, width, height, false, SurfaceFormat.Color);
@@ -37,6 +38,6 @@ namespace ggj_resurrection
             }
             rectangleTexture.SetData(color);//set the color data on the texture
             return rectangleTexture;//return the texture
-        }
+        }*/
     };
 }

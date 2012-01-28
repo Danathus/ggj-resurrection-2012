@@ -47,7 +47,7 @@ namespace ggj_resurrection
 
         public override void LoadData(Game myGame)
         {
-
+            mTexture = myGame.Content.Load<Texture2D>("monster");
         }
        
     }

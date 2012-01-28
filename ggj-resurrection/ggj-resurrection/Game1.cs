@@ -19,11 +19,13 @@ namespace ggj_resurrection
         GraphicsDeviceManager mGraphics;
         SpriteBatch           mSpriteBatch;
         Player                mPlayer;
+        Monster               mMonster1;
 
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            mMonster1 = new Monster(mGraphics);
         }
 
         /// <summary>
@@ -50,6 +52,8 @@ namespace ggj_resurrection
 
             // TODO: use this.Content to load your game content here
             mPlayer = new Player(mGraphics);
+            mPlayer.LoadData(this);
+            mMonster1.LoadData(this);
         }
 
         /// <summary>
@@ -75,6 +79,7 @@ namespace ggj_resurrection
             // TODO: Add your update logic here
             mPlayer.Update(gameTime);
 
+            mMonster1.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -89,7 +94,9 @@ namespace ggj_resurrection
             // custom drawing code here
             mSpriteBatch.Begin();
             mPlayer.Draw(mSpriteBatch);
+            mMonster1.Draw(mSpriteBatch);
             mSpriteBatch.End();
+
 
             base.Draw(gameTime);
         }
