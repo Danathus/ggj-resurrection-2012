@@ -17,6 +17,8 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
+        Vector2 maxSpeed = new Vector2(.01f,.01f);
+
         static private Texture2D mTexture;
 
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
@@ -46,10 +48,33 @@ namespace ggj_resurrection
             mCurrKeyboardState = Keyboard.GetState();
 
             Vector2 direction = new Vector2(0, 0);
-            if (mCurrKeyboardState.IsKeyDown(Keys.Right)) direction.X += 1.0f;      //direction needs to be LinearVelocity
-            if (mCurrKeyboardState.IsKeyDown(Keys.Left))  direction.X -= 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Up))    direction.Y -= 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Down))  direction.Y += 1.0f;
+            Vector2 multiply = new Vector2(0,0);
+            mBody.LinearVelocity = new Vector2(0, 0);
+            if (mCurrKeyboardState.IsKeyDown(Keys.Right))
+            {
+                //Vector2 velocity = new Vector2(1, 0);
+                multiply.X = 1f;
+                mBody.LinearVelocity = (multiply * maxSpeed);
+            }//direction needs to be LinearVelocity
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Left))
+            {
+                multiply.X = -1f;
+                mBody.LinearVelocity = (multiply * maxSpeed);
+            }
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Up))
+            {
+                multiply.Y = -1f; ;
+                mBody.LinearVelocity = (multiply * maxSpeed);
+            }
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Down))
+            {
+                multiply.Y = 1f;
+                mBody.LinearVelocity = (multiply * maxSpeed);
+            }
+
             if (direction.Length() > 0)
             {
                 direction.Normalize();
