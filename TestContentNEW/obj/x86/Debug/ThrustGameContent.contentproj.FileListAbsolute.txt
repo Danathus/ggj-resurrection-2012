@@ -1,0 +1,5 @@
+C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\thrust\trunk\ThrustGame\ThrustGame\ThrustGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\John\Documents\Visual Studio 2010\Projects\TestCommit\thrust\trunk\ThrustGame\ThrustGame\ThrustGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Ryan\Documents\CMPS20\trunk\ThrustGame\ThrustGame\ThrustGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\John\Documents\Visual Studio 2010\Projects\TestCommit\trunk\ThrustGame\ThrustGame\ThrustGameContent\obj\x86\Debug\ResolveAssemblyReference.cache
