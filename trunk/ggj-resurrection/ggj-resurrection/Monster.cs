@@ -19,6 +19,7 @@ namespace ggj_resurrection
     {
         static private Texture2D mTexture;
 
+        Vector2 maxSpeed = new Vector2(.02f, .02f);
         Color tempColor = Color.White;
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
@@ -50,7 +51,7 @@ namespace ggj_resurrection
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(mTexture, mPosition, tempColor);
+            spriteBatch.Draw(mTexture, mBody.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -61,7 +62,6 @@ namespace ggj_resurrection
             {
                 timeElapsed = 0;
                 int randomNumber = rand.Next(1, 5);
-
                 switch (randomNumber)
                 {
                     //up
@@ -86,28 +86,46 @@ namespace ggj_resurrection
                 }
             }
 
+            Vector2 multiply = new Vector2(0, 0);
+
             switch (currentDirection)
             {
 
                 case DIRECTION.UP:
-                    if (mPosition.Y <= 700) mPosition.Y += 3;
+                    if (mBody.Position.Y <= 700) 
+                    {
+                        multiply.Y = 1f;
+                        mPosition.Y += 3; 
+                    }
                     break;
 
                 
                 case DIRECTION.RIGHT:
-                    if (mPosition.X <= 700) mPosition.X += 3;
+                    if (mBody.Position.X <= 700)
+                    {
+                        multiply.X = 1f;
+                    }
                     break;
 
                 
                 case DIRECTION.DOWN:
-                    if (mPosition.Y >= 100)  mPosition.Y -= 3;
+                    if (mBody.Position.Y >= 100)
+                    {
+                        multiply.Y = -1f;
+                    }
                     break;
 
                 
                 case DIRECTION.LEFT:
-                    if (mPosition.X >= 100) mPosition.X -= 3;
+                    if (mBody.Position.X >= 100)
+                    {
+                        multiply.X = -1f;
+                    }
                     break;
             }
+
+            mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
+
         }
 
         public static void LoadData(Game myGame)    //i don't htink this should be static because every monster has a different "physics" body.
