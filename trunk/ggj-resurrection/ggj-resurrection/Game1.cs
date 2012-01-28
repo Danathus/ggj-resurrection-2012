@@ -17,7 +17,9 @@ namespace ggj_resurrection
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        SpriteBatch           spriteBatch;
+        Texture2D             mTexture;
+        Vector2               mPosition;
 
         public Game1()
         {
@@ -38,6 +40,18 @@ namespace ggj_resurrection
             base.Initialize();
         }
 
+        private Texture2D CreateRectangle(int width, int height, Color colori)
+        {
+            Texture2D rectangleTexture = new Texture2D(GraphicsDevice, width, height, false, SurfaceFormat.Color);
+            Color[] color = new Color[width * height];//set the color to the amount of pixels in the textures
+            for (int i = 0; i < color.Length; i++)//loop through all the colors setting them to whatever values we want
+            {
+                color[i] = colori;
+            }
+            rectangleTexture.SetData(color);//set the color data on the texture
+            return rectangleTexture;//return the texture
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -48,6 +62,9 @@ namespace ggj_resurrection
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            mTexture = CreateRectangle(32, 32, color);
+            mPosition = new Vector2(0, 0);
         }
 
         /// <summary>
@@ -71,6 +88,8 @@ namespace ggj_resurrection
                 this.Exit();
 
             // TODO: Add your update logic here
+            const float speed = 100.0f;
+            mPosition.X += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
@@ -84,6 +103,9 @@ namespace ggj_resurrection
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
