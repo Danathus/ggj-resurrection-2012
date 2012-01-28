@@ -19,6 +19,8 @@ namespace ggj_resurrection
     {
         static private Texture2D mTexture;
 
+        Color tempColor = Color.White;
+
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
         private DIRECTION currentDirection;
         private double timeElapsed;
@@ -29,14 +31,26 @@ namespace ggj_resurrection
         {
             timeElapsed = 0;
             currentDirection = DIRECTION.RIGHT;
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f);
+            mBody.BodyType = BodyType.Dynamic;
+            mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
+            mFixture.CollisionCategories = Category.Cat1;
+            mBody.OnCollision += monsterOnCollision;
         }
+
+        public bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            tempColor = Color.Red;
+            return true;
+        }
+
         ~Monster()
         {
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(mTexture, mPosition, Color.White);
+            spriteBatch.Draw(mTexture, mPosition, tempColor);
         }
 
         public override void Update(GameTime gameTime)
