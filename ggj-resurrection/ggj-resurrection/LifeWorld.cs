@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ggj_resurrection
 {
-    class LifeWorld : World
+    class LifeWorld : GameWorld
     {
     }
 }
