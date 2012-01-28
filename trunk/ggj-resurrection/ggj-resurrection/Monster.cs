@@ -24,7 +24,7 @@ namespace ggj_resurrection
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
         private DIRECTION currentDirection;
         private double timeElapsed;
-        Random rand = new Random();
+        static Random rand = new Random();
 
         public Monster(World world)
             : base(world)
