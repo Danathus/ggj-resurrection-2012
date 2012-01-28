@@ -21,16 +21,15 @@ namespace ggj_resurrection
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
         private DIRECTION currentDirection;
-        private double mTimeElapsed;
-        Random mRand = new Random();
+        private double timeElapsed;
+        Random rand = new Random();
 
         public Monster(GraphicsDeviceManager gdm, World world)
             : base(gdm, world)
         {
-            mTimeElapsed = 0;
+            timeElapsed = 0;
             currentDirection = DIRECTION.RIGHT;
         }
-
         ~Monster()
         {
         }
@@ -42,12 +41,12 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
-            mTimeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
+            timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (mTimeElapsed > 1000)
+            if (timeElapsed > 1000)
             {
-                mTimeElapsed = 0;
-                int randomNumber = mRand.Next(1, 5);
+                timeElapsed = 0;
+                int randomNumber = rand.Next(1, 5);
 
                 switch (randomNumber)
                 {

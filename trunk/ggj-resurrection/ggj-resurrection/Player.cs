@@ -42,7 +42,7 @@ namespace ggj_resurrection
             mCurrKeyboardState = Keyboard.GetState();
 
             Vector2 direction = new Vector2(0, 0);
-            if (mCurrKeyboardState.IsKeyDown(Keys.Right)) direction.X += 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Right)) direction.X += 1.0f;      //direction needs to be LinearVelocity
             if (mCurrKeyboardState.IsKeyDown(Keys.Left))  direction.X -= 1.0f;
             if (mCurrKeyboardState.IsKeyDown(Keys.Up))    direction.Y -= 1.0f;
             if (mCurrKeyboardState.IsKeyDown(Keys.Down))  direction.Y += 1.0f;
@@ -66,6 +66,8 @@ namespace ggj_resurrection
         public static void LoadData(Game myGame)
         {
             mTexture = myGame.Content.Load<Texture2D>("monster");
+
+            // fixture load to initial position;
         }
        
     }
