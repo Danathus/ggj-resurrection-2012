@@ -29,9 +29,78 @@ namespace ggj_resurrection
         DeathWorld mDeathWorld;
         GameWorld  mCurrentWorld; // this is to point to whichever one we're in
 
+        public class Camera : GameObject
+        {
+            // screen info
+            Vector2 mScreenDimensions;
+
+            // positional data ("raw" values)
+            Vector3 mRot;
+            float   mZoom;
+
+            // matrices ("cooked" values)
+            public Matrix mProjectionMatrix;
+            public Matrix mViewMatrix; // formerly mDebugCameraMatrix
+            //public Matrix mDebugCameraMatrix;
+
+            public Camera(World world, Vector2 initPos, Vector2 screenCenter, Vector2 screenDimensions)
+                : base(world, initPos)
+            {
+                mScreenDimensions = screenDimensions;
+                //
+                mRot = new Vector3(0, 0, 0);
+                mZoom = 1.0f;
+                //
+                mProjectionMatrix = Matrix.CreateOrthographicOffCenter(
+                    -mScreenDimensions.X/2, mScreenDimensions.X/2, // left, right
+                    -mScreenDimensions.Y/2, mScreenDimensions.Y/2, // bottom, top
+                    -1000f, 1000f);                                // near, far
+                mViewMatrix = Matrix.Identity;
+            }
+
+            public override void Update(GameTime gameTime)
+            {
+                // update positional data
+                //mRot.Z += 10.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // generate view matrix from positional data
+                {
+                    Matrix preRotTranslationMatrix =
+                        Matrix.Identity;
+                        //Matrix.CreateTranslation(
+                        //-mScreenDimensions.X / 2,
+                        //-mScreenDimensions.Y / 2, 0
+                        //);
+                    Matrix rotationMatrix = Matrix.CreateRotationZ(MathHelper.ToRadians(mRot.Z));
+                    Matrix postRotTranslationMatrix =
+                        Matrix.Identity;
+                        //Matrix.CreateTranslation(
+                        //mScreenDimensions.X / 2,
+                        //mScreenDimensions.Y / 2, 0
+                        //);
+                    Matrix zoomMatrix = Matrix.CreateScale(mZoom);
+
+                    //Matrix translationMatrix =
+                      //  Matrix.Identity
+                        //Matrix.CreateTranslation(
+                        //-mScreenDimensions.X / 2,
+                        //-mScreenDimensions.Y / 2, 0)
+                        //;
+
+                    Matrix compositeMatrix = preRotTranslationMatrix * rotationMatrix * postRotTranslationMatrix * zoomMatrix;
+
+                    mViewMatrix = compositeMatrix;
+                }
+            }
+
+            public override void Draw(SpriteBatch spriteBatch)
+            {
+                // what is this nonsense, to draw the camera?
+            }
+        };
+        Camera mCamera;
+
         DebugViewXNA mDebugView;
-        private Matrix mProjection;
-        private Matrix mDebugCameraMatrix;
 
         Player mPlayer;
 
@@ -42,13 +111,13 @@ namespace ggj_resurrection
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
-            mGraphics.PreferredBackBufferWidth = 800;
+            mGraphics.PreferredBackBufferWidth  = 800;
             mGraphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
             mPhysicsWorld = new World(new Vector2(0, 0));
 
             mDebugView = new DebugViewXNA(mPhysicsWorld);
-            mPlayer = new Player(mPhysicsWorld, new Vector2(Window.ClientBounds.Width/2, Window.ClientBounds.Height/2) );
+            mPlayer    = new Player(mPhysicsWorld, new Vector2(0, 0));
             
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
@@ -58,7 +127,11 @@ namespace ggj_resurrection
             mLifeWorld.AddGameObject(mPlayer);
             mLifeWorld.AddGameObject( new MonsterSpawner(mPhysicsWorld, new Vector2(0,0)) );
 
-            
+            mScreenCenter = new Vector2(Window.ClientBounds.Width / 2f, Window.ClientBounds.Height / 2f);
+            mCamera = new Camera(
+                mPhysicsWorld, new Vector2(0, 0),
+                mScreenCenter,
+                new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));
         }
 
         /// <summary>
@@ -70,7 +143,6 @@ namespace ggj_resurrection
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -89,16 +161,6 @@ namespace ggj_resurrection
             MonsterSpawner.LoadData(this);
             Monster.LoadData(this);
             SwordSlash.LoadData(this);
-
-            mScreenCenter = new Vector2(Window.ClientBounds.Width / 2f, Window.ClientBounds.Height / 2f);
-            mProjection = Matrix.CreateOrthographicOffCenter(0f, mScreenCenter.X / 32f, mScreenCenter.Y / 32f, 0f, 0f, 1f);
-            mDebugCameraMatrix = Matrix.Identity;
-
-            mScreenCenter = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
-            mProjection = Matrix.CreateOrthographicOffCenter(0f, mScreenCenter.X / 32f,
-                                                             mScreenCenter.Y / 32f, 0f, 0f, 1f);
-            mDebugCameraMatrix = Matrix.Identity;
-
         }
 
         /// <summary>
@@ -122,10 +184,9 @@ namespace ggj_resurrection
                 this.Exit();
             mCurrMouseState = Mouse.GetState();
             
-            
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
-
+            mCamera.Update(gameTime);
 
             mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);
@@ -139,15 +200,30 @@ namespace ggj_resurrection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
+            BasicEffect basicEffect = new BasicEffect(GraphicsDevice);
+            basicEffect.World       = Matrix.Identity;
+            basicEffect.View        = mCamera.mViewMatrix;
+            basicEffect.Projection  = mCamera.mProjectionMatrix;
+            //
+            basicEffect.TextureEnabled     = true;
+            basicEffect.VertexColorEnabled = true;
+
             // custom drawing code here
-            mSpriteBatch.Begin();
+            mSpriteBatch.Begin(
+                SpriteSortMode.Immediate,   // sprite sort mode
+                BlendState.AlphaBlend,      // blend state
+                SamplerState.LinearClamp,   // sampler state
+                DepthStencilState.None,     // depth stencil state
+                RasterizerState.CullNone,   // rasterizer state
+                basicEffect,                // effect (formerly null)
+                Matrix.Identity);           // transform matrix
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
 
             mSpriteBatch.End();
 
-            mDebugView.RenderDebugData(ref mProjection, ref mDebugCameraMatrix);
-
+            mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
 
             base.Draw(gameTime);
         }
