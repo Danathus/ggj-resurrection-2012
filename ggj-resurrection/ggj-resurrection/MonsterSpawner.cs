@@ -23,11 +23,15 @@ namespace ggj_resurrection
         private static int mHeight;
         static Random mRand = new Random();
 
-        public MonsterSpawner(World world, Vector2 initPos)
+        private static Player mPlayer;
+
+        public MonsterSpawner(World world, Vector2 initPos, Player player)
             : base(world, initPos)
         {
             mPhysicsWorld = world;
             mMonsters = new List<Monster>();
+
+            mPlayer = player;
             
         }
 
@@ -45,7 +49,7 @@ namespace ggj_resurrection
         {
             timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (timeElapsed > 5000)
+           if (timeElapsed > 5000)
             {
                 timeElapsed = 0;
                 Spawn();
@@ -62,7 +66,7 @@ namespace ggj_resurrection
         private void Spawn()
         {
             //Spawn monster in a random location -- hopefully in bounds
-            Monster newMonster = new Monster(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth-50), mRand.Next(0, mHeight-50) ) );
+            Monster newMonster = new Monster(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth-50), mRand.Next(0, mHeight-50) ), mPlayer );
             mMonsters.Add(newMonster);
             mGameWorld.AddGameObject(newMonster);
         }

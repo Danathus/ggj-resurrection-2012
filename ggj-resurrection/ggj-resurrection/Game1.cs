@@ -125,7 +125,7 @@ namespace ggj_resurrection
             mCurrentWorld = mLifeWorld;
           
             mLifeWorld.AddGameObject(mPlayer);
-            mLifeWorld.AddGameObject( new MonsterSpawner(mPhysicsWorld, new Vector2(0,0)) );
+            mLifeWorld.AddGameObject( new MonsterSpawner(mPhysicsWorld, new Vector2(0,0), mPlayer) );
 
             mScreenCenter = new Vector2(Window.ClientBounds.Width / 2f, Window.ClientBounds.Height / 2f);
             mCamera = new Camera(
