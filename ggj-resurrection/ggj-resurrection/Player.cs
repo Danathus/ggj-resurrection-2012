@@ -19,6 +19,7 @@ namespace ggj_resurrection
     {
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
         float mSlashTimeout;
+        const float mMaxSlashTimeout = 0.5f;
 
         public Player(GraphicsDeviceManager gdm, World world)
             : base(gdm, world)
@@ -33,11 +34,10 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+            // draw sword slash
             if (mSlashTimeout > 0)
             {
-                Vector2 pos = new Vector2(50, 0);
-                pos += mPosition;
-                spriteBatch.Draw(mTexture, pos, Color.YellowGreen);
+                spriteBatch.Draw(mTexture, mPosition + 50 * mDirection, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255));
             }
         }
 
@@ -51,11 +51,15 @@ namespace ggj_resurrection
             if (mCurrKeyboardState.IsKeyDown(Keys.Left)) direction.X -= 1.0f;
             if (mCurrKeyboardState.IsKeyDown(Keys.Up)) direction.Y -= 1.0f;
             if (mCurrKeyboardState.IsKeyDown(Keys.Down)) direction.Y += 1.0f;
-            if (direction.Length() > 0) direction.Normalize();
+            if (direction.Length() > 0)
+            {
+                direction.Normalize();
+                mDirection = direction;
+            }
 
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
-                mSlashTimeout = 0.1f;
+                mSlashTimeout = mMaxSlashTimeout;
             }
 
             mSlashTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
