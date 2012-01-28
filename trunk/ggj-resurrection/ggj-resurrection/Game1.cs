@@ -16,15 +16,15 @@ namespace ggj_resurrection
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch           spriteBatch;
+        GraphicsDeviceManager mGraphics;
+        SpriteBatch           mSpriteBatch;
         Texture2D             mTexture;
         Vector2               mPosition;
         KeyboardState         mCurrKeyboardState, mPrevKeyboardState;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -60,7 +60,7 @@ namespace ggj_resurrection
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -101,7 +101,7 @@ namespace ggj_resurrection
             if (mCurrKeyboardState.IsKeyDown(Keys.Down))  direction.Y += 1.0f;
             if (direction.Length() > 0) direction.Normalize();
             
-            const float speed = 100.0f;
+            const float speed = 300.0f;
             mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
@@ -116,9 +116,9 @@ namespace ggj_resurrection
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
-            spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.End();
+            mSpriteBatch.Begin();
+            mSpriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+            mSpriteBatch.End();
 
             base.Draw(gameTime);
         }
