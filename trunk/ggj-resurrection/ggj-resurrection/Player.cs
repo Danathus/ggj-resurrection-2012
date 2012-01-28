@@ -36,10 +36,12 @@ namespace ggj_resurrection
             mBody.BodyType = BodyType.Dynamic;
             
             mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);
-
+            mFixture.Body.CollisionCategories = Category.Cat1;
             mFixture.CollisionCategories = Category.Cat1;
-            mFixture.CollidesWith = Category.All & ~Category.Cat2;
+            mFixture.CollidesWith = Category.All & ~Category.Cat1;
             mBody.OnCollision += playerOnCollision;
+            mFixture.UserData = "Player";
+            mFixture.Body.UserData = "Player";
         }
 
         ~Player()
@@ -48,12 +50,12 @@ namespace ggj_resurrection
 
         public bool playerOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            /*if (one.Body.LinearVelocity.Length() == Vector2.Zero.Length())
+            if (two.Body.UserData.ToString() == "Sword")
             {
                 tempColor = Color.Red;
                 return false;
             }
-            */
+            
             tempColor = Color.Red;
             return true;
         }
@@ -61,7 +63,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.Draw(mTexture, mPosition, null, tempColor, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mBody.Position * 64f, null, tempColor, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
