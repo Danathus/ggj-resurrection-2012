@@ -21,14 +21,6 @@ namespace ggj_resurrection
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager mGraphics;
-        SpriteBatch           mSpriteBatch;
-        World                 mPhysicsWorld;
-        //
-        LifeWorld  mLifeWorld;
-        DeathWorld mDeathWorld;
-        GameWorld  mCurrentWorld; // this is to point to whichever one we're in
-
         public class Camera : GameObject
         {
             // screen info
@@ -43,7 +35,7 @@ namespace ggj_resurrection
             public Matrix mViewMatrix; // formerly mDebugCameraMatrix
             //public Matrix mDebugCameraMatrix;
 
-            public Camera(World world, Vector2 initPos, Vector2 screenCenter, Vector2 screenDimensions)
+            public Camera(World world, Vector2 initPos, Vector2 screenDimensions)
                 : base(world, initPos)
             {
                 mScreenDimensions = screenDimensions;
@@ -101,12 +93,15 @@ namespace ggj_resurrection
         Camera mCamera;
 
         DebugViewXNA mDebugView;
-
         Player mPlayer;
 
-        Vector2 mScreenCenter;
-
-        MouseState mCurrMouseState;
+        GraphicsDeviceManager mGraphics;
+        SpriteBatch mSpriteBatch;
+        World mPhysicsWorld;
+        //
+        LifeWorld mLifeWorld;
+        DeathWorld mDeathWorld;
+        GameWorld mCurrentWorld; // this is to point to whichever one we're in
 
         public Game1()
         {
@@ -127,11 +122,11 @@ namespace ggj_resurrection
             mLifeWorld.AddGameObject(mPlayer);
             mLifeWorld.AddGameObject( new MonsterSpawner(mPhysicsWorld, new Vector2(0,0), mPlayer) );
 
-            mScreenCenter = new Vector2(Window.ClientBounds.Width / 2f, Window.ClientBounds.Height / 2f);
             mCamera = new Camera(
                 mPhysicsWorld, new Vector2(0, 0),
-                mScreenCenter,
                 new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));
+
+            //FarseerPhysics.Settings.ContinuousPhysics = false;
         }
 
         /// <summary>
@@ -182,7 +177,6 @@ namespace ggj_resurrection
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            mCurrMouseState = Mouse.GetState();
             
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
@@ -200,6 +194,7 @@ namespace ggj_resurrection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            /*
             // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
             BasicEffect basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.World       = Matrix.Identity;
@@ -208,6 +203,10 @@ namespace ggj_resurrection
             //
             basicEffect.TextureEnabled     = true;
             basicEffect.VertexColorEnabled = true;
+            //
+            /*/
+            BasicEffect basicEffect = null;
+            //*/
 
             // custom drawing code here
             mSpriteBatch.Begin(

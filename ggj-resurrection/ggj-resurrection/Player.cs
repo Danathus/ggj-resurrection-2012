@@ -17,7 +17,7 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
-        Vector2 maxSpeed = new Vector2(.03f,.03f);
+        float mMaxSpeed = .03f;
         Color tempColor = Color.YellowGreen;
         
 
@@ -92,7 +92,7 @@ namespace ggj_resurrection
 
                 if (getStick.Length() > .065f )
                 {
-                    mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
+                    mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
                     //mFixture.Body.LinearVelocity = (multiply * maxSpeed);
                 }
 
@@ -120,7 +120,7 @@ namespace ggj_resurrection
                 {
                     multiply.Y = -1f;
                 }
-                mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
+                mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
 
             //}
 
@@ -139,8 +139,6 @@ namespace ggj_resurrection
                 GetGameWorld().AddGameObject(newSwordSlash);
             }
 
-            
-
             const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
             mPosition = mBody.Position * 64f;       //converts Body.Position (meters) into pixels
@@ -151,8 +149,6 @@ namespace ggj_resurrection
             mTexture = myGame.Content.Load<Texture2D>("monster");
       
             // fixture load to initial position;
-         
-            
         }
        
     }
