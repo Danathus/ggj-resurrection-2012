@@ -39,10 +39,6 @@ namespace ggj_resurrection
 
         MouseState mCurrMouseState;
 
-        #region TestRegion
-        Body test;
-        #endregion 
-
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -53,12 +49,7 @@ namespace ggj_resurrection
 
             mDebugView = new DebugViewXNA(mPhysicsWorld);
             mPlayer = new Player(mPhysicsWorld);
-
-            #region moreTesting
-            test = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f, new Vector2(200f / 64f, 150f / 64f));
-            test.BodyType = BodyType.Dynamic;
-            #endregion
-
+            
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
 
@@ -67,7 +58,7 @@ namespace ggj_resurrection
 
             
             mLifeWorld.AddGameObject(mPlayer);
-          //  mLifeWorld.AddGameObject(new MonsterSpawner(mGraphics, mPhysicsWorld));
+            mLifeWorld.AddGameObject(new MonsterSpawner(mPhysicsWorld));
 
             
         }
