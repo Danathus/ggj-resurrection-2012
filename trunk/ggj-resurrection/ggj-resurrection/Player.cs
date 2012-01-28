@@ -27,6 +27,7 @@ namespace ggj_resurrection
             mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
             mSlashTimeout = 0.0f;
         }
+
         ~Player()
         {
         }
@@ -48,9 +49,9 @@ namespace ggj_resurrection
 
             Vector2 direction = new Vector2(0, 0);
             if (mCurrKeyboardState.IsKeyDown(Keys.Right)) direction.X += 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Left)) direction.X -= 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Up)) direction.Y -= 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Down)) direction.Y += 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Left))  direction.X -= 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Up))    direction.Y -= 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Down))  direction.Y += 1.0f;
             if (direction.Length() > 0)
             {
                 direction.Normalize();
