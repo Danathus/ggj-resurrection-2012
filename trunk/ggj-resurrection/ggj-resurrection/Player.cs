@@ -28,9 +28,8 @@ namespace ggj_resurrection
         public Player(World world)   //this is never called. We need it for physics object
             : base(world)
         {
-            mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
-
-        
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f, new Vector2(400f / 64f, 300f / 64f));
+            mBody.BodyType = BodyType.Dynamic;
             
         }
 
@@ -41,7 +40,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.Draw(mTexture, mBody.Position * 64f, null, Color.YellowGreen, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mPosition, null, Color.YellowGreen, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -112,17 +111,16 @@ namespace ggj_resurrection
             }
 
             const float speed = 300.0f;
-            mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            mPosition = mBody.Position * 64f;       //converts Body.Position (meters) into pixels
         }
 
-        public void LoadData(Game myGame)
+        public static void LoadData(Game myGame)
         {
             mTexture = myGame.Content.Load<Texture2D>("monster");
 
             // fixture load to initial position;
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f, new Vector2(400f / 64f, 300f / 64f));
-            mBody.BodyType = BodyType.Dynamic;
-
+         
             
         }
        

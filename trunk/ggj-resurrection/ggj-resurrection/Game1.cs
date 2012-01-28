@@ -36,7 +36,13 @@ namespace ggj_resurrection
         Player mPlayer;
 
         Vector2 mScreenCenter;
-        
+
+        MouseState mCurrMouseState;
+
+        #region TestRegion
+        Body test;
+        #endregion 
+
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -48,6 +54,10 @@ namespace ggj_resurrection
             mDebugView = new DebugViewXNA(mPhysicsWorld);
             mPlayer = new Player(mPhysicsWorld);
 
+            #region moreTesting
+            test = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f, new Vector2(200f / 64f, 150f / 64f));
+            test.BodyType = BodyType.Dynamic;
+            #endregion
 
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
@@ -86,7 +96,7 @@ namespace ggj_resurrection
 
             mDebugView.LoadContent(mGraphics.GraphicsDevice, Content);
 
-            mPlayer.LoadData(this);
+            Player.LoadData(this);
             Monster.LoadData(this);
             SwordSlash.LoadData(this);
 
@@ -120,10 +130,13 @@ namespace ggj_resurrection
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            mCurrMouseState = Mouse.GetState();
+            
             
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
+
+
             mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);
         }
