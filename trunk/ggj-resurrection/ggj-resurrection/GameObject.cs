@@ -17,7 +17,7 @@ namespace ggj_resurrection
 {
     public abstract class GameObject
     {
-        protected Vector2   mPosition;
+        protected Vector2   mPosition, mDirection;
         protected Texture2D mTexture;
         protected Fixture   mFixture;
         protected World     mWorld;
@@ -29,6 +29,7 @@ namespace ggj_resurrection
         public GameObject(GraphicsDeviceManager gdm, World world)
         {
             mPosition = new Vector2(0, 0);
+            mDirection = new Vector2(1, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             mWorld = world;
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
