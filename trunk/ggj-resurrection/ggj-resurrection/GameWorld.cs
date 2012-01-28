@@ -54,6 +54,7 @@ namespace ggj_resurrection
             foreach (GameObject go in mRemoveList)
             {
                 //remove in farseer?
+                go.fixtureDestory();
                 mGameObjects.Remove(go);
             }
             mRemoveList.Clear();

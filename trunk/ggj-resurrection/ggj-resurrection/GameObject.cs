@@ -46,6 +46,12 @@ namespace ggj_resurrection
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
         }
 
+        public void fixtureDestory()
+        {
+            mBody.Dispose();
+            //mFixture.Dispose();
+        }
+
         /*
         protected Texture2D CreateRectangle(GraphicsDevice graphicsDevice, int width, int height, Color colori)
         {

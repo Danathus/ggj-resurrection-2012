@@ -34,8 +34,11 @@ namespace ggj_resurrection
 
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius / 64f, 1f, new Vector2(mPosition.X / 64f, mPosition.Y / 64f));
             mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);         
+            
+            mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);
+
             mFixture.CollisionCategories = Category.Cat1;
+            mFixture.CollidesWith = Category.All & ~Category.Cat2;
             mBody.OnCollision += playerOnCollision;
         }
 
@@ -132,6 +135,7 @@ namespace ggj_resurrection
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && !mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
                 SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld);
+          
                 newSwordSlash.SetPosition(mPosition + (100 * mDirection));
                 newSwordSlash.SetVelocity(mBody.LinearVelocity);
                 GetGameWorld().AddGameObject(newSwordSlash);
@@ -147,7 +151,7 @@ namespace ggj_resurrection
         public static void LoadData(Game myGame)
         {
             mTexture = myGame.Content.Load<Texture2D>("monster");
-
+      
             // fixture load to initial position;
          
             
