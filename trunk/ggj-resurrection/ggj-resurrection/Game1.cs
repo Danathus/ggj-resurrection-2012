@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using FarseerPhysics.DebugViews;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
-using FarseerPhysics.Common;    
+using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
@@ -21,75 +21,6 @@ namespace ggj_resurrection
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        public class Camera : GameObject
-        {
-            // screen info
-            Vector2 mScreenDimensions;
-
-            // positional data ("raw" values)
-            Vector3 mRot;
-            float   mZoom;
-
-            // matrices ("cooked" values)
-            public Matrix mProjectionMatrix;
-            public Matrix mViewMatrix; // formerly mDebugCameraMatrix
-            //public Matrix mDebugCameraMatrix;
-
-            public Camera(World world, Vector2 initPos, Vector2 screenDimensions)
-                : base(world, initPos)
-            {
-                mScreenDimensions = screenDimensions;
-                //
-                mRot = new Vector3(0, 0, 0);
-                mZoom = 1.0f;
-                //
-                mProjectionMatrix = Matrix.CreateOrthographicOffCenter(
-                    -mScreenDimensions.X/2, mScreenDimensions.X/2, // left, right
-                    -mScreenDimensions.Y/2, mScreenDimensions.Y/2, // bottom, top
-                    -1000f, 1000f);                                // near, far
-                mViewMatrix = Matrix.Identity;
-            }
-
-            public override void Update(GameTime gameTime)
-            {
-                // update positional data
-                //mRot.Z += 10.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                // generate view matrix from positional data
-                {
-                    Matrix preRotTranslationMatrix =
-                        Matrix.Identity;
-                        //Matrix.CreateTranslation(
-                        //-mScreenDimensions.X / 2,
-                        //-mScreenDimensions.Y / 2, 0
-                        //);
-                    Matrix rotationMatrix = Matrix.CreateRotationZ(MathHelper.ToRadians(mRot.Z));
-                    Matrix postRotTranslationMatrix =
-                        Matrix.Identity;
-                        //Matrix.CreateTranslation(
-                        //mScreenDimensions.X / 2,
-                        //mScreenDimensions.Y / 2, 0
-                        //);
-                    Matrix zoomMatrix = Matrix.CreateScale(mZoom);
-
-                    //Matrix translationMatrix =
-                      //  Matrix.Identity
-                        //Matrix.CreateTranslation(
-                        //-mScreenDimensions.X / 2,
-                        //-mScreenDimensions.Y / 2, 0)
-                        //;
-
-                    Matrix compositeMatrix = preRotTranslationMatrix * rotationMatrix * postRotTranslationMatrix * zoomMatrix;
-
-                    mViewMatrix = compositeMatrix;
-                }
-            }
-
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                // what is this nonsense, to draw the camera?
-            }
-        };
         Camera mCamera;
 
         DebugViewXNA mDebugView;
@@ -199,8 +130,8 @@ namespace ggj_resurrection
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
-            mRenderingEffect.World       = Matrix.Identity;
-            mRenderingEffect.View = mCamera.mViewMatrix;
+            mRenderingEffect.World      = Matrix.Identity;
+            mRenderingEffect.View       = mCamera.mViewMatrix;
             mRenderingEffect.Projection = mCamera.mProjectionMatrix;
             //
             mRenderingEffect.TextureEnabled = true;
