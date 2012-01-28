@@ -19,12 +19,16 @@ namespace ggj_resurrection
     {
         List<Monster> mMonsters;
         private double timeElapsed;
+        private static int mWidth;
+        private static int mHeight;
+        static Random mRand = new Random();
 
-        public MonsterSpawner(World world)
-            : base(world)
+        public MonsterSpawner(World world, Vector2 initPos)
+            : base(world, initPos)
         {
             mPhysicsWorld = world;
             mMonsters = new List<Monster>();
+            
         }
 
         ~MonsterSpawner()
@@ -48,11 +52,19 @@ namespace ggj_resurrection
             }
         }
 
+        public static void LoadData(Game myGame)
+        {
+            mHeight = myGame.Window.ClientBounds.Height;
+            mWidth = myGame.Window.ClientBounds.Width;
+        }
+
+
         private void Spawn()
         {
-            Monster newMonster = new Monster(mPhysicsWorld);
+            //Spawn monster in a random location -- hopefully in bounds
+            Monster newMonster = new Monster(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth-50), mRand.Next(0, mHeight-50) ) );
             mMonsters.Add(newMonster);
-            mGameWorld.AddGameObject(new Monster(mPhysicsWorld));
+            mGameWorld.AddGameObject(newMonster);
         }
     }
 }

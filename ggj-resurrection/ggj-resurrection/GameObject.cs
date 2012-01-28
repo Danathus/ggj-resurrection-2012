@@ -36,9 +36,8 @@ namespace ggj_resurrection
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
 
-        public GameObject(World world)
-        {
-            mPosition = new Vector2(0, 0);
+        public GameObject(World world, Vector2 initPos){
+            mPosition = initPos;
             mDirection = new Vector2(1, 0);
             mVelocity = new Vector2(0, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);

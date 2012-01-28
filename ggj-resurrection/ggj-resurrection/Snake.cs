@@ -20,8 +20,8 @@ namespace ggj_resurrection
     {
         private Monster snake;
 
-        public Snake(World world)
-            : base(world)
+        public Snake(World world, Vector2 initPos)
+            : base(world, initPos)
         {
 
         }

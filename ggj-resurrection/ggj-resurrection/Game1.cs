@@ -48,17 +48,15 @@ namespace ggj_resurrection
             mPhysicsWorld = new World(new Vector2(0, 0));
 
             mDebugView = new DebugViewXNA(mPhysicsWorld);
-            mPlayer = new Player(mPhysicsWorld);
+            mPlayer = new Player(mPhysicsWorld, new Vector2(Window.ClientBounds.Width/2, Window.ClientBounds.Height/2) );
             
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
 
             mCurrentWorld = mLifeWorld;
           
-
-            
             mLifeWorld.AddGameObject(mPlayer);
-            mLifeWorld.AddGameObject(new MonsterSpawner(mPhysicsWorld));
+            mLifeWorld.AddGameObject( new MonsterSpawner(mPhysicsWorld, new Vector2(0,0)) );
 
             
         }
@@ -88,6 +86,7 @@ namespace ggj_resurrection
             mDebugView.LoadContent(mGraphics.GraphicsDevice, Content);
 
             Player.LoadData(this);
+            MonsterSpawner.LoadData(this);
             Monster.LoadData(this);
             SwordSlash.LoadData(this);
 
