@@ -1,0 +1,10 @@
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\bin\x86\Debug\Content\font.xnb
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\bin\x86\Debug\DebugViewXNA.dll
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\bin\x86\Debug\DebugViewXNA.pdb
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\bin\x86\Debug\FarseerPhysicsXNA.dll
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\bin\x86\Debug\FarseerPhysicsXNA.pdb
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\bin\x86\Debug\FarseerPhysicsXNA.xml
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\obj\x86\Debug\DebugViewXNA.dll
+C:\Users\William\Documents\UCSC11-12\GameJam2012\DebugView XNA\obj\x86\Debug\DebugViewXNA.pdb
