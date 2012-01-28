@@ -9,21 +9,28 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using FarseerPhysics.Factories;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Common;    
+
 namespace ggj_resurrection
 {
     public abstract class GameObject
     {
         protected Vector2   mPosition;
         protected Texture2D mTexture;
+        protected Fixture   mFixture;
+        protected World     mWorld;
 
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
         public abstract void LoadData(Game myGame);
 
-        public GameObject(GraphicsDeviceManager gdm)
+        public GameObject(GraphicsDeviceManager gdm, World world)
         {
             mPosition = new Vector2(0, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            mWorld = world;
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
         }
 

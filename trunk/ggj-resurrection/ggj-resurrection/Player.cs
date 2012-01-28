@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using FarseerPhysics.Factories;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Common;    
+
 namespace ggj_resurrection
 {
     public class Player : GameObject
@@ -16,8 +20,8 @@ namespace ggj_resurrection
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
         float mSlashTimeout;
 
-        public Player(GraphicsDeviceManager gdm)
-            : base(gdm)
+        public Player(GraphicsDeviceManager gdm, World world)
+            : base(gdm, world)
         {
             mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
             mSlashTimeout = 0.0f;

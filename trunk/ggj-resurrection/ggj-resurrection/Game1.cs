@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Common;    
@@ -23,6 +24,7 @@ namespace ggj_resurrection
         SpriteBatch           mSpriteBatch;
         Player                mPlayer;
         Monster               mMonster1;
+        World                 mWorld;
 
         public Game1()
         {
