@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using FarseerPhysics.DebugViews;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Common;    
@@ -28,11 +29,16 @@ namespace ggj_resurrection
         DeathWorld mDeathWorld;
         GameWorld  mCurrentWorld; // this is to point to whichever one we're in
 
+        DebugViewXNA mDebugView;
+        private Matrix mProjection;
+        private Matrix mDebugCameraMatrix;
+
+
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
             mGraphics.PreferredBackBufferWidth = 800;
-            mGraphics.PreferredBackBufferHeight = 800;
+            mGraphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
 
             mLifeWorld    = new LifeWorld();
@@ -41,7 +47,9 @@ namespace ggj_resurrection
             mCurrentWorld = mLifeWorld;
 
             mLifeWorld.AddGameObject(new Player(mGraphics, mPhysicsWorld));
-            mLifeWorld.AddGameObject(new MonsterSpawner(mGraphics, mPhysicsWorld));
+          //  mLifeWorld.AddGameObject(new MonsterSpawner(mGraphics, mPhysicsWorld));
+
+            mDebugView = new DebugViewXNA(mPhysicsWorld);
         }
 
         /// <summary>

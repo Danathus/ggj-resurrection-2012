@@ -19,7 +19,7 @@ namespace ggj_resurrection
     {
         protected GraphicsDeviceManager mGraphicsDeviceManager;
         protected Vector2   mPosition, mDirection;
-        protected Fixture   mFixture;
+        protected Body      mBody;
         protected World     mWorld;
         protected GameWorld mGameWorld; // the game world this object is in
 
