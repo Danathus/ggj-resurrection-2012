@@ -18,13 +18,11 @@ namespace ggj_resurrection
     public abstract class GameObject
     {
         protected Vector2   mPosition, mDirection;
-        protected Texture2D mTexture;
         protected Fixture   mFixture;
         protected World     mWorld;
 
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
-        public abstract void LoadData(Game myGame);
 
         public GameObject(GraphicsDeviceManager gdm, World world)
         {

@@ -17,6 +17,8 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
+        static private Texture2D mTexture;
+
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
         float mSlashTimeout;
         const float mMaxSlashTimeout = 0.5f;
@@ -70,7 +72,7 @@ namespace ggj_resurrection
             mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public override void LoadData(Game myGame)
+        public static void LoadData(Game myGame)
         {
             mTexture = myGame.Content.Load<Texture2D>("monster");
         }

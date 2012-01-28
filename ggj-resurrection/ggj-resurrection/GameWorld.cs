@@ -16,12 +16,17 @@ namespace ggj_resurrection
     {
         List<GameObject> mGameObjects;
 
-        void AddGameObject(GameObject go)
+        public GameWorld()
+        {
+            mGameObjects = new List<GameObject>();
+        }
+
+        public void AddGameObject(GameObject go)
         {
             mGameObjects.Add(go);
         }
 
-        void RemoveGameObject(GameObject go)
+        public void RemoveGameObject(GameObject go)
         {
             mGameObjects.Remove(go);
         }
