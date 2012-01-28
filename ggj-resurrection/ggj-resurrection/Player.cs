@@ -18,10 +18,12 @@ namespace ggj_resurrection
     public class Player : GameObject
     {
         Vector2 maxSpeed = new Vector2(.01f,.01f);
+        
 
         static private Texture2D mTexture;
 
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
+        GamePadState mCurrControllerState, mPrevControllerState;
 
         public Player(World world)   //this is never called. We need it for physics object
             : base(world)
@@ -46,33 +48,54 @@ namespace ggj_resurrection
         {
             mPrevKeyboardState = mCurrKeyboardState;
             mCurrKeyboardState = Keyboard.GetState();
+            mPrevControllerState = mCurrControllerState;
+            mCurrControllerState = GamePad.GetState(PlayerIndex.One);
 
             Vector2 direction = new Vector2(0, 0);
             Vector2 multiply = new Vector2(0,0);
             mBody.LinearVelocity = new Vector2(0, 0);
-            if (mCurrKeyboardState.IsKeyDown(Keys.Right))
+            Vector2 getStick;
+            if (mCurrControllerState.IsConnected)
             {
-                //Vector2 velocity = new Vector2(1, 0);
-                multiply.X = 1f;
-                mBody.LinearVelocity = (multiply * maxSpeed);
-            }//direction needs to be LinearVelocity
+                getStick.X = mCurrControllerState.ThumbSticks.Left.X;
+                getStick.Y = mCurrControllerState.ThumbSticks.Left.Y;
 
-            if (mCurrKeyboardState.IsKeyDown(Keys.Left))
-            {
-                multiply.X = -1f;
-                mBody.LinearVelocity = (multiply * maxSpeed);
+                getStick.Y *= -1f;
+
+                if (getStick.Length() > .065f )
+                {
+                    mBody.LinearVelocity = (getStick * maxSpeed);
+                }
+
             }
 
-            if (mCurrKeyboardState.IsKeyDown(Keys.Up))
+            else
             {
-                multiply.Y = -1f; ;
-                mBody.LinearVelocity = (multiply * maxSpeed);
-            }
+                if (mCurrKeyboardState.IsKeyDown(Keys.Right))
+                {
+                    //Vector2 velocity = new Vector2(1, 0);
+                    multiply.X = 1f;
+                    mBody.LinearVelocity = (multiply * maxSpeed);
+                }//direction needs to be LinearVelocity
 
-            if (mCurrKeyboardState.IsKeyDown(Keys.Down))
-            {
-                multiply.Y = 1f;
-                mBody.LinearVelocity = (multiply * maxSpeed);
+                if (mCurrKeyboardState.IsKeyDown(Keys.Left))
+                {
+                    multiply.X = -1f;
+                    mBody.LinearVelocity = (multiply * maxSpeed);
+                }
+
+                if (mCurrKeyboardState.IsKeyDown(Keys.Up))
+                {
+                    multiply.Y = -1f; ;
+                    mBody.LinearVelocity = (multiply * maxSpeed);
+                }
+
+                if (mCurrKeyboardState.IsKeyDown(Keys.Down))
+                {
+                    multiply.Y = 1f;
+                    mBody.LinearVelocity = (multiply * maxSpeed);
+                }
+
             }
 
             if (direction.Length() > 0)
