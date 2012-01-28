@@ -17,6 +17,7 @@ namespace ggj_resurrection
 {
     class Monster : GameObject
     {
+        static private Texture2D mTexture;
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
         private DIRECTION currentDirection;
@@ -95,7 +96,7 @@ namespace ggj_resurrection
             }
         }
 
-        public override void LoadData(Game myGame)
+        public static void LoadData(Game myGame)
         {
             mTexture = myGame.Content.Load<Texture2D>("monster");
         }

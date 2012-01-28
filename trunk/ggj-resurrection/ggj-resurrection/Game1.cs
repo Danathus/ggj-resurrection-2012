@@ -22,9 +22,11 @@ namespace ggj_resurrection
     {
         GraphicsDeviceManager mGraphics;
         SpriteBatch           mSpriteBatch;
-        Player                mPlayer;
-        Monster               mMonster1;
         World                 mWorld;
+        //
+        LifeWorld  mLifeWorld;
+        DeathWorld mDeathWorld;
+        LifeWorld  mCurrentWorld; // this is to point to whichever one we're in
 
         public Game1()
         {
@@ -32,8 +34,13 @@ namespace ggj_resurrection
             mGraphics.PreferredBackBufferWidth = 800;
             mGraphics.PreferredBackBufferHeight = 800;
             Content.RootDirectory = "Content";
-            mPlayer = new Player(mGraphics, mWorld);
-            mMonster1 = new Monster(mGraphics, mWorld);
+
+            mLifeWorld    = new LifeWorld();
+            mDeathWorld   = new DeathWorld();
+            mCurrentWorld = mLifeWorld;
+
+            mLifeWorld.AddGameObject(new Player(mGraphics, mWorld));
+            mLifeWorld.AddGameObject(new Monster(mGraphics, mWorld));
         }
 
         /// <summary>
@@ -57,11 +64,9 @@ namespace ggj_resurrection
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
             
-            mPlayer.LoadData(this);
-            mMonster1.LoadData(this);
+            Player.LoadData(this);
+            Monster.LoadData(this);
         }
 
         /// <summary>
@@ -84,10 +89,9 @@ namespace ggj_resurrection
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
-            mPlayer.Update(gameTime);
+            mLifeWorld.Update(gameTime);
+            mDeathWorld.Update(gameTime);
 
-            mMonster1.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -101,10 +105,9 @@ namespace ggj_resurrection
 
             // custom drawing code here
             mSpriteBatch.Begin();
-            mPlayer.Draw(mSpriteBatch);
-            mMonster1.Draw(mSpriteBatch);
+            mLifeWorld.Draw(mSpriteBatch);
+            mDeathWorld.Draw(mSpriteBatch);
             mSpriteBatch.End();
-
 
             base.Draw(gameTime);
         }
