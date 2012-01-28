@@ -103,6 +103,8 @@ namespace ggj_resurrection
         DeathWorld mDeathWorld;
         GameWorld mCurrentWorld; // this is to point to whichever one we're in
 
+        BasicEffect mRenderingEffect;
+
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -156,6 +158,8 @@ namespace ggj_resurrection
             MonsterSpawner.LoadData(this);
             Monster.LoadData(this);
             SwordSlash.LoadData(this);
+
+            mRenderingEffect = new BasicEffect(GraphicsDevice);
         }
 
         /// <summary>
@@ -194,28 +198,22 @@ namespace ggj_resurrection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            /*
             // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
-            BasicEffect basicEffect = new BasicEffect(GraphicsDevice);
-            basicEffect.World       = Matrix.Identity;
-            basicEffect.View        = mCamera.mViewMatrix;
-            basicEffect.Projection  = mCamera.mProjectionMatrix;
+            mRenderingEffect.World       = Matrix.Identity;
+            mRenderingEffect.View = mCamera.mViewMatrix;
+            mRenderingEffect.Projection = mCamera.mProjectionMatrix;
             //
-            basicEffect.TextureEnabled     = true;
-            basicEffect.VertexColorEnabled = true;
-            //
-            /*/
-            BasicEffect basicEffect = null;
-            //*/
+            mRenderingEffect.TextureEnabled = true;
+            mRenderingEffect.VertexColorEnabled = true;
 
             // custom drawing code here
             mSpriteBatch.Begin(
-                SpriteSortMode.Immediate,   // sprite sort mode
+                SpriteSortMode.Immediate,   // sprite sort mode (which is better, immediate or deffered?)
                 BlendState.AlphaBlend,      // blend state
                 SamplerState.LinearClamp,   // sampler state
                 DepthStencilState.None,     // depth stencil state
                 RasterizerState.CullNone,   // rasterizer state
-                basicEffect,                // effect (formerly null)
+                mRenderingEffect,           // effect (formerly null)
                 Matrix.Identity);           // transform matrix
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
