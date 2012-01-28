@@ -61,7 +61,7 @@ namespace ggj_resurrection
                 mDirection = direction;
             }
 
-            if (mCurrKeyboardState.IsKeyDown(Keys.Z) && mPrevKeyboardState.IsKeyDown(Keys.Z))
+            if (mCurrKeyboardState.IsKeyDown(Keys.Z) && !mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
                 SwordSlash newSwordSlash = new SwordSlash(mGraphicsDeviceManager, mWorld);
                 newSwordSlash.SetPosition(mPosition + 50 * mDirection);
