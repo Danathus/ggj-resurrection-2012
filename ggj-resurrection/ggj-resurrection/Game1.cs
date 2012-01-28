@@ -29,6 +29,8 @@ namespace ggj_resurrection
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
+            mGraphics.PreferredBackBufferWidth = 800;
+            mGraphics.PreferredBackBufferHeight = 800;
             Content.RootDirectory = "Content";
             mPlayer = new Player(mGraphics, mWorld);
             mMonster1 = new Monster(mGraphics, mWorld);
