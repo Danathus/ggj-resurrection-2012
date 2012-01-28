@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
-using FarseerPhysics.Common;    
+using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
