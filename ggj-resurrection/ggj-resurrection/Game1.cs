@@ -22,7 +22,7 @@ namespace ggj_resurrection
     {
         GraphicsDeviceManager mGraphics;
         SpriteBatch           mSpriteBatch;
-        World                 mWorld;
+        World                 mPhysicsWorld;
         //
         LifeWorld  mLifeWorld;
         DeathWorld mDeathWorld;
@@ -37,10 +37,11 @@ namespace ggj_resurrection
 
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
+
             mCurrentWorld = mLifeWorld;
 
-            mLifeWorld.AddGameObject(new Player(mGraphics, mWorld));
-            mLifeWorld.AddGameObject(new Monster(mGraphics, mWorld));
+            mLifeWorld.AddGameObject(new Player(mGraphics, mPhysicsWorld));
+            mLifeWorld.AddGameObject(new MonsterSpawner(mGraphics, mPhysicsWorld));
         }
 
         /// <summary>
