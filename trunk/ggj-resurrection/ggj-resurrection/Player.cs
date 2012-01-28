@@ -102,25 +102,21 @@ namespace ggj_resurrection
                 {
                     //Vector2 velocity = new Vector2(1, 0);
                     multiply.X = 1f;
-                    
                 }//direction needs to be LinearVelocity
 
                 if (mCurrKeyboardState.IsKeyDown(Keys.Left))
                 {
                     multiply.X = -1f;
-                
                 }
 
                 if (mCurrKeyboardState.IsKeyDown(Keys.Up))
                 {
-                    multiply.Y = -1f; ;
-                
+                    multiply.Y =  1f;
                 }
 
                 if (mCurrKeyboardState.IsKeyDown(Keys.Down))
                 {
-                    multiply.Y = 1f;
-                
+                    multiply.Y = -1f;
                 }
                 mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
 
