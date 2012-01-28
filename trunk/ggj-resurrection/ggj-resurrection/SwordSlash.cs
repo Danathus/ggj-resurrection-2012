@@ -23,8 +23,8 @@ namespace ggj_resurrection
         float mSlashTimeout;
         const float mMaxSlashTimeout = 0.5f;
 
-        public SwordSlash(World world)
-            : base(world)
+        public SwordSlash(World world, Vector2 initPos)
+            : base(world, initPos)
         {
             mSlashTimeout = mMaxSlashTimeout;
             mRadius = 50;

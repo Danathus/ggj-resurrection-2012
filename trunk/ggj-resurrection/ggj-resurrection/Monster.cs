@@ -25,10 +25,10 @@ namespace ggj_resurrection
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
         private DIRECTION currentDirection;
         private double timeElapsed;
-        static Random rand = new Random();
+        static Random mRand = new Random();
 
-        public Monster(World world)
-            : base(world)
+        public Monster(World world, Vector2 initPos)
+            : base(world, initPos)
         {
             timeElapsed = 0;
             currentDirection = DIRECTION.RIGHT;
@@ -37,6 +37,8 @@ namespace ggj_resurrection
             mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat1;
             mBody.OnCollision += monsterOnCollision;
+            mPosition /= 64f;
+            mBody.Position = mPosition;
         }
 
         public bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -61,7 +63,7 @@ namespace ggj_resurrection
             if (timeElapsed > 1000)
             {
                 timeElapsed = 0;
-                int randomNumber = rand.Next(1, 5);
+                int randomNumber = mRand.Next(1, 5);
                 switch (randomNumber)
                 {
                     //up
@@ -125,6 +127,8 @@ namespace ggj_resurrection
             }
 
             mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
+
+            Console.WriteLine("X: " + mBody.Position.X + "     Y: " + mBody.Position.Y);
 
         }
 

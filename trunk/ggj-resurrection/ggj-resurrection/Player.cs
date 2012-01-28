@@ -26,8 +26,8 @@ namespace ggj_resurrection
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
         GamePadState mCurrControllerState, mPrevControllerState;
 
-        public Player(World world)   //this is never called. We need it for physics object
-            : base(world)
+        public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
+            : base(world, initPos)
         {
             mRadius = 50f;
             
@@ -134,7 +134,7 @@ namespace ggj_resurrection
 
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && !mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
-                SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld);
+                SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, mPosition);
           
                 newSwordSlash.SetPosition(mPosition + (100 * mDirection));
                 newSwordSlash.SetVelocity(mBody.LinearVelocity);
