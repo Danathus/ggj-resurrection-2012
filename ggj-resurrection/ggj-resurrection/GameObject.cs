@@ -18,6 +18,7 @@ namespace ggj_resurrection
     public abstract class GameObject
     {
         protected Vector2   mPosition, mDirection;
+        protected Fixture   mFixture;
         protected Body      mBody;
         protected World     mPhysicsWorld;
         protected GameWorld mGameWorld; // the game world this object is in
