@@ -18,6 +18,7 @@ namespace ggj_resurrection
     public class Player : GameObject
     {
         Vector2 maxSpeed = new Vector2(.01f,.01f);
+        Color tempColor = Color.YellowGreen;
         
 
         static private Texture2D mTexture;
@@ -28,23 +29,39 @@ namespace ggj_resurrection
         public Player(World world)   //this is never called. We need it for physics object
             : base(world)
         {
+            
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f, new Vector2(400f / 64f, 300f / 64f));
             mBody.BodyType = BodyType.Dynamic;
-            
+            mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
+            mFixture.CollisionCategories = Category.Cat1;
+            mBody.OnCollision += playerOnCollision;
         }
 
         ~Player()
         {
         }
+
+        public bool playerOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            if (one.Body.LinearVelocity.Length() == Vector2.Zero.Length())
+            {
+                tempColor = Color.Red;
+                return true;
+            }
+
+            tempColor = Color.Red;
+            return false;
+        }
         
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.Draw(mTexture, mPosition, null, Color.YellowGreen, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mPosition, null, tempColor, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
         {
+            tempColor = Color.YellowGreen;
             mPrevKeyboardState = mCurrKeyboardState;
             mCurrKeyboardState = Keyboard.GetState();
             mPrevControllerState = mCurrControllerState;
@@ -109,6 +126,8 @@ namespace ggj_resurrection
                 newSwordSlash.SetPosition(mPosition + 50 * mDirection);
                 GetGameWorld().AddGameObject(newSwordSlash);
             }
+
+            
 
             const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
