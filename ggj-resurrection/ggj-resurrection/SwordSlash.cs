@@ -32,12 +32,28 @@ namespace ggj_resurrection
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius / 64f, 1f, mPosition / 64f);
             mBody.BodyType = BodyType.Dynamic;
 
-
+            mBody.CollisionCategories = Category.Cat2;
+            mBody.UserData = "Sword";
             
             mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat2;
+            mFixture.Body.CollisionCategories = Category.Cat2;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
+            mFixture.UserData = "Sword";
+            mFixture.Body.UserData = "Sword";
+            
+            mBody.OnCollision += swordOnCollision;
 
+        }
+
+        public bool swordOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            if (two.Body.UserData.ToString() == "Sword" || two.Body.UserData.ToString() == "Player")
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
