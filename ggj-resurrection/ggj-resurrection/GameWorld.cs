@@ -53,6 +53,7 @@ namespace ggj_resurrection
             // handle all remove requests
             foreach (GameObject go in mRemoveList)
             {
+                //remove in farseer?
                 mGameObjects.Remove(go);
             }
             mRemoveList.Clear();

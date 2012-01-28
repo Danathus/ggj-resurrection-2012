@@ -17,7 +17,7 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
-        Vector2 maxSpeed = new Vector2(.01f,.01f);
+        Vector2 maxSpeed = new Vector2(.03f,.03f);
         Color tempColor = Color.YellowGreen;
         
 
@@ -29,10 +29,12 @@ namespace ggj_resurrection
         public Player(World world)   //this is never called. We need it for physics object
             : base(world)
         {
+            mRadius = 50f;
             
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f, new Vector2(400f / 64f, 300f / 64f));
+
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius / 64f, 1f, new Vector2(mPosition.X / 64f, mPosition.Y / 64f));
             mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
+            mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);         
             mFixture.CollisionCategories = Category.Cat1;
             mBody.OnCollision += playerOnCollision;
         }
@@ -43,14 +45,14 @@ namespace ggj_resurrection
 
         public bool playerOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            if (one.Body.LinearVelocity.Length() == Vector2.Zero.Length())
+            /*if (one.Body.LinearVelocity.Length() == Vector2.Zero.Length())
             {
                 tempColor = Color.Red;
-                return true;
+                return false;
             }
-
+            */
             tempColor = Color.Red;
-            return false;
+            return true;
         }
         
         public override void Draw(SpriteBatch spriteBatch)
@@ -69,8 +71,11 @@ namespace ggj_resurrection
 
             Vector2 direction = new Vector2(0, 0);
             Vector2 multiply = new Vector2(0,0);
-            mBody.LinearVelocity = new Vector2(0, 0);
+            mFixture.Body.LinearVelocity = new Vector2(0, 0);
+            mFixture.Body.Rotation = 0;
             Vector2 getStick;
+
+
             if (mCurrControllerState.IsConnected)
             {
                 getStick.X = mCurrControllerState.ThumbSticks.Left.X;
@@ -78,52 +83,57 @@ namespace ggj_resurrection
 
                 getStick.Y *= -1f;
 
+                multiply = getStick;
+
                 if (getStick.Length() > .065f )
                 {
-                    mBody.LinearVelocity = (getStick * maxSpeed);
+                    mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
+                    //mFixture.Body.LinearVelocity = (multiply * maxSpeed);
                 }
 
             }
 
-            else
-            {
+            //else
+            //{
                 if (mCurrKeyboardState.IsKeyDown(Keys.Right))
                 {
                     //Vector2 velocity = new Vector2(1, 0);
                     multiply.X = 1f;
-                    mBody.LinearVelocity = (multiply * maxSpeed);
+                    
                 }//direction needs to be LinearVelocity
 
                 if (mCurrKeyboardState.IsKeyDown(Keys.Left))
                 {
                     multiply.X = -1f;
-                    mBody.LinearVelocity = (multiply * maxSpeed);
+                
                 }
 
                 if (mCurrKeyboardState.IsKeyDown(Keys.Up))
                 {
                     multiply.Y = -1f; ;
-                    mBody.LinearVelocity = (multiply * maxSpeed);
+                
                 }
 
                 if (mCurrKeyboardState.IsKeyDown(Keys.Down))
                 {
                     multiply.Y = 1f;
-                    mBody.LinearVelocity = (multiply * maxSpeed);
+                
                 }
+                mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
 
-            }
+            //}
 
-            if (direction.Length() > 0)
+            if (multiply.Length() > 0)
             {
-                direction.Normalize();
-                mDirection = direction;
+                multiply.Normalize();
+                mDirection = multiply;
             }
 
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && !mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
                 SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld);
-                newSwordSlash.SetPosition(mPosition + 50 * mDirection);
+                newSwordSlash.SetPosition(mPosition + (100 * mDirection));
+                newSwordSlash.SetVelocity(mBody.LinearVelocity);
                 GetGameWorld().AddGameObject(newSwordSlash);
             }
 
