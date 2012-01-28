@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace ggj_resurrection
 {
-    public abstract class World
+    public abstract class GameWorld
     {
         List<GameObject> mGameObjects;
 
@@ -38,7 +38,7 @@ namespace ggj_resurrection
         {
             foreach (GameObject go in mGameObjects)
             {
-                go.Draw(mSpriteBatch);
+                go.Draw(spriteBatch);
             }
         }
     }
