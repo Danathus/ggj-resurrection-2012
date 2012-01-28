@@ -67,6 +67,7 @@ namespace ggj_resurrection
             
             Player.LoadData(this);
             Monster.LoadData(this);
+            SwordSlash.LoadData(this);
         }
 
         /// <summary>

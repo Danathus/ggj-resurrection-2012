@@ -19,15 +19,15 @@ namespace ggj_resurrection
     {
         static private Texture2D mTexture;
 
+        List<SwordSlash> mSwordSlashes;
+
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
-        float mSlashTimeout;
-        const float mMaxSlashTimeout = 0.5f;
 
         public Player(GraphicsDeviceManager gdm, World world)
             : base(gdm, world)
         {
             mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
-            mSlashTimeout = 0.0f;
+            mSwordSlashes = new List<SwordSlash>();
         }
 
         ~Player()
@@ -37,10 +37,11 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            // draw sword slash
-            if (mSlashTimeout > 0)
+
+            // draw sword slashes
+            foreach (SwordSlash ss in mSwordSlashes)
             {
-                spriteBatch.Draw(mTexture, mPosition + 50 * mDirection, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255));
+                ss.Draw(spriteBatch);
             }
         }
 
@@ -62,14 +63,19 @@ namespace ggj_resurrection
 
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
-                mSlashTimeout = mMaxSlashTimeout;
+                SwordSlash newSwordSlash = new SwordSlash(mGraphicsDeviceManager, mWorld);
+                newSwordSlash.SetPosition(mPosition + 50 * mDirection);
+                mSwordSlashes.Add(newSwordSlash);
             }
-
-            mSlashTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (mSlashTimeout < 0.0f) mSlashTimeout = 0.0f;
 
             const float speed = 300.0f;
             mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // update slashes
+            foreach (SwordSlash ss in mSwordSlashes)
+            {
+                ss.Update(gameTime);
+            }
         }
 
         public static void LoadData(Game myGame)

@@ -17,15 +17,20 @@ namespace ggj_resurrection
 {
     public abstract class GameObject
     {
+        protected GraphicsDeviceManager mGraphicsDeviceManager;
         protected Vector2   mPosition, mDirection;
         protected Fixture   mFixture;
         protected World     mWorld;
+
+        public void SetPosition(Vector2 pos) { mPosition = pos; }
+        public Vector2 GetPosition() { return mPosition; }
 
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
 
         public GameObject(GraphicsDeviceManager gdm, World world)
         {
+            mGraphicsDeviceManager = gdm;
             mPosition = new Vector2(0, 0);
             mDirection = new Vector2(1, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
