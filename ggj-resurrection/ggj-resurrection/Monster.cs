@@ -35,10 +35,11 @@ namespace ggj_resurrection
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f);
             mBody.BodyType = BodyType.Dynamic;
             mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
-            mFixture.CollisionCategories = Category.Cat1;
+            mFixture.CollisionCategories = Category.Cat3;
             mBody.OnCollision += monsterOnCollision;
             mPosition /= 64f;
             mBody.Position = mPosition;
+            mBody.UserData = "Monster";
         }
 
         public bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -53,7 +54,7 @@ namespace ggj_resurrection
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(mTexture, mBody.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mFixture.Body.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -89,21 +90,21 @@ namespace ggj_resurrection
             }
 
             Vector2 multiply = new Vector2(0, 0);
-
+            
             switch (currentDirection)
             {
 
                 case DIRECTION.UP:
-                    if (mBody.Position.Y <= 700) 
+                    if (mFixture.Body.Position.Y <= 500 / 64f) 
                     {
                         multiply.Y = 1f;
-                        mPosition.Y += 3; 
+                      //  mPosition.Y += 3; 
                     }
                     break;
 
                 
                 case DIRECTION.RIGHT:
-                    if (mBody.Position.X <= 700)
+                    if (mFixture.Body.Position.X <= 700 / 64f)
                     {
                         multiply.X = 1f;
                     }
@@ -111,7 +112,7 @@ namespace ggj_resurrection
 
                 
                 case DIRECTION.DOWN:
-                    if (mBody.Position.Y >= 100)
+                    if (mFixture.Body.Position.Y >= 100 / 64f)
                     {
                         multiply.Y = -1f;
                     }
@@ -119,7 +120,7 @@ namespace ggj_resurrection
 
                 
                 case DIRECTION.LEFT:
-                    if (mBody.Position.X >= 100)
+                    if (mFixture.Body.Position.X >= 100 / 64f)
                     {
                         multiply.X = -1f;
                     }
