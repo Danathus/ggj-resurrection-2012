@@ -30,7 +30,8 @@ namespace ggj_resurrection
         {
             mGraphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            mMonster1 = new Monster(mGraphics);
+            mPlayer = new Player(mGraphics, mWorld);
+            mMonster1 = new Monster(mGraphics, mWorld);
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace ggj_resurrection
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            mPlayer = new Player(mGraphics);
+            
             mPlayer.LoadData(this);
             mMonster1.LoadData(this);
         }
