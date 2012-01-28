@@ -16,7 +16,7 @@ namespace ggj_resurrection
         public Monster(GraphicsDeviceManager gdm)
             : base(gdm)
         {
-           //mSpriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+            
         }
         ~Monster()
         {
@@ -24,16 +24,17 @@ namespace ggj_resurrection
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(mTexture, new Vector2(1, 1), Color.White);
         }
 
         public override void Update(GameTime gameTime)
         {
- 
+            
         }
 
         public override void LoadData(Game myGame)
         {
-
+            mTexture = myGame.Content.Load<Texture2D>("monster");
         }
     }
 }
