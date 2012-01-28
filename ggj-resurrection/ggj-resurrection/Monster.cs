@@ -24,8 +24,8 @@ namespace ggj_resurrection
         private double timeElapsed;
         Random rand = new Random();
 
-        public Monster(GraphicsDeviceManager gdm, World world)
-            : base(gdm, world)
+        public Monster(World world)
+            : base(world)
         {
             timeElapsed = 0;
             currentDirection = DIRECTION.RIGHT;
@@ -96,7 +96,7 @@ namespace ggj_resurrection
             }
         }
 
-        public static void LoadData(Game myGame)
+        public static void LoadData(Game myGame)    //i don't htink this should be static because every monster has a different "physics" body.
         {
             mTexture = myGame.Content.Load<Texture2D>("monster");
         }

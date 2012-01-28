@@ -33,23 +33,33 @@ namespace ggj_resurrection
         private Matrix mProjection;
         private Matrix mDebugCameraMatrix;
 
+        Player mPlayer;
 
+        Vector2 mScreenCenter;
+        
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
             mGraphics.PreferredBackBufferWidth = 800;
             mGraphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
+            mPhysicsWorld = new World(new Vector2(0, 0));
+
+            mDebugView = new DebugViewXNA(mPhysicsWorld);
+            mPlayer = new Player(mPhysicsWorld);
+
 
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
 
             mCurrentWorld = mLifeWorld;
+          
 
-            mLifeWorld.AddGameObject(new Player(mGraphics, mPhysicsWorld));
+            
+            mLifeWorld.AddGameObject(mPlayer);
           //  mLifeWorld.AddGameObject(new MonsterSpawner(mGraphics, mPhysicsWorld));
 
-            mDebugView = new DebugViewXNA(mPhysicsWorld);
+            
         }
 
         /// <summary>
@@ -73,10 +83,22 @@ namespace ggj_resurrection
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            Player.LoadData(this);
+
+            mDebugView.LoadContent(mGraphics.GraphicsDevice, Content);
+
+            mPlayer.LoadData(this);
             Monster.LoadData(this);
             SwordSlash.LoadData(this);
+
+            mScreenCenter = new Vector2(Window.ClientBounds.Width / 2f, Window.ClientBounds.Height / 2f);
+            mProjection = Matrix.CreateOrthographicOffCenter(0f, mScreenCenter.X / 32f, mScreenCenter.Y / 32f, 0f, 0f, 1f);
+            mDebugCameraMatrix = Matrix.Identity;
+
+            mScreenCenter = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2);
+            mProjection = Matrix.CreateOrthographicOffCenter(0f, mScreenCenter.X / 32f,
+                                                             mScreenCenter.Y / 32f, 0f, 0f, 1f);
+            mDebugCameraMatrix = Matrix.Identity;
+
         }
 
         /// <summary>
@@ -99,9 +121,10 @@ namespace ggj_resurrection
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
-
+            mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);
         }
 
@@ -117,7 +140,11 @@ namespace ggj_resurrection
             mSpriteBatch.Begin();
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
+
             mSpriteBatch.End();
+
+            mDebugView.RenderDebugData(ref mProjection, ref mDebugCameraMatrix);
+
 
             base.Draw(gameTime);
         }

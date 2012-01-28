@@ -23,8 +23,8 @@ namespace ggj_resurrection
         float mSlashTimeout;
         const float mMaxSlashTimeout = 0.5f;
 
-        public SwordSlash(GraphicsDeviceManager gdm, World world)
-            : base(gdm, world)
+        public SwordSlash(World world)
+            : base(world)
         {
             mSlashTimeout = mMaxSlashTimeout;
         }

@@ -132,7 +132,8 @@
       <Name>Farseer Physics XNA</Name>
     </ProjectReference>
     <ProjectReference Include="..\ggj-resurrectionContent\ggj-resurrectionContent.contentproj">
-      <Name>ggj_resurrectionContent</Name>
+      <Project>{DB53D611-5975-41CC-8443-EE8537BF2458}</Project>
+      <Name>ggj-resurrectionContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>

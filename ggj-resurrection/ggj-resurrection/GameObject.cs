@@ -17,10 +17,9 @@ namespace ggj_resurrection
 {
     public abstract class GameObject
     {
-        protected GraphicsDeviceManager mGraphicsDeviceManager;
         protected Vector2   mPosition, mDirection;
         protected Body      mBody;
-        protected World     mWorld;
+        protected World     mPhysicsWorld;
         protected GameWorld mGameWorld; // the game world this object is in
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
@@ -32,13 +31,12 @@ namespace ggj_resurrection
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
 
-        public GameObject(GraphicsDeviceManager gdm, World world)
+        public GameObject(World world)
         {
-            mGraphicsDeviceManager = gdm;
             mPosition = new Vector2(0, 0);
             mDirection = new Vector2(1, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            mWorld = world;
+            mPhysicsWorld = world;
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
         }
 
