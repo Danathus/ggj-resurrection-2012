@@ -128,8 +128,6 @@ namespace ggj_resurrection
 
             mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
 
-            Console.WriteLine("X: " + mBody.Position.X + "     Y: " + mBody.Position.Y);
-
         }
 
         public static void LoadData(Game myGame)    //i don't htink this should be static because every monster has a different "physics" body.
