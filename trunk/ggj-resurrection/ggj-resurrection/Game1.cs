@@ -20,6 +20,7 @@ namespace ggj_resurrection
         SpriteBatch           spriteBatch;
         Texture2D             mTexture;
         Vector2               mPosition;
+        KeyboardState         mCurrKeyboardState, mPrevKeyboardState;
 
         public Game1()
         {
@@ -65,6 +66,8 @@ namespace ggj_resurrection
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             mTexture = CreateRectangle(32, 32, color);
             mPosition = new Vector2(0, 0);
+
+            mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
         }
 
         /// <summary>
@@ -88,8 +91,18 @@ namespace ggj_resurrection
                 this.Exit();
 
             // TODO: Add your update logic here
+            mPrevKeyboardState = mCurrKeyboardState;
+            mCurrKeyboardState = Keyboard.GetState();
+
+            Vector2 direction = new Vector2(0, 0);
+            if (mCurrKeyboardState.IsKeyDown(Keys.Right)) direction.X += 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Left))  direction.X -= 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Up))    direction.Y -= 1.0f;
+            if (mCurrKeyboardState.IsKeyDown(Keys.Down))  direction.Y += 1.0f;
+            if (direction.Length() > 0) direction.Normalize();
+            
             const float speed = 100.0f;
-            mPosition.X += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
