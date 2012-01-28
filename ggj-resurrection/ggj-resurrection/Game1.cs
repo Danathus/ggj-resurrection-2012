@@ -18,9 +18,7 @@ namespace ggj_resurrection
     {
         GraphicsDeviceManager mGraphics;
         SpriteBatch           mSpriteBatch;
-        Texture2D             mTexture;
-        Vector2               mPosition;
-        KeyboardState         mCurrKeyboardState, mPrevKeyboardState;
+        Player                mPlayer;
 
         public Game1()
         {
@@ -41,18 +39,6 @@ namespace ggj_resurrection
             base.Initialize();
         }
 
-        private Texture2D CreateRectangle(int width, int height, Color colori)
-        {
-            Texture2D rectangleTexture = new Texture2D(GraphicsDevice, width, height, false, SurfaceFormat.Color);
-            Color[] color = new Color[width * height];//set the color to the amount of pixels in the textures
-            for (int i = 0; i < color.Length; i++)//loop through all the colors setting them to whatever values we want
-            {
-                color[i] = colori;
-            }
-            rectangleTexture.SetData(color);//set the color data on the texture
-            return rectangleTexture;//return the texture
-        }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -63,11 +49,7 @@ namespace ggj_resurrection
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            mTexture = CreateRectangle(32, 32, color);
-            mPosition = new Vector2(0, 0);
-
-            mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
+            mPlayer = new Player(mGraphics);
         }
 
         /// <summary>
@@ -91,18 +73,7 @@ namespace ggj_resurrection
                 this.Exit();
 
             // TODO: Add your update logic here
-            mPrevKeyboardState = mCurrKeyboardState;
-            mCurrKeyboardState = Keyboard.GetState();
-
-            Vector2 direction = new Vector2(0, 0);
-            if (mCurrKeyboardState.IsKeyDown(Keys.Right)) direction.X += 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Left))  direction.X -= 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Up))    direction.Y -= 1.0f;
-            if (mCurrKeyboardState.IsKeyDown(Keys.Down))  direction.Y += 1.0f;
-            if (direction.Length() > 0) direction.Normalize();
-            
-            const float speed = 300.0f;
-            mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            mPlayer.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -115,9 +86,9 @@ namespace ggj_resurrection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // custom drawing code here
             mSpriteBatch.Begin();
-            mSpriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
+            mPlayer.Draw(mSpriteBatch);
             mSpriteBatch.End();
 
             base.Draw(gameTime);
