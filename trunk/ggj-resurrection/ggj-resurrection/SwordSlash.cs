@@ -43,7 +43,8 @@ namespace ggj_resurrection
             if (mSlashTimeout < 0.0f)
             {
                 mSlashTimeout = 0.0f;
-                // todo: kill self
+                // remove thyself
+                GetGameWorld().RemoveGameObject(this);
             }
         }
 

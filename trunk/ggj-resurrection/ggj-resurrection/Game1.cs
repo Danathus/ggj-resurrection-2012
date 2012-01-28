@@ -26,7 +26,7 @@ namespace ggj_resurrection
         //
         LifeWorld  mLifeWorld;
         DeathWorld mDeathWorld;
-        LifeWorld  mCurrentWorld; // this is to point to whichever one we're in
+        GameWorld  mCurrentWorld; // this is to point to whichever one we're in
 
         public Game1()
         {

@@ -21,9 +21,13 @@ namespace ggj_resurrection
         protected Vector2   mPosition, mDirection;
         protected Fixture   mFixture;
         protected World     mWorld;
+        protected GameWorld mGameWorld; // the game world this object is in
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
         public Vector2 GetPosition() { return mPosition; }
+
+        public void SetGameWorld(GameWorld gameWorld) { mGameWorld = gameWorld; }
+        public GameWorld GetGameWorld() { return mGameWorld; }
 
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);

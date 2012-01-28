@@ -15,20 +15,25 @@ namespace ggj_resurrection
     public abstract class GameWorld
     {
         List<GameObject> mGameObjects;
+        List<GameObject> mAddList, mRemoveList;
 
         public GameWorld()
         {
             mGameObjects = new List<GameObject>();
+            mAddList     = new List<GameObject>();
+            mRemoveList  = new List<GameObject>();
         }
 
         public void AddGameObject(GameObject go)
         {
-            mGameObjects.Add(go);
+            mAddList.Add(go);
+            go.SetGameWorld(this);
         }
 
         public void RemoveGameObject(GameObject go)
         {
-            mGameObjects.Remove(go);
+            mRemoveList.Add(go);
+            go.SetGameWorld(null);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -37,6 +42,20 @@ namespace ggj_resurrection
             {
                 go.Update(gameTime);
             }
+
+            // handle all add requests
+            foreach (GameObject go in mAddList)
+            {
+                mGameObjects.Add(go);
+            }
+            mAddList.Clear();
+
+            // handle all remove requests
+            foreach (GameObject go in mRemoveList)
+            {
+                mGameObjects.Remove(go);
+            }
+            mRemoveList.Clear();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

@@ -19,15 +19,12 @@ namespace ggj_resurrection
     {
         static private Texture2D mTexture;
 
-        List<SwordSlash> mSwordSlashes;
-
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
 
         public Player(GraphicsDeviceManager gdm, World world)
             : base(gdm, world)
         {
             mPrevKeyboardState = mCurrKeyboardState = Keyboard.GetState();
-            mSwordSlashes = new List<SwordSlash>();
         }
 
         ~Player()
@@ -37,12 +34,6 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-
-            // draw sword slashes
-            foreach (SwordSlash ss in mSwordSlashes)
-            {
-                ss.Draw(spriteBatch);
-            }
         }
 
         public override void Update(GameTime gameTime)
@@ -65,17 +56,11 @@ namespace ggj_resurrection
             {
                 SwordSlash newSwordSlash = new SwordSlash(mGraphicsDeviceManager, mWorld);
                 newSwordSlash.SetPosition(mPosition + 50 * mDirection);
-                mSwordSlashes.Add(newSwordSlash);
+                GetGameWorld().AddGameObject(newSwordSlash);
             }
 
             const float speed = 300.0f;
             mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // update slashes
-            foreach (SwordSlash ss in mSwordSlashes)
-            {
-                ss.Update(gameTime);
-            }
         }
 
         public static void LoadData(Game myGame)
