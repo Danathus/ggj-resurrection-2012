@@ -70,8 +70,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharSprite\x30y50BoyStandingStill.png">
-      <Name>boyStandingStill</Name>
+    <Compile Include="Grass001.png">
+      <Name>Grass001</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -110,6 +110,27 @@
   <ItemGroup>
     <Compile Include="CharSprite\x30y50BoyRunningBackward5fps.png">
       <Name>boyRunningBackward5fps</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CharSprite\x30y50BoyStandingStill.png">
+      <Name>boyStandingStill</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Grass002.png">
+      <Name>Grass002</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Grass003.png">
+      <Name>Grass003</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
