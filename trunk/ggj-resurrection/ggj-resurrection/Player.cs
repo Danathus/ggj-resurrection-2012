@@ -133,16 +133,16 @@ namespace ggj_resurrection
             }
 
             Vector2 rightStick = mCurrControllerState.ThumbSticks.Right;
-            rightStick.Y *= -1f;
+            rightStick.Y *= 1f;
 
             if (mCurrControllerState.IsConnected && rightStick.Length() > .25)
             {
                 if (bats.Count <= 4)
                 {
-                    Vector2 offset = mPosition + (50 * rightStick);
+                    Vector2 offset = mPosition + (1 * rightStick);
                     SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset);
                     newSwordSlash.setRotation(rightStick);
-                    newSwordSlash.SetPosition(mPosition + (100 * mDirection));
+                    newSwordSlash.SetPosition(offset);
                     newSwordSlash.SetVelocity(mBody.LinearVelocity);
                     bats.Add(newSwordSlash);
                     GetGameWorld().AddGameObject(newSwordSlash);
