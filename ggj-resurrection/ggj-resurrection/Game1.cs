@@ -109,7 +109,7 @@ namespace ggj_resurrection
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            
+
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
