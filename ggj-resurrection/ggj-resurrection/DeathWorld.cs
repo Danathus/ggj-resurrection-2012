@@ -427,7 +427,7 @@ namespace ggj_resurrection
                 }
             }
 
-            score = 0;
+            mScore = 0;
             // for now set countdown timer to 10 seconds
             mCountdownTimer = 10f;
 

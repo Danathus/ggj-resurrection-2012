@@ -128,7 +128,7 @@ namespace ggj_resurrection
                     mMoved = true;
                     mMoveGraveSnd.Play(mMoveGraveSndVolume, 0, 0);
 
-
+                    GameWorld.mScore++;
                     // spawn soul
                     mSoulEmergeSnd.Play(mSoulEmergeSndVolume, 0, 0);
                     GetGameWorld().AddGameObject(new Soul(mPhysicsWorld,

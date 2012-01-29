@@ -26,7 +26,7 @@ namespace ggj_resurrection
         public World     mPhysicsWorld;
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
-        protected static int score;
+        public static int mScore;
         protected SpriteFont drawFont;
 
         protected bool mAwake;
@@ -57,7 +57,7 @@ namespace ggj_resurrection
 
         public int getScore()
         {
-            int reference = score;
+            int reference = mScore;
             return reference;
         }
 
@@ -90,7 +90,7 @@ namespace ggj_resurrection
 
                         this.RemoveGameObject(go);
                         mMonsterDeathSnd.Play(mMonsterDeathVolume, 0f, 0f);
-                        score++;
+                        mScore++;
                     }
                 }
 
