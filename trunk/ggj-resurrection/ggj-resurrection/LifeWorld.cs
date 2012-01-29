@@ -86,7 +86,7 @@ namespace ggj_resurrection
         {
             mRenderingEffect.View = mCamera.GetTopViewMatrix();
             base.Draw(spriteBatch);
-            mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
+            //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
         }
 
         public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)

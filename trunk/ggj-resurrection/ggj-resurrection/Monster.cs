@@ -23,7 +23,7 @@ namespace ggj_resurrection
         Color tempColor = Color.White;
         bool isHit = false;
 
-        public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
+        public enum DIRECTION { UP, DOWN, LEFT, RIGHT, NONE } //Enum for direction of the char
         private DIRECTION currentDirection;
         private double timeElapsed;
         static Random mRand = new Random();
@@ -37,7 +37,7 @@ namespace ggj_resurrection
         {
             timeElapsed = 0;
             mRadius = 1;
-           // setRandDirection();
+            setRandDirection();
             //Body = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
             //mBody.BodyType = BodyType.Dynamic;
 
@@ -76,6 +76,7 @@ namespace ggj_resurrection
                 Vector2 forceOfHit = getKnockBack(one, two);
                 //one.Body.LinearDamping = .01f;
                 mFixture.Body.ApplyForce(forceOfHit * 3);
+                mFixture.Body.Mass *= 0.9f;
                 //two.Body.ResetDynamics();
 
                 isHit = true;
