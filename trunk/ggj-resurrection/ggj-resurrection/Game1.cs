@@ -85,6 +85,7 @@ namespace ggj_resurrection
             Snake.LoadData(this);
             EvilCow.LoadData(this);
             SwordSlash.LoadData(this);
+            Grave.LoadData(this);
 
             mLifeWorld.loadTiles(this);
 
