@@ -33,19 +33,24 @@ namespace ggj_resurrection
             mSlashTimeout = mMaxSlashTimeout;
             mRadius = 1;
 
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f);
-            mBody.BodyType = BodyType.Dynamic;
+            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, mTexture.Width / 64f, mTexture.Height / 64f, .1f);
+            mBody.BodyType = BodyType.Static;
+            mBody.Restitution = 0f;
 
             mBody.CollisionCategories = Category.Cat2;
             mBody.UserData = "Sword";
 
             mFixture = FixtureFactory.AttachRectangle(mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
             mBody.Position = mPosition;
+            
+            mFixture = FixtureFactory.AttachRectangle(mTexture.Width / 64f, mTexture.Height / 64f, .1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
+            mBody.Position = mPosition * 1;
             mFixture.CollisionCategories = Category.Cat2;
             mFixture.Body.CollisionCategories = Category.Cat2;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
             mFixture.UserData = "Sword";
             mFixture.Body.UserData = "Sword";
+            mFixture.Restitution = 0f;
             
             mBody.OnCollision += swordOnCollision;
         }
@@ -62,7 +67,14 @@ namespace ggj_resurrection
 
         public bool isTimedOut()
         {
-            return timedOut;
+            if (timedOut)
+            {
+                timedOut = false;
+                return true;
+            }
+
+            return false;
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
