@@ -84,7 +84,24 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharSprite\boyRunningSideways5fps.png">
+    <Compile Include="Enemies\x100y100LightningCow5fps.png">
+      <Name>x100y100LightningCow5fps</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Enemies\x100y100LightningCowRun10fps.png">
+      <Name>x100y100LightningCowRun10fps</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Enemies\x45y60BasicEnemy.png">
+      <Name>x45y60BasicEnemy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CharSprite\x30y50boyRunningSideways5fps.png">
       <Name>boyRunningSideways5fps</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

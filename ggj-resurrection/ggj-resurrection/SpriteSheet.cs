@@ -38,6 +38,7 @@ namespace ggj_resurrection
             Vector2 mPosition, mScale;
             float   mRotation;
             Color   mColor;
+            bool    mFlipX;
 
             public SpriteRenderingParameters()
             {
@@ -45,14 +46,16 @@ namespace ggj_resurrection
                 mRotation = 0.0f;
                 mColor    = Color.White;
                 mScale    = new Vector2(1, 1);
+                mFlipX    = false;
             }
 
-            public SpriteRenderingParameters(Vector2 position, float rotation, Color color, Vector2 scale)
+            public SpriteRenderingParameters(Vector2 position, float rotation, Color color, Vector2 scale, bool flipX = false)
             {
                 mPosition = position;
                 mRotation = rotation;
                 mColor    = color;
                 mScale    = scale;
+                mFlipX    = flipX;
             }
 
             public SpriteRenderingParameters(SpriteRenderingParameters copyMe)
@@ -64,11 +67,13 @@ namespace ggj_resurrection
             }
 
             public void SetScale(Vector2 scale) { mScale = scale; }
+            public void SetFlipX(bool flipX)    { mFlipX = flipX; }
 
             public Vector2 GetPosition() { return mPosition; }
             public float   GetRotation() { return mRotation; }
             public Color   GetColor()    { return mColor; }
             public Vector2 GetScale()    { return mScale; }
+            public bool ShouldFlipX()    { return mFlipX; }
         }
 
         Texture2D mTexture;
@@ -107,7 +112,9 @@ namespace ggj_resurrection
                 parameters.GetRotation(),           // rotation
                 new Vector2(0, 0),                  // origin
                 parameters.GetScale(),              // scale
-                SpriteEffects.None,                 // effects
+                parameters.ShouldFlipX()            // effects
+                    ? SpriteEffects.FlipHorizontally
+                    : SpriteEffects.None,
                 0f);                                // layer depth
         }
     }
