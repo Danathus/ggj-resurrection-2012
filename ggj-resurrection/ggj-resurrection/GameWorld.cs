@@ -26,6 +26,8 @@ namespace ggj_resurrection
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
 
+        Texture2D mHackSmoke;
+
         public GameWorld(Camera camera)
         {
             mCamera      = camera;
@@ -52,11 +54,19 @@ namespace ggj_resurrection
 
         public virtual void Update(GameTime gameTime)
         {
+            mGameObjects.Sort();
+
             foreach (GameObject go in mGameObjects)
             {
                 if (go.IsEnabled())
                 {
                     go.Update(gameTime);
+                }
+
+                if (go.mHealth < 0)
+                {
+                   
+                    this.RemoveGameObject(go);
                 }
             }
 
@@ -66,6 +76,7 @@ namespace ggj_resurrection
             foreach (GameObject go in mAddList)
             {
                 mGameObjects.Add(go);
+                
             }
             mAddList.Clear();
 
@@ -115,8 +126,10 @@ namespace ggj_resurrection
 
         public void LoadContent(GraphicsDevice device, ContentManager content)
         {
+
             mDebugView.LoadContent(device, content);
             mRenderingEffect = new BasicEffect(device);
+             mHackSmoke = content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
         }
 
         public virtual void WakeUp() {}

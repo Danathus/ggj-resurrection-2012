@@ -15,11 +15,12 @@ using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
-    public abstract class GameObject
+    public abstract class GameObject : IComparable<GameObject>
     {
         private bool        mEnabled;
         protected Vector2   mPosition;
         protected Vector2   mDirection;
+        protected Vector2   mTopLeftPos;
         // protected Vector2   mVelocity;
         protected Fixture   mFixture;
         //protected Body      mBody;
@@ -28,6 +29,8 @@ namespace ggj_resurrection
 
         protected float mRadius;        //radius of physics object (usually circle)
         protected float mDensity;
+
+        public int mHealth;
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
         public Vector2 GetPosition() { return mPosition; }
@@ -49,6 +52,7 @@ namespace ggj_resurrection
             //mVelocity = new Vector2(0, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             mPhysicsWorld = world;
+            
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
 
             mEnabled = true;
@@ -75,5 +79,13 @@ namespace ggj_resurrection
             rectangleTexture.SetData(color);//set the color data on the texture
             return rectangleTexture;//return the texture
         }*/
+
+        public int CompareTo(GameObject other)
+        {
+            return //this.mPosition.Y.CompareTo(other.mPosition.Y);
+                this.mPosition.Y.CompareTo(other.mPosition.Y) * -1;
+        }
+
+
     };
 }

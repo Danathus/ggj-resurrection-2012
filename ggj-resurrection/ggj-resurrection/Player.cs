@@ -25,9 +25,13 @@ namespace ggj_resurrection
             mRunningEastAnimation,  mRunningWestAnimation;
         protected static Texture2D mHackSmoke;
 
+        int t = 0;
+
+        //Boolean isDead;
+
         // member data
         protected SpriteAnimationPlayer mSpriteAnimPlayer;
-        protected float mMaxSpeed = 5;
+        protected float mMaxSpeed = 2.5f;
         //Color tempColor = Color.YellowGreen;
         List<SwordSlash> bats = new List<SwordSlash>();
 
@@ -150,7 +154,7 @@ namespace ggj_resurrection
             {
                 if (bats.Count <= 4)
                 {
-                    Vector2 offset2d = mFixture.Body.Position + rightStick * 1.5f;
+                    Vector2 offset2d = mFixture.Body.Position + rightStick * 1f;
                     //Vector3 offset3d = new Vector2(offset2d.X, offset2d.Y, 0);
                     SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset2d);
                     newSwordSlash.setRotation(rightStick);
@@ -208,13 +212,19 @@ namespace ggj_resurrection
             mSpriteAnimPlayer.Update(gameTime);
             if (!mSpriteAnimPlayer.IsPlaying())
             {
-                mSpriteAnimPlayer.Play();
+
+                t += gameTime.ElapsedGameTime.Milliseconds;
+                if (t > 150)
+                {
+                    mSpriteAnimPlayer.Play();
+                    t = 0;
+                }
             }
         }
 
         protected void Fart()
         {
-            Particle smoke  = new Particle(mHackSmoke, mPosition, 1.0f);
+            /*Particle smoke  = new Particle(mHackSmoke, mPosition, 1.0f);
             float precision     = 100f;
             float maxSmokeSpeed = 2.0f;
             float maxRotSpeed   = 1.0f;
@@ -226,7 +236,22 @@ namespace ggj_resurrection
             smoke.mScaleVel = -new Vector2(
                 Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
                 Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
-            GetGameWorld().AddGameObject(smoke);
+            GetGameWorld().AddGameObject(smoke);*/
+			
+			    Particle smoke  = new Particle(mHackSmoke, new Vector2(mPosition.X, mPosition.Y - (20.0f * Camera.kPixelsToUnits)), 1.0f);
+                smoke.mScale = new Vector2(0.1f);
+                float precision     = 100f;
+                float maxSmokeSpeed = 0f;
+                float maxRotSpeed   = 1.0f;
+                float maxScaleSpeed = 1.0f;
+                smoke.mVelocity = new Vector2(
+                    Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2),
+                    Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2));
+                smoke.mRotVel   = Particle.Random(-maxRotSpeed/2, +maxRotSpeed/2);
+                smoke.mScaleVel = -new Vector2(
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                GetGameWorld().AddGameObject(smoke);
         }
 
         // read input state and return current direction we want to move this frame

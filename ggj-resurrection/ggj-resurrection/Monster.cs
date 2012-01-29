@@ -23,10 +23,13 @@ namespace ggj_resurrection
         Color tempColor = Color.White;
         bool isHit = false;
 
+        
+
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT, NONE } //Enum for direction of the char
         private DIRECTION currentDirection;
         static Random mRand = new Random();
         protected Player mPlayer;
+        protected Boolean mDeath;
 
         //Player hits monster
         static SoundEffectInstance mHitMonsterSEI;
@@ -36,13 +39,13 @@ namespace ggj_resurrection
         static SoundEffectInstance mMonMonCollSEI;
         static SoundEffect mMonMonCollSnd;
 
-
+        protected static Texture2D mHackSmoke;
 
         public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
         {
             mRadius = 1;
-            setRandDirection();
+           // setRandDirection();
             //Body = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
             //mBody.BodyType = BodyType.Dynamic;
 
@@ -51,7 +54,7 @@ namespace ggj_resurrection
             mPlayer = player;
 
             // hit points
-            mHealth = 3;
+            //mHealth = 3;
         }
 
         Vector2 getKnockBack(Fixture a, Fixture b)
@@ -81,11 +84,11 @@ namespace ggj_resurrection
                 Vector2 forceOfHit = getKnockBack(one, two);
                 //one.Body.LinearDamping = .01f;
                 mFixture.Body.ApplyForce(forceOfHit * 3);
-                mFixture.Body.Mass *= 0.9f;
                 //two.Body.ResetDynamics();
-
+                mFixture.Body.Mass *= 0.8f;
+                //mFixture.Body.
                 isHit = true;
-
+                mHealth -= 500;
                 mHitMonsterSEI.Play();
             }
             //else mMonMonCollSnd.Play(.05f, -.5f, 0);
@@ -111,36 +114,13 @@ namespace ggj_resurrection
 
             Vector2 multiply = new Vector2(0, 0);
             
-            switch (currentDirection)
-            {
 
-                case DIRECTION.UP:
-                    multiply.Y = 1f; 
-                    break;
 
-                
-                case DIRECTION.RIGHT:
-                    multiply.X = 1f;
-                    break;
-
-                
-                case DIRECTION.DOWN:
-                    multiply.Y = -1f;
-                    break;
-
-                
-                case DIRECTION.LEFT:
-                    multiply.X = -1f;
-                    break;
-            }
-
-            mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed * .03f);
+            //Vector2 multiply = new Vector2(0, 0);
+         
             //mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
 
-            if (mHealth <= 0)
-            {
-                GetGameWorld().RemoveGameObject(this);
-            }
+
         }
 
         public static void LoadData(Game myGame)
@@ -149,6 +129,8 @@ namespace ggj_resurrection
             mHitMonsterSEI = mHitMonsterSnd.CreateInstance();
             mHitMonsterSEI.Volume = .25f;
 
+
+            mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
             mMonMonCollSnd = myGame.Content.Load<SoundEffect>("Audio/monsterMonsterColl");
             mMonMonCollSEI = mMonMonCollSnd.CreateInstance();
             mMonMonCollSEI.Volume = .25f;

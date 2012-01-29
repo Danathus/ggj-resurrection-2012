@@ -28,7 +28,7 @@ namespace ggj_resurrection
         private double mTimeSinceCall;
         private DIRECTION currentDirection;
 
-        float snakeSpeed = .1f;
+        float snakeSpeed = .02f;
 
         Color tempColor = Color.White;
 
@@ -42,7 +42,8 @@ namespace ggj_resurrection
         public Snake(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
-            
+            mHealth = 300;
+
             mFixture = FixtureFactory.AttachRectangle(40f * Camera.kPixelsToUnits, 50f * Camera.kPixelsToUnits, .015f, new Vector2(-20.5f, 30f) * Camera.kPixelsToUnits, new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
@@ -119,7 +120,26 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
-
+              if (mHealth <= 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Particle smoke = new Particle(mHackSmoke, mFixture.Body.Position, 1.0f);
+                    smoke.mScale = new Vector2(1f);
+                    float precision = 100f;
+                    float maxSmokeSpeed = 1f;
+                    float maxRotSpeed = 1.0f;
+                    float maxScaleSpeed = 1.0f;
+                    smoke.mVelocity = new Vector2(
+                        Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2),
+                        Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2));
+                    smoke.mRotVel = Particle.Random(-maxRotSpeed / 2, +maxRotSpeed / 2);
+                    smoke.mScaleVel = -new Vector2(
+                        Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                        Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                    GetGameWorld().AddGameObject(smoke);
+                }
+            }
            // mFixture.Body.ResetDynamics();
             mFixture.Body.LinearDamping = 1f;
             mFixture.Body.Rotation = 0f;
@@ -181,13 +201,34 @@ namespace ggj_resurrection
 
             }
 
+            float speedParticle = 15;
+            if (mFixture.Body.LinearVelocity.Length() > speedParticle)
+            {
+                mHealth -= 30;
+                Particle smoke = new Particle(mHackSmoke, mFixture.Body.Position, 1.0f);
+                smoke.mScale = new Vector2(0.5f);
+                float precision = 100f;
+                float maxSmokeSpeed = 2.0f;
+                float maxRotSpeed = 1.0f;
+                float maxScaleSpeed = 2.0f;
+                smoke.mVelocity = new Vector2(
+                    Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2),
+                    Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2));
+                smoke.mRotVel = Particle.Random(-maxRotSpeed / 2, +maxRotSpeed / 2);
+                smoke.mScaleVel = -new Vector2(
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                GetGameWorld().AddGameObject(smoke);
+                mHealth -= 30;
+            }
+
            // base.Update(gameTime);
         }
         
         new public static void LoadData(Game myGame)
         {
             //mTexture = myGame.Content.Load<Texture2D>("enemySprites/Sentinel");
-
+            mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
             BasicEnemySpriteSheet = new SpriteSheet();
             BasicEnemySpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("Enemies/BasicEnemy"));
             BasicEnemyAnimation = new SpriteAnimation();
