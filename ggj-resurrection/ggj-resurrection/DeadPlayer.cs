@@ -21,6 +21,17 @@ namespace ggj_resurrection
         public DeadPlayer(World world, Vector2 initPos)   //this is never called. We need it for physics object
             : base(world, initPos)
         {
+            mFixture.Body.OnCollision += deadPlayerOnCollision;
+        }
+
+        public bool deadPlayerOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            if (two.UserData.ToString() == "Grave" || two.Body.UserData.ToString() == "Grave")
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
