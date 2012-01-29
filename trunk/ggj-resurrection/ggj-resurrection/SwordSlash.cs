@@ -46,7 +46,8 @@ namespace ggj_resurrection
             mBody.Position = new Vector2(mPosition.X, mPosition.Y);
             mFixture.CollisionCategories = Category.Cat2;
             mFixture.Body.CollisionCategories = Category.Cat2;
-            mFixture.CollidesWith = Category.All & ~Category.Cat1;
+            mFixture.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
+            mFixture.Body.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
             mFixture.UserData = "Sword";
             mFixture.Body.UserData = "Sword";
             mFixture.Restitution = 0f;
@@ -56,7 +57,7 @@ namespace ggj_resurrection
 
         public bool swordOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            if (two.Body.UserData.ToString() == "Sword" || two.Body.UserData.ToString() == "Player")
+            if (contact.FixtureA.Body.UserData.ToString() == "Sword" || contact.FixtureB.Body.UserData.ToString() == "Player")
             {
                 return false;
             }

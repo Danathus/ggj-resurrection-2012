@@ -160,7 +160,7 @@ namespace ggj_resurrection
 
             mSpriteBatch.End();
 
-            mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
+           // mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
 
             base.Draw(gameTime);
         }
