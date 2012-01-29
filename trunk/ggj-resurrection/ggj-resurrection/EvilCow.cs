@@ -40,12 +40,12 @@ namespace ggj_resurrection
         private static float mMooVolume;
         private static float mThunderVolume;
         private static int mCallFrequency;
-
+        static Texture2D mHackSmoke;
 
         public EvilCow(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
-
+            mHealth = 200;
             mPlayer = player;
             lightningPlayer = new SpriteAnimationPlayer();
             lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
@@ -90,7 +90,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 spriteOffset = -new Vector2(50, -50) * Camera.kPixelsToUnits;
-            lightningPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+            lightningPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 1* new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
            // spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
         }
@@ -100,7 +100,7 @@ namespace ggj_resurrection
         {
             int randomnum = cowRand.Next(1, 100);
 
-            if (randomnum <= 34)
+            if (randomnum <= 20)
             {
                 cowDirection = DIRECTION.NONE;
             }
@@ -111,11 +111,11 @@ namespace ggj_resurrection
                 float xDifference = Math.Abs((playerPos.X - mFixture.Body.Position.X));
                 float yDifference = Math.Abs((playerPos.Y - mFixture.Body.Position.Y));
 
-                if (randomnum > 34 && randomnum <= 49)
+                if (randomnum > 20 && randomnum <= 90)
                 {
                     if (xDifference >= yDifference)
                     {
-                        if (playerPos.X > mFixture.Body.Position.X)
+                        if (playerPos.X < mFixture.Body.Position.X)
                         {
                             cowDirection = DIRECTION.LEFT;
                         }
@@ -130,7 +130,7 @@ namespace ggj_resurrection
                     else
                     {
 
-                        if (playerPos.Y > mFixture.Body.Position.Y)
+                        if (playerPos.Y < mFixture.Body.Position.Y)
                         {
                             cowDirection = DIRECTION.DOWN;
                         }
@@ -186,6 +186,28 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
+            if (mHealth <= 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Particle smoke = new Particle(mHackSmoke, mFixture.Body.Position, 1.0f);
+                    smoke.mScale = new Vector2(1f);
+                    float precision = 100f;
+                    float maxSmokeSpeed = 1f;
+                    float maxRotSpeed = 1.0f;
+                    float maxScaleSpeed = 1.0f;
+                    smoke.mVelocity = new Vector2(
+                        Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2),
+                        Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2));
+                    smoke.mRotVel = Particle.Random(-maxRotSpeed / 2, +maxRotSpeed / 2);
+                    smoke.mScaleVel = -new Vector2(
+                        Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                        Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                    GetGameWorld().AddGameObject(smoke);
+                 
+                }
+
+            }
 
            // mFixture.Body.LinearDamping = .01f;
             mFixture.Body.Rotation = 0f;
@@ -236,6 +258,7 @@ namespace ggj_resurrection
 
             lightningPlayer.Update(gameTime);
 
+           base.Update(gameTime);
            mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             //Make a call every 5 seconds
@@ -252,14 +275,35 @@ namespace ggj_resurrection
 
             }
 
-            base.Update(gameTime);
+            float speedParticle = 10f;
+            if (mFixture.Body.LinearVelocity.Length() > speedParticle)
+            {
+                Particle smoke = new Particle(mHackSmoke, mFixture.Body.Position, 1.0f);
+                smoke.mScale = new Vector2(0.5f);
+                float precision = 100f;
+                float maxSmokeSpeed = 2.0f;
+                float maxRotSpeed = 1.0f;
+                float maxScaleSpeed = 2.0f;
+                smoke.mVelocity = new Vector2(
+                    Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2),
+                    Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2));
+                smoke.mRotVel = Particle.Random(-maxRotSpeed / 2, +maxRotSpeed / 2);
+                smoke.mScaleVel = -new Vector2(
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                GetGameWorld().AddGameObject(smoke);
+                mHealth -= 30;
+            }
+
+            //base.Update(gameTime);
 
         }
 
         new public static void LoadData(Game myGame)
         {
             lightningCowSpriteSheet = new SpriteSheet();
-            lightningCowSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("Enemies/LightningCow5fps"));
+            lightningCowSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("Enemies/CowRun"));//("Enemies/LightningCow5fps"));
+
             lightningCowAnimation = new SpriteAnimation();
 
             for (int i = 0; i < 4; i++)
@@ -268,7 +312,7 @@ namespace ggj_resurrection
                 lightningCowAnimation.AddFrame(lightningCowSpriteSheet, i, .1f);
             }
 
-            
+            mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
             mMooSnd = myGame.Content.Load<SoundEffect>("Audio/moo");
             mThunderSnd = myGame.Content.Load<SoundEffect>("Audio/thunder");
             

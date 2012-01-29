@@ -90,7 +90,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="Enemies\x100y100LightningCowRun10fps.png">
-      <Name>x100y100LightningCowRun10fps</Name>
+      <Name>CowRun</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

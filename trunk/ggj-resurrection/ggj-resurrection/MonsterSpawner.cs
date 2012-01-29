@@ -122,6 +122,8 @@ namespace ggj_resurrection
 
             }
 
+            //mGameWorld.AddGameObject(new MonsterCow);
+
         }
     }
 }
