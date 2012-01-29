@@ -23,12 +23,10 @@ namespace ggj_resurrection
     {
         Camera mCamera;
 
-        DebugViewXNA mDebugView;
         Player mPlayer;
 
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
-        World mPhysicsWorld;
         //
         LifeWorld mLifeWorld;
         DeathWorld mDeathWorld;
@@ -42,9 +40,6 @@ namespace ggj_resurrection
             mGraphics.PreferredBackBufferWidth  = 800;
             mGraphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
-            mPhysicsWorld = new World(new Vector2(0, 0));
-
-            mDebugView = new DebugViewXNA(mPhysicsWorld);
             
             mLifeWorld    = new LifeWorld("Content/lifeworld.txt", this);
             mDeathWorld   = new DeathWorld();
@@ -52,7 +47,7 @@ namespace ggj_resurrection
             mCurrentWorld = mLifeWorld;
 
             mCamera = new Camera(
-                mPhysicsWorld, new Vector2(0, 0),
+                null, new Vector2(0, 0),
                 new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));
 
             //FarseerPhysics.Settings.ContinuousPhysics = false;
@@ -79,7 +74,8 @@ namespace ggj_resurrection
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mDebugView.LoadContent(mGraphics.GraphicsDevice, Content);
+            mLifeWorld.LoadContent(mGraphics.GraphicsDevice, Content);
+            mDeathWorld.LoadContent(mGraphics.GraphicsDevice, Content);
 
             Player.LoadData(this);
             MonsterSpawner.LoadData(this);
@@ -90,12 +86,11 @@ namespace ggj_resurrection
 
             mRenderingEffect = new BasicEffect(GraphicsDevice);
 
-            mPlayer = new Player(mPhysicsWorld, new Vector2(0, 0));
-
             mLifeWorld.loadTiles(this);
 
+            mPlayer = new Player(mLifeWorld.mPhysicsWorld, new Vector2(0, 0));
             mLifeWorld.AddGameObject(mPlayer);
-            mLifeWorld.AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
+            mLifeWorld.AddGameObject(new MonsterSpawner(mLifeWorld.mPhysicsWorld, new Vector2(0, 0), mPlayer));
         }
 
         /// <summary>
@@ -131,7 +126,6 @@ namespace ggj_resurrection
                 mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
             }
 
-            mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 

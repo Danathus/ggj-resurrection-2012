@@ -10,18 +10,28 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using FarseerPhysics.DebugViews;
+using FarseerPhysics.Factories;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Common;
+
 namespace ggj_resurrection
 {
     public abstract class GameWorld
     {
         List<GameObject> mGameObjects;
         List<GameObject> mAddList, mRemoveList;
+        public World mPhysicsWorld;
+        DebugViewXNA mDebugView;
 
         public GameWorld()
         {
             mGameObjects = new List<GameObject>();
             mAddList     = new List<GameObject>();
             mRemoveList  = new List<GameObject>();
+
+            mPhysicsWorld = new World(new Vector2(0, 0));
+            mDebugView = new DebugViewXNA(mPhysicsWorld);
         }
 
         public void AddGameObject(GameObject go)
@@ -42,6 +52,8 @@ namespace ggj_resurrection
             {
                 go.Update(gameTime);
             }
+
+            mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             // handle all add requests
             foreach (GameObject go in mAddList)
@@ -66,6 +78,11 @@ namespace ggj_resurrection
             {
                 go.Draw(spriteBatch);
             }
+        }
+
+        public void LoadContent(GraphicsDevice device, ContentManager content)
+        {
+            mDebugView.LoadContent(device, content);
         }
     }
 }
