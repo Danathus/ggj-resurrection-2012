@@ -24,6 +24,7 @@ namespace ggj_resurrection
             mRunningNorthAnimation, mRunningSouthAnimation,
             mRunningEastAnimation,  mRunningWestAnimation;
         protected static Texture2D mHackSmoke;
+        protected static Texture2D mOuch;
 
         public bool mControllable;
 
@@ -108,7 +109,7 @@ namespace ggj_resurrection
             mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
 
             // start up health! Hard-coded 3 for now...
-            mHealth = 3;
+            mHealth = 10;
 
             mControllable = true;
         }
@@ -362,7 +363,7 @@ namespace ggj_resurrection
             }
 
             mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
-
+            mOuch = myGame.Content.Load<Texture2D>("Particles/ouch");
             mSwingBatSnd = myGame.Content.Load<SoundEffect>("Audio/batSwing");
             mPlayerDamageSnd = myGame.Content.Load<SoundEffect>("Audio/playerDamage");
             mCollectSoulSnd = myGame.Content.Load<SoundEffect>("Audio/collectSoul");
