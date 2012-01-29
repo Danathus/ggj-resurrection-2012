@@ -21,6 +21,13 @@ namespace ggj_resurrection
         PuzzleGenerator graveyardMaker;
         List<int[,]> puzzleChunks;
 
+        enum DeathWorldStates
+        {
+            DWS_MAIN,
+            DWS_WRAPUP
+        };
+        DeathWorldStates mState; // states of the death world!
+
         public DeathWorld(Camera camera)
             : base(camera)
         {
@@ -422,6 +429,9 @@ namespace ggj_resurrection
 
             // for now set countdown timer to 10 seconds
             mCountdownTimer = 10f;
+
+            // initialize state to first
+            mState = DeathWorldStates.DWS_MAIN;
         }
 
         public bool IsTileOccupied(Vector2 tileIdx)
@@ -495,7 +505,7 @@ namespace ggj_resurrection
             }
 
             // then draw the physics debug view...
-            mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
+            //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
         }
 
         public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)
