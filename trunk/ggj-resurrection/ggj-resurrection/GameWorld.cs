@@ -52,7 +52,7 @@ namespace ggj_resurrection
             mMaxFadeCountdown = 3f;
             mFadeCountdown = 0;
 
-            mMonsterDeathVolume = .4f;
+            mMonsterDeathVolume = .25f;
         }
 
         public int getScore()

@@ -35,7 +35,8 @@ namespace ggj_resurrection
 
         //Player hits monster
         static SoundEffect mHitMonsterSnd;
-        static private float mHitMonsterSndVolume;
+        static private float mHitMonsterSndVolume = .0f;
+        static private SoundEffectInstance mHitMonsterSEI;
 
         //Monsters hit each other
         static SoundEffect mMonMonCollSnd;
@@ -97,7 +98,11 @@ namespace ggj_resurrection
                 //mFixture.Body.
                 isHit = true;
                 //this.mHealth -= 100;
-                mHitMonsterSnd.Play(mHitMonsterSndVolume, -.5f, 0);
+
+                //Should play the bat collision sound but the Snd is too touchy, and the SEI isn't interruptable...
+                //mHitMonsterSnd.Play(mHitMonsterSndVolume, -.5f, 0);
+                //mHitMonsterSEI.Play();
+
                 Random rand = new Random();
                // Particle smoke;
                 switch(rand.Next(0,3))
@@ -182,6 +187,9 @@ namespace ggj_resurrection
         public static void LoadData(Game myGame)
         {
             mHitMonsterSnd = myGame.Content.Load<SoundEffect>("Audio/hitMonster");
+            mHitMonsterSEI = mHitMonsterSnd.CreateInstance();
+            mHitMonsterSEI.Volume = .15f;
+            mHitMonsterSEI.Pitch = -1f;
 
             critical = myGame.Content.Load<Texture2D>("Particles/CriticalStrike");
             pow = myGame.Content.Load<Texture2D>("Particles/Pow");
