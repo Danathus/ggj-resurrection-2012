@@ -15,33 +15,33 @@ using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
-    class Snake : Monster
+    class EvilCow : Monster
     {
         static private Texture2D mTexture;
         Color tempColor = Color.White;
-             
 
-        public Snake(World world, Vector2 initPos, Player player)
+
+        public EvilCow(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
-           mPlayer = player;
+            mPlayer = player;
         }
 
-        ~Snake()
+        ~EvilCow()
         {
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch)
+        {
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
-           
             spriteBatch.Draw(mTexture, mFixture.Body.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
           
         }
-        
+
         new public static void LoadData(Game myGame)
         {
-            mTexture = myGame.Content.Load<Texture2D>("enemySprites/Sentinel");
+            mTexture = myGame.Content.Load<Texture2D>("enemySprites/evilCow");
         }
     }
-        
+
 }

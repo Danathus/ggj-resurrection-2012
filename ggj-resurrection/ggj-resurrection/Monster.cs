@@ -17,8 +17,6 @@ namespace ggj_resurrection
 {
     class Monster : GameObject
     {
-        static private Texture2D mTexture;
-
         float mMaxSpeed = 5;
         Color tempColor = Color.White;
 
@@ -26,7 +24,7 @@ namespace ggj_resurrection
         private DIRECTION currentDirection;
         private double timeElapsed;
         static Random mRand = new Random();
-        Player mPlayer;
+        protected Player mPlayer;
 
         public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
@@ -38,7 +36,7 @@ namespace ggj_resurrection
             mBody.BodyType = BodyType.Dynamic;
             mFixture = FixtureFactory.AttachCircle(mRadius, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat3;
-            mBody.OnCollision += monsterOnCollision;
+           mBody.OnCollision += monsterOnCollision;
            
             //Correct for meters vs pixels
             mBody.Position = mPosition;
@@ -49,7 +47,8 @@ namespace ggj_resurrection
             mPlayer = player;
         }
 
-        public bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        
+        public virtual bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
             tempColor = Color.Red;
             return true;
@@ -61,12 +60,6 @@ namespace ggj_resurrection
 
         public override void Draw(SpriteBatch spriteBatch)
         {   
-            float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
-
-            if (proximity < 1000)
-            {
-                spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
-            }
         }
 
         public override void Update(GameTime gameTime)
@@ -110,7 +103,6 @@ namespace ggj_resurrection
 
         public static void LoadData(Game myGame)
         {
-            mTexture = myGame.Content.Load<Texture2D>("monster");
         }
 
         private void setRandDirection() {

@@ -80,7 +80,7 @@ namespace ggj_resurrection
 
         public static void LoadData(Game myGame)
         {
-            mTexture = myGame.Content.Load<Texture2D>("monster");
+            mTexture = myGame.Content.Load<Texture2D>("enemySprites/monster");
         }
     }
 }
