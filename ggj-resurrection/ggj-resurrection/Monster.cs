@@ -25,17 +25,22 @@ namespace ggj_resurrection
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT, NONE } //Enum for direction of the char
         private DIRECTION currentDirection;
-        private double timeElapsed;
         static Random mRand = new Random();
         protected Player mPlayer;
 
+        //Player hits monster
         static SoundEffectInstance mHitMonsterSEI;
         static SoundEffect mHitMonsterSnd;
+
+        //Monsters hit each other
+        static SoundEffectInstance mMonMonCollSEI;
+        static SoundEffect mMonMonCollSnd;
+
+
 
         public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
         {
-            timeElapsed = 0;
             mRadius = 1;
             setRandDirection();
             //Body = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
@@ -71,7 +76,7 @@ namespace ggj_resurrection
 
             if ((String)two.Body.UserData == "Sword")
             {
-               // --mHealth;
+                // --mHealth;
                 //mFixture.Body.ApplyLinearImpulse(new Vector2(5f, 5f));
                 Vector2 forceOfHit = getKnockBack(one, two);
                 //one.Body.LinearDamping = .01f;
@@ -83,6 +88,7 @@ namespace ggj_resurrection
 
                 mHitMonsterSEI.Play();
             }
+            //else mMonMonCollSnd.Play(.05f, -.5f, 0);
 
             
 
@@ -102,13 +108,6 @@ namespace ggj_resurrection
             
             //mFixture.Body.ResetDynamics();
             mFixture.Body.Rotation = 0f;
-            timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (timeElapsed > 1000)
-            {
-                timeElapsed = 0;
-                //setRandDirection();
-            }
 
             Vector2 multiply = new Vector2(0, 0);
             
@@ -149,6 +148,10 @@ namespace ggj_resurrection
             mHitMonsterSnd = myGame.Content.Load<SoundEffect>("Audio/hitMonster");
             mHitMonsterSEI = mHitMonsterSnd.CreateInstance();
             mHitMonsterSEI.Volume = .25f;
+
+            mMonMonCollSnd = myGame.Content.Load<SoundEffect>("Audio/monsterMonsterColl");
+            mMonMonCollSEI = mMonMonCollSnd.CreateInstance();
+            mMonMonCollSEI.Volume = .25f;
         }
 
         private void setRandDirection() {

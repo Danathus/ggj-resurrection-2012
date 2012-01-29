@@ -19,6 +19,8 @@ namespace ggj_resurrection
     {
         //static private Texture2D mTexture;
 
+        
+
         static SpriteSheet lightningCowSpriteSheet;
         static SpriteAnimation lightningCowAnimation;
 
@@ -29,14 +31,19 @@ namespace ggj_resurrection
         private DIRECTION cowDirection;
         private float cowMaxSpeed = 3f;
         private double timeElapsed;
+        private double mTimeSinceCall = 0;
         static Random cowRand = new Random();
+
+        private static SoundEffect mMooSnd;
+        private static float mVolume;
+
 
         public EvilCow(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
 
             mPlayer = player;
-           lightningPlayer = new SpriteAnimationPlayer();
+            lightningPlayer = new SpriteAnimationPlayer();
             lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
 
             mFixture = FixtureFactory.AttachRectangle(90f * Camera.kPixelsToUnits, 90f * Camera.kPixelsToUnits, 1f, new Vector2(0, 0), new Body(mPhysicsWorld));
@@ -50,7 +57,11 @@ namespace ggj_resurrection
             mFixture.Body.UserData = "Monster";
             mFixture.UserData = "Monster";
 
-            cowDirection = DIRECTION.UP;
+            mTimeSinceCall = 7500; //so that they call upon spawning
+            mVolume = .4f;
+
+            //Init direction
+            getNextDirection(mPlayer);
 
             /*
             //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 3f, 3f, .0125f);
@@ -217,7 +228,17 @@ namespace ggj_resurrection
 
             lightningPlayer.Update(gameTime);
 
-           // base.Update(gameTime);
+           mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            //Make a call every 5 seconds
+            if (mTimeSinceCall > 5000)
+            {
+                mTimeSinceCall = 0;
+                mMooSnd.Play(mVolume, 0f, 0f);
+
+            }
+
+            base.Update(gameTime);
 
         }
 
@@ -232,6 +253,12 @@ namespace ggj_resurrection
                 lightningCowSpriteSheet.AddSprite(new Vector2(i * 100, 0), new Vector2(100, 100));
                 lightningCowAnimation.AddFrame(lightningCowSpriteSheet, i, .1f);
             }
+
+            
+            mMooSnd = myGame.Content.Load<SoundEffect>("Audio/moo");
+            //mMooSEI = mMooSnd.CreateInstance();
+            //mMooSEI.Volume = .25f;
+                        
             //mTexture = myGame.Content.Load<Texture2D>("enemySprites/evilCow");
         }
     }
