@@ -36,6 +36,12 @@ namespace ggj_resurrection
 
         BasicEffect mRenderingEffect;
 
+        // djmc hack for testing
+        SpriteAnimation       mSpriteAnim;
+        SpriteSheet           mSpriteSheet;
+        SpriteAnimationPlayer mSpriteAnimPlayer;
+        // djmc hack for testing
+
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -93,6 +99,16 @@ namespace ggj_resurrection
             SwordSlash.LoadData(this);
 
             mRenderingEffect = new BasicEffect(GraphicsDevice);
+
+            mSpriteSheet = new SpriteSheet();
+            mSpriteSheet.SetTexture(Content.Load<Texture2D>("CharSprite/boyStandingStill"));
+            mSpriteSheet.AddSprite(new Vector2( 0, 0), new Vector2(30, 50));
+            mSpriteSheet.AddSprite(new Vector2(30, 0), new Vector2(30, 50));
+            mSpriteAnim = new SpriteAnimation();
+            mSpriteAnim.AddFrame(mSpriteSheet, 1, 1.0f);
+            mSpriteAnim.AddFrame(mSpriteSheet, 0, 0.1f);
+            mSpriteAnimPlayer = new SpriteAnimationPlayer();
+            mSpriteAnimPlayer.SetAnimationToPlay(mSpriteAnim);
         }
 
         /// <summary>
@@ -118,6 +134,14 @@ namespace ggj_resurrection
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
+
+            // djmc animation test
+            if (!mSpriteAnimPlayer.IsPlaying())
+            {
+                mSpriteAnimPlayer.Play();
+            }
+            mSpriteAnimPlayer.Update(gameTime);
+            // djmc animation test
 
             mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
@@ -151,9 +175,11 @@ namespace ggj_resurrection
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
 
+            mSpriteAnimPlayer.Draw(mSpriteBatch, new Vector2(0, 0), 0, Color.White);
+
             mSpriteBatch.End();
 
-            mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
+            //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
 
             base.Draw(gameTime);
         }
