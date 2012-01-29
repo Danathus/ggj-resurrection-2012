@@ -50,7 +50,7 @@ namespace ggj_resurrection
             mPosition = initPos;
            // mDirection = new Vector2(1, 0);
             //mVelocity = new Vector2(0, 0);
-            Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            //Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             mPhysicsWorld = world;
             
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);

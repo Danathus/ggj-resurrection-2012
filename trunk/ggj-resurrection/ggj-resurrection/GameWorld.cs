@@ -19,6 +19,7 @@ namespace ggj_resurrection
 {
     public abstract class GameWorld
     {
+        public Player    mPlayer;
         public Camera    mCamera;
         protected List<GameObject> mGameObjects;
         List<GameObject> mAddList, mRemoveList;
@@ -26,7 +27,8 @@ namespace ggj_resurrection
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
 
-        bool mAwake;
+        protected bool mAwake;
+        float mFadeCountdown, mMaxFadeCountdown;
 
         Texture2D mHackSmoke;
 
@@ -42,6 +44,7 @@ namespace ggj_resurrection
             mDebugView    = new DebugViewXNA(mPhysicsWorld);
 
             mAwake = false;
+            mMaxFadeCountdown = 3f;
         }
 
         public void AddGameObject(GameObject go)
@@ -75,24 +78,40 @@ namespace ggj_resurrection
                 }
 
                 mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
-
-                // handle all add requests
-                foreach (GameObject go in mAddList)
-                {
-                    mGameObjects.Add(go);
-                }
-                mAddList.Clear();
-
-                // handle all remove requests
-                foreach (GameObject go in mRemoveList)
-                {
-                    //remove in farseer?
-                    go.fixtureDestory();
-                    mGameObjects.Remove(go);
-                }
-                mRemoveList.Clear();
             }
-        }
+            else // if (mAwake)
+            {
+                mFadeCountdown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (mFadeCountdown <= 0)
+                {
+                    // clear all objects (except the player!)
+                    foreach (GameObject go in mGameObjects)
+                    {
+                        if (!(go is Player))
+                        {
+                            Console.WriteLine("killing object...");
+                            RemoveGameObject(go);
+                        }
+                    }
+                }
+            } // if (mAwake) else
+
+            // handle all add requests
+            foreach (GameObject go in mAddList)
+            {
+                mGameObjects.Add(go);
+            }
+            mAddList.Clear();
+
+            // handle all remove requests
+            foreach (GameObject go in mRemoveList)
+            {
+                //remove in farseer?
+                go.fixtureDestory();
+                mGameObjects.Remove(go);
+            }
+            mRemoveList.Clear();
+        } // Update()
 
         public abstract void DrawCustomWorldDetails(SpriteBatch spriteBatch);
 
@@ -108,6 +127,7 @@ namespace ggj_resurrection
             mRenderingEffect.DiffuseColor = mAwake
                 ? new Vector3(1f, 1f, 1f)
                 : new Vector3(0.5f, 0.5f, 0.5f);
+            mRenderingEffect.Alpha = 1f;
 
             // custom drawing code here
             spriteBatch.Begin(
@@ -120,6 +140,24 @@ namespace ggj_resurrection
                 Matrix.Identity);           // transform matrix
 
             DrawCustomWorldDetails(spriteBatch);
+
+            spriteBatch.End();
+
+            mRenderingEffect.DiffuseColor = mAwake
+                ? new Vector3(1f, 1f, 1f)
+                : new Vector3(mFadeCountdown / mMaxFadeCountdown, mFadeCountdown / mMaxFadeCountdown, mFadeCountdown / mMaxFadeCountdown);
+            mRenderingEffect.Alpha = mAwake
+                ? 1f
+                : mFadeCountdown / mMaxFadeCountdown;
+
+            spriteBatch.Begin(
+                SpriteSortMode.Immediate,   // sprite sort mode (which is better, immediate or deffered?)
+                BlendState.AlphaBlend,      // blend state
+                SamplerState.LinearClamp,   // sampler state
+                DepthStencilState.None,     // depth stencil state
+                RasterizerState.CullNone,   // rasterizer state
+                mRenderingEffect,           // effect (formerly null)
+                Matrix.Identity);           // transform matrix
 
             foreach (GameObject go in mGameObjects)
             {
@@ -134,22 +172,32 @@ namespace ggj_resurrection
 
         public void LoadContent(GraphicsDevice device, ContentManager content)
         {
-
             mDebugView.LoadContent(device, content);
             mRenderingEffect = new BasicEffect(device);
-             mHackSmoke = content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
+            mHackSmoke = content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
+        }
+
+        public virtual bool ReadyToTransition()
+        {
+            return mAwake || mFadeCountdown <= 0;
         }
 
         public virtual void GoToSleep()
         {
             mAwake = false;
-            // todo: on-sleep processing
+
+            // on-sleep processing
+            mPlayer.GoToSleep();
+            mPlayer.Disable();
+            mFadeCountdown = mMaxFadeCountdown;
         }
 
         public virtual void WakeUp()
         {
             mAwake = true;
-            // todo: on-wake processing
+            // on-wake processing
+            mPlayer.WakeUp();
+            mPlayer.Enable();
         }
     }
 }
