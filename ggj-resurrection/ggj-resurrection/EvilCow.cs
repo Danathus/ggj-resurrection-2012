@@ -26,6 +26,10 @@ namespace ggj_resurrection
 
         Color tempColor = Color.White;
 
+        private DIRECTION cowDirection;
+        private float cowMaxSpeed = 3f;
+        private double timeElapsed;
+        static Random cowRand = new Random();
 
         public EvilCow(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
@@ -35,7 +39,7 @@ namespace ggj_resurrection
            lightningPlayer = new SpriteAnimationPlayer();
             lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
 
-            mFixture = FixtureFactory.AttachRectangle(90f * Camera.kPixelsToUnits, 90f * Camera.kPixelsToUnits, .0125f, new Vector2(0, 0), new Body(mPhysicsWorld));
+            mFixture = FixtureFactory.AttachRectangle(90f * Camera.kPixelsToUnits, 90f * Camera.kPixelsToUnits, 1f, new Vector2(0, 0), new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
             mFixture.Body.OnCollision += monsterOnCollision;
@@ -45,7 +49,8 @@ namespace ggj_resurrection
             //mFixture.Body.UserData = "Monster";
             mFixture.Body.UserData = "Monster";
             mFixture.UserData = "Monster";
-            
+
+            cowDirection = DIRECTION.UP;
 
             /*
             //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 3f, 3f, .0125f);
@@ -71,8 +76,140 @@ namespace ggj_resurrection
            // spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
         }
 
+
+        private void getNextDirection(Player mPlayer)
+        {
+            int randomnum = cowRand.Next(1, 100);
+
+            if (randomnum <= 34)
+            {
+                cowDirection = DIRECTION.NONE;
+            }
+
+            else
+            {
+                Vector2 playerPos = mPlayer.GetPosition();
+                float xDifference = Math.Abs((playerPos.X - mFixture.Body.Position.X));
+                float yDifference = Math.Abs((playerPos.Y - mFixture.Body.Position.Y));
+
+                if (randomnum > 34 && randomnum <= 49)
+                {
+                    if (xDifference >= yDifference)
+                    {
+                        if (playerPos.X > mFixture.Body.Position.X)
+                        {
+                            cowDirection = DIRECTION.LEFT;
+                        }
+
+                        else
+                        {
+                            cowDirection = DIRECTION.RIGHT;
+                        }
+
+                    }
+
+                    else
+                    {
+
+                        if (playerPos.Y > mFixture.Body.Position.Y)
+                        {
+                            cowDirection = DIRECTION.DOWN;
+                        }
+
+                        else
+                        {
+                            cowDirection = DIRECTION.UP;
+                        }
+
+                    }
+
+                }
+
+                else
+                {
+
+                    if (xDifference >= yDifference)
+                    {
+
+                        if (playerPos.X > mFixture.Body.Position.X)
+                        {
+                            cowDirection = DIRECTION.RIGHT;
+                        }
+
+                        else
+                        {
+                            cowDirection = DIRECTION.LEFT;
+                        }
+
+                    }
+
+                    if (yDifference > xDifference)
+                    {
+
+                        if (playerPos.Y > mFixture.Body.Position.Y)
+                        {
+                            cowDirection = DIRECTION.UP;
+                        }
+
+                        else
+                        {
+                            cowDirection = DIRECTION.DOWN;
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+        }
+
         public override void Update(GameTime gameTime)
         {
+
+           // mFixture.Body.LinearDamping = .01f;
+            mFixture.Body.Rotation = 0f;
+            timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (timeElapsed > 1000)
+            {
+                timeElapsed = 0;
+                getNextDirection(mPlayer);
+
+            }
+
+            Vector2 multiply = new Vector2(0, 0);
+
+            switch (cowDirection)
+            {
+
+                case DIRECTION.UP:
+                    multiply.Y = 1f;
+                    break;
+
+
+                case DIRECTION.RIGHT:
+                    multiply.X = 1f;
+                    break;
+
+
+                case DIRECTION.DOWN:
+                    multiply.Y = -1f;
+                    break;
+
+
+                case DIRECTION.LEFT:
+                    multiply.X = -1f;
+                    break;
+
+
+                default:
+                    break;
+            }
+
+            mFixture.Body.ApplyLinearImpulse(multiply * cowMaxSpeed * .03f);
+
             if (!lightningPlayer.IsPlaying())
             {
                 lightningPlayer.Play();
@@ -80,7 +217,7 @@ namespace ggj_resurrection
 
             lightningPlayer.Update(gameTime);
 
-            base.Update(gameTime);
+           // base.Update(gameTime);
 
         }
 
