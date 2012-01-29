@@ -23,6 +23,7 @@ namespace ggj_resurrection
         bool timedOut = false;
         float mSlashTimeout;
         Vector2 rightStickRotation;
+        Vector2 oldRightStick;
         float batRotation;
         const float mMaxSlashTimeout = 0.5f;
 
@@ -32,18 +33,16 @@ namespace ggj_resurrection
             mSlashTimeout = mMaxSlashTimeout;
             mRadius = 1;
 
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, mTexture.Width / 64f, mTexture.Height / 64f, .1f);
-            mBody.BodyType = BodyType.Static;
-            mBody.Restitution = 0f;
+            //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, mTexture.Width / 64f, mTexture.Height / 64f, .1f);         
+     
 
-            mBody.CollisionCategories = Category.Cat2;
-            mBody.UserData = "Sword";
+            mFixture = FixtureFactory.AttachRectangle(mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f, new Vector2(0 ,0) *Camera.kPixelsToUnits, new Body(mPhysicsWorld));
+            mFixture.Body.BodyType = BodyType.Dynamic;
+            mFixture.Body.Restitution = 0f;
+            mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
 
-            mFixture = FixtureFactory.AttachRectangle(mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
-            mBody.Position = new Vector2(mPosition.X, mPosition.Y);
 
-            mFixture = FixtureFactory.AttachRectangle(mTexture.Width / 64f, mTexture.Height / 64f, .1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
-            mBody.Position = new Vector2(mPosition.X, mPosition.Y);
+            //mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
             mFixture.CollisionCategories = Category.Cat2;
             mFixture.Body.CollisionCategories = Category.Cat2;
             mFixture.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
@@ -52,7 +51,7 @@ namespace ggj_resurrection
             mFixture.Body.UserData = "Sword";
             mFixture.Restitution = 0f;
             
-            mBody.OnCollision += swordOnCollision;
+            mFixture.Body.OnCollision += swordOnCollision;
         }
 
         public bool swordOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -81,7 +80,7 @@ namespace ggj_resurrection
             if (mSlashTimeout > 0)
             {
                 int opacity = (int)(mSlashTimeout / mMaxSlashTimeout * 255);
-                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(opacity, opacity, opacity, opacity),
+                spriteBatch.Draw(mTexture, mFixture.Body.Position, null, new Color(opacity, opacity, opacity, opacity),
                                 batRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }
@@ -95,27 +94,32 @@ namespace ggj_resurrection
 
         public void setRotation(Vector2 stick)
         {
+            oldRightStick = rightStickRotation;
             rightStickRotation = stick;
+
+            Vector2 stickDifference = rightStickRotation - oldRightStick;
 
             //rightStickRotation.Normalize();
             double ratio = rightStickRotation.Y / rightStickRotation.X;
-            float rotator = (float)Math.Atan(ratio);
+            float rotator = (float)Math.Atan2(stickDifference.Y, stickDifference.X);
             
             //rotator *= (3.1415926535f / 180f);
-            rotator += ((3f *3.1415926535f )/ 2f);
+            rotator += ((3.1415926535f) / 2f);
+            rotator += (float)Math.PI;
 
-            if (rightStickRotation.X < 0)
-            {
-                rotator += (3.1415926535f);
-            }
+            //if (rightStickRotation.X < 0)
+            //{
+            //    rotator += (3.1415926535f);
+            //}
 
             batRotation = rotator;
+            mFixture.Body.Rotation = rotator;
         }
 
         public override void Update(GameTime gameTime)
         {
             mSlashTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            SetVelocity(GetVelocity() * 0.9f);
+            //SetVelocity(GetVelocity() * 0.9f);
            
             if (mSlashTimeout < 0.0f)
             {

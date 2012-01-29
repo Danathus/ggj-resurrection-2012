@@ -69,7 +69,7 @@ namespace ggj_resurrection
             mMonsters.Add(newMonster);
             mGameWorld.AddGameObject(newMonster);
 
-            Monster newMonsterCow = new EvilCow(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
+            Monster newMonsterCow = new EvilCow(mPhysicsWorld, new Vector2(mRand.Next(-mHeight / 2, mHeight / 2), mRand.Next(-mHeight / 2, mHeight / 2)), mPlayer);
             mMonsters.Add(newMonsterCow);
             mGameWorld.AddGameObject(newMonsterCow);
         }
