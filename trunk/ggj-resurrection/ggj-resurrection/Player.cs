@@ -177,7 +177,9 @@ namespace ggj_resurrection
             mSpriteAnimPlayer.Update(gameTime);
             // djmc animation test
 
-            if (mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X))
+            if ( (mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X)) ||
+                 (mCurrControllerState.Buttons.X == ButtonState.Pressed && mPrevControllerState.Buttons.X != ButtonState.Pressed)
+                )
             {
                 GetGameWorld().AddGameObject(new Particle(mHackSmoke, mPosition, 1.0f));
             }
