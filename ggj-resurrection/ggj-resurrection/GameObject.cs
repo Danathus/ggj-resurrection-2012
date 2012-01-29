@@ -50,7 +50,7 @@ namespace ggj_resurrection
 
         public void fixtureDestory()
         {
-            if (mFixture.Body != null)
+            if (mFixture != null && mFixture.Body != null)
             {
                 mFixture.Body.Dispose();
             }
