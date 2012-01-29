@@ -517,6 +517,11 @@ namespace ggj_resurrection
                 const float textShift = 4f / 5f;
                 spriteBatch.DrawString(drawFont, "Collect souls", new Vector2(0, mCamera.mScreenDimensions.Y * textShift), Color.DarkGreen);
                 spriteBatch.DrawString(drawFont, "from graves!", new Vector2(0, mCamera.mScreenDimensions.Y * textShift + 64), Color.DarkGreen);
+                //
+                if (mState == DeathWorldStates.DWS_MAIN)
+                {
+                    spriteBatch.DrawString(drawFont, "" + (int)mCountdownTimer, new Vector2(mCamera.mScreenDimensions.X - 64, 0), Color.DarkGreen);
+                }
                 spriteBatch.End();
             }
 

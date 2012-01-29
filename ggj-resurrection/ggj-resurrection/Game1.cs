@@ -153,6 +153,8 @@ namespace ggj_resurrection
 
             //mDesiredWorld
 
+            // debug testing world switch
+            /*
             KeyboardState keyState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.Q))
@@ -164,6 +166,7 @@ namespace ggj_resurrection
             {
                 mDesiredWorld = mLifeWorld;
             }
+            //*/
 
             // should we die?
             if (mCurrentWorld == mLifeWorld && mAlivePlayer.mHealth <= 0)
