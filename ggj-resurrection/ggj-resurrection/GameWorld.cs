@@ -26,6 +26,7 @@ namespace ggj_resurrection
         public World     mPhysicsWorld;
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
+        
 
         protected bool mAwake;
         float mFadeCountdown, mMaxFadeCountdown;

@@ -46,8 +46,12 @@ namespace ggj_resurrection
                 null, new Vector2(0, 0),
                 new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));
 
+            
+
             mLifeWorld  = new LifeWorld(mCamera, "Content/lifeworld.txt", this);
+            //puzzleChunks = graveyardMaker.generatePuzzleSections(8);
             mDeathWorld = new DeathWorld(mCamera);
+            
             //
             mCurrentWorld = mLifeWorld;
 

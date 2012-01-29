@@ -123,6 +123,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="PuzzleGenerator.cs" />
     <Compile Include="Snake.cs" />
     <Compile Include="SpriteAnimation.cs" />
     <Compile Include="SpriteAnimationPlayer.cs" />

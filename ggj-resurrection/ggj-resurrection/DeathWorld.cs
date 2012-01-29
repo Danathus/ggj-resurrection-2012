@@ -14,9 +14,389 @@ namespace ggj_resurrection
 {
     class DeathWorld : GameWorld
     {
+        int[,] graveyardMap;
+        Random deathRand = new Random();
+        PuzzleGenerator graveyardMaker;
+        List<int[,]> puzzleChunks;
+
         public DeathWorld(Camera camera)
             : base(camera)
         {
+            puzzleChunks = new List<int[,]>();
+            graveyardMaker = new PuzzleGenerator();
+            graveyardMap = new int[16, 16];
+            puzzleChunks = graveyardMaker.generatePuzzleSections(32);
+
+            List<int> selections = new List<int>();
+            List<int[,]> initialMap = new List<int[,]>();
+            for (int i = 0; i < 16; i++)
+            {
+                int temp = deathRand.Next(1, 32);
+                selections.Add(temp);
+            }
+
+            foreach (int s in selections)
+            {
+                initialMap.Add(puzzleChunks.ElementAt(s-1));
+            }
+
+            for (int j = 0; j < 16; j++)
+            {
+                int[,] temp = initialMap.ElementAt(j);
+                switch (j)
+                {
+                    case 0:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k,l] = temp[k,l];
+                            }
+
+                        }
+                        break;
+                    case 1:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m+4,n] = temp[m,n];
+                            }
+
+                        }
+                        break;
+                    case 2:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m+8,n] = temp[m,n];
+                            }
+
+                        }
+                        break;
+                    case 3:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m+12,n] = temp[m,n];
+                            }
+
+                        }
+                        break;
+                    case 4:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l+4] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 5:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n+4] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 6:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m+8, n + 4] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 7:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n + 4] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 8:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l+8] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 9:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n+8] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 10:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 8, n+8] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 11:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n+8] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 12:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l + 12] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 13:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n + 12] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 14:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 8, n + 12] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 15:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n + 12] = temp[m, n];
+                            }
+
+                        }
+                        break;
+
+                }
+
+            }
+
+        }
+
+        private void generateGraveyard()
+        {
+            graveyardMap = new int[16, 16];
+            List<int> selections = new List<int>();
+            List<int[,]> initialMap = new List<int[,]>();
+            for (int i = 0; i < 16; i++)
+            {
+                int temp = deathRand.Next(1, 32);
+                selections.Add(temp);
+            }
+
+            foreach (int s in selections)
+            {
+                initialMap.Add(puzzleChunks.ElementAt(s - 1));
+            }
+
+            for (int j = 0; j < 16; j++)
+            {
+                int[,] temp = initialMap.ElementAt(j);
+                switch (j)
+                {
+                    case 0:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 1:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 2:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 8, n] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 3:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 4:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l + 4] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 5:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n + 4] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 6:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 8, n + 4] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 7:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n + 4] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 8:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l + 8] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 9:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n + 8] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 10:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 8, n + 8] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 11:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n + 8] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 12:
+                        for (int k = 0; k < 4; k++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                graveyardMap[k, l + 12] = temp[k, l];
+                            }
+
+                        }
+                        break;
+                    case 13:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 4, n + 12] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 14:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 8, n + 12] = temp[m, n];
+                            }
+
+                        }
+                        break;
+                    case 15:
+                        for (int m = 0; m < 4; m++)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                graveyardMap[m + 12, n + 12] = temp[m, n];
+                            }
+
+                        }
+                        break;
+
+                }
+
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
