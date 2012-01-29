@@ -29,13 +29,13 @@ namespace ggj_resurrection
             mSlashTimeout = mMaxSlashTimeout;
             mRadius = 50;
 
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius / 64f, 1f, mPosition / 64f);
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius, 1f, mPosition);
             mBody.BodyType = BodyType.Dynamic;
 
             mBody.CollisionCategories = Category.Cat2;
             mBody.UserData = "Sword";
             
-            mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);
+            mFixture = FixtureFactory.AttachCircle(mRadius, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat2;
             mFixture.Body.CollisionCategories = Category.Cat2;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
@@ -61,7 +61,7 @@ namespace ggj_resurrection
             if (mSlashTimeout > 0)
             {
                 //spriteBatch.Draw(mTexture, mPosition, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255));
-                spriteBatch.Draw(mTexture, mBody.Position * 64f, null, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255),
+                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255),
                                 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
             }
         }

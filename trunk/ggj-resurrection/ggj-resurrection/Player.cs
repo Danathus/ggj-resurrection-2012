@@ -17,7 +17,7 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
-        float mMaxSpeed = .03f;
+        float mMaxSpeed = 3000;
         Color tempColor = Color.YellowGreen;
         
 
@@ -32,10 +32,10 @@ namespace ggj_resurrection
             mRadius = 50f;
             
 
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius / 64f, 1f, new Vector2(mPosition.X / 64f, mPosition.Y / 64f));
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius, 1f, new Vector2(mPosition.X, mPosition.Y));
             mBody.BodyType = BodyType.Dynamic;
             
-            mFixture = FixtureFactory.AttachCircle(mRadius / 64f, 1f, mBody);
+            mFixture = FixtureFactory.AttachCircle(mRadius, 1f, mBody);
             mFixture.Body.CollisionCategories = Category.Cat1;
             mFixture.CollisionCategories = Category.Cat1;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
@@ -63,7 +63,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.Draw(mTexture, mBody.Position * 64f, null, tempColor, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mBody.Position, null, tempColor, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -92,8 +92,8 @@ namespace ggj_resurrection
 
                 if (getStick.Length() > .065f )
                 {
-                    mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
-                    //mFixture.Body.LinearVelocity = (multiply * maxSpeed);
+                    //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
+                    mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
                 }
 
             }
@@ -120,8 +120,8 @@ namespace ggj_resurrection
                 {
                     multiply.Y = -1f;
                 }
-                mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
-
+                //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
+                mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
             //}
 
             if (multiply.Length() > 0)
@@ -139,9 +139,9 @@ namespace ggj_resurrection
                 GetGameWorld().AddGameObject(newSwordSlash);
             }
 
-            const float speed = 300.0f;
+            //const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mPosition = mBody.Position * 64f;       //converts Body.Position (meters) into pixels
+            mPosition = mBody.Position;       //converts Body.Position (meters) into pixels
         }
 
         public static void LoadData(Game myGame)
