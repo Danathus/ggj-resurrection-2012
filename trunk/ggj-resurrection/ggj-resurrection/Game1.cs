@@ -27,7 +27,8 @@ namespace ggj_resurrection
 
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
-        Song mLifeTheme;
+        SoundEffect mLifeTheme;
+        SoundEffectInstance mLifeThemeSEI;
         
         //
         LifeWorld  mLifeWorld;
@@ -91,11 +92,12 @@ namespace ggj_resurrection
             mDeathWorld.AddGameObject(mDeadPlayer = new DeadPlayer(mDeathWorld.mPhysicsWorld, new Vector2(0, 0)));
             mLifeWorld.AddGameObject(new MonsterSpawner(mLifeWorld.mPhysicsWorld, new Vector2(0, 0), mAlivePlayer));
 
-            mLifeTheme = Content.Load<Song>("Audio/LifeTheme");
+            mLifeTheme = Content.Load<SoundEffect>("Audio/LifeTheme");
             //We'll need to load the Death song here!
-            MediaPlayer.Play(mLifeTheme);
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = (float) 1;
+            mLifeThemeSEI = mLifeTheme.CreateInstance();
+            mLifeThemeSEI.IsLooped = true;
+            mLifeThemeSEI.Volume = 1;
+            mLifeThemeSEI.Play();
 
         }
 
@@ -144,7 +146,7 @@ namespace ggj_resurrection
                         //+50 * Camera.kPixelsToUnits // this is the "height" (incidently half of it, doubled) of the player sprite
                         +Player.kFrameSizeInPixels.Y/2 * Camera.kPixelsToUnits
                         );
-                    MediaPlayer.Stop();
+                    mLifeThemeSEI.Stop();
                 }
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
@@ -154,7 +156,7 @@ namespace ggj_resurrection
                 {
                     mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
                     mCurrentWorld = mLifeWorld;
-                    MediaPlayer.Play(mLifeTheme);
+                    mLifeThemeSEI.Play();
                 }
             }
 

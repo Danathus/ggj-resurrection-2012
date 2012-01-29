@@ -25,16 +25,22 @@ namespace ggj_resurrection
         SpriteAnimationPlayer BasicEnemyPlayer;
 
         private double timeElapsed;
+        private double mTimeSinceCall;
         private DIRECTION currentDirection;
 
         float snakeSpeed = .1f;
 
         Color tempColor = Color.White;
+
+        private static SoundEffect mBatSnd;
+
+        private static float mVolume;
              
 
         public Snake(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
+            
             mFixture = FixtureFactory.AttachRectangle(40f * Camera.kPixelsToUnits, 50f * Camera.kPixelsToUnits, .015f, new Vector2(-20.5f, 30f) * Camera.kPixelsToUnits, new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
@@ -47,12 +53,15 @@ namespace ggj_resurrection
             mFixture.UserData = "Monster";
             //setRandDirection();
 
-
-            currentDirection = DIRECTION.LEFT;
+            //Init current direction
+            getNextDirection(mPlayer);
 
            mPlayer = player;
            BasicEnemyPlayer = new SpriteAnimationPlayer();
            BasicEnemyPlayer.SetAnimationToPlay(BasicEnemyAnimation);
+           mTimeSinceCall = 7500; //so that they call upon spawning
+
+           mVolume = .3f;
         }
 
         ~Snake()
@@ -159,6 +168,16 @@ namespace ggj_resurrection
 
             BasicEnemyPlayer.Update(gameTime);
 
+            mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            //Make a call every 5 seconds
+            if (mTimeSinceCall > 5000)
+            {
+                mTimeSinceCall = 0;
+                mBatSnd.Play(mVolume, 0, 0);
+
+            }
+
            // base.Update(gameTime);
         }
         
@@ -175,6 +194,8 @@ namespace ggj_resurrection
                 BasicEnemySpriteSheet.AddSprite(new Vector2(i * 45, 0), new Vector2(45, 60));
                 BasicEnemyAnimation.AddFrame(BasicEnemySpriteSheet, i, .1f);
             }
+
+            mBatSnd = myGame.Content.Load<SoundEffect>("Audio/bat");
 
         }
     }

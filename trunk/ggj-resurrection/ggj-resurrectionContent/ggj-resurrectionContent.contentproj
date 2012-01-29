@@ -154,7 +154,7 @@
     <Compile Include="Audio\LifeTheme.mp3">
       <Name>LifeTheme</Name>
       <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
     <Compile Include="Audio\monsterDeath.mp3">
       <Name>monsterDeath</Name>
