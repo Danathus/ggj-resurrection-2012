@@ -74,7 +74,6 @@ namespace ggj_resurrection
             }
 
             return false;
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -102,7 +101,6 @@ namespace ggj_resurrection
             double ratio = rightStickRotation.Y / rightStickRotation.X;
             float rotator = (float)Math.Atan(ratio);
             
-
             //rotator *= (3.1415926535f / 180f);
             rotator += ((3f *3.1415926535f )/ 2f);
 
@@ -112,7 +110,6 @@ namespace ggj_resurrection
             }
 
             batRotation = rotator;
-
         }
 
         public override void Update(GameTime gameTime)
