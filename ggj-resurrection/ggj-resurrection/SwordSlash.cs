@@ -37,7 +37,7 @@ namespace ggj_resurrection
      
 
             mFixture = FixtureFactory.AttachRectangle(mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f, new Vector2(0 ,0) *Camera.kPixelsToUnits, new Body(mPhysicsWorld));
-            mFixture.Body.BodyType = BodyType.Dynamic;
+            mFixture.Body.BodyType = BodyType.Static;
             mFixture.Body.Restitution = 0f;
             mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
 

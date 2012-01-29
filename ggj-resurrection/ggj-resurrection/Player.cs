@@ -41,7 +41,7 @@ namespace ggj_resurrection
             //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, 1f);
            // mBody.BodyType = BodyType.Dynamic;
 
-            mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(0f, 0f), new Body(mPhysicsWorld));
+            mFixture = FixtureFactory.AttachRectangle(30 * Camera.kPixelsToUnits, 50 * Camera.kPixelsToUnits, 1f, new Vector2(0f, 0f), new Body(mPhysicsWorld));
             mFixture.Body.CollisionCategories = Category.Cat1;
             mFixture.Body.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
             mFixture.CollisionCategories = Category.Cat1;
@@ -76,9 +76,9 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 spriteOffset =
-                -new Vector2(30, -50) * Camera.kPixelsToUnits;
+                -new Vector2(15, -25) * Camera.kPixelsToUnits;
             mSpriteAnimPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(
-                mPosition + spriteOffset, 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+                mPosition + spriteOffset, 0, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
         }
 
         public override void Update(GameTime gameTime)

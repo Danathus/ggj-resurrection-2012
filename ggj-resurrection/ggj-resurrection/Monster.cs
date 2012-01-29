@@ -18,7 +18,7 @@ namespace ggj_resurrection
     class Monster : GameObject
     {
 
-        float mMaxSpeed = 5;
+        float mMaxSpeed = 0.05f;
         float mHealth;
         Color tempColor = Color.White;
         bool isHit = false;
@@ -41,7 +41,8 @@ namespace ggj_resurrection
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
             mFixture.Body.OnCollision += monsterOnCollision;
-           
+            mFixture.Body.LinearDamping = 0.1f;
+            
             //Correct for meters vs pixels
             mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
             //mFixture.Body.UserData = "Monster";
@@ -81,9 +82,9 @@ namespace ggj_resurrection
                // --mHealth;
                 //mFixture.Body.ApplyLinearImpulse(new Vector2(5f, 5f));
                 Vector2 forceOfHit = getKnockBack(one, two);
-                one.Body.LinearDamping = .01f;
-                mFixture.Body.ApplyLinearImpulse(forceOfHit * 500);
-               two.Body.ResetDynamics();
+                //one.Body.LinearDamping = .01f;
+                mFixture.Body.ApplyForce(forceOfHit * 3);
+                //two.Body.ResetDynamics();
 
                 isHit = true;
 
@@ -103,7 +104,7 @@ namespace ggj_resurrection
         public override void Update(GameTime gameTime)
         {
             
-            mFixture.Body.ResetDynamics();
+            //mFixture.Body.ResetDynamics();
             mFixture.Body.Rotation = 0f;
             timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
