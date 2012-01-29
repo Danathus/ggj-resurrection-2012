@@ -175,7 +175,8 @@ namespace ggj_resurrection
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
 
-            mSpriteAnimPlayer.Draw(mSpriteBatch, new SpriteSheet.SpriteRenderingParameters(new Vector2(0, 0), 0, Color.White));
+            mSpriteAnimPlayer.Draw(mSpriteBatch, new SpriteSheet.SpriteRenderingParameters(
+                new Vector2(0, 0), 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
 
             mSpriteBatch.End();
 
