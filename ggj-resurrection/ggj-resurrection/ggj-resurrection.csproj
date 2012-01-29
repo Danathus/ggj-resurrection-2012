@@ -120,6 +120,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Snake.cs" />
+    <Compile Include="SpriteAnimation.cs" />
+    <Compile Include="SpriteAnimationPlayer.cs" />
+    <Compile Include="SpriteSheet.cs" />
     <Compile Include="SwordSlash.cs" />
   </ItemGroup>
   <ItemGroup>

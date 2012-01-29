@@ -38,7 +38,12 @@ namespace ggj_resurrection
             mScreenDimensions = screenDimensions;
             //
             mRot = new Vector3(0, 0, 0);
-            mZoom = 0.5f;// 1.0f;
+            mZoom =
+                /*
+                0.5f;
+                 /*/
+                1.0f;
+            //*/
             //
             // multiply by kPixelsToUnits to make 1.0 in space equal the appropriate number of pixels
             mProjectionMatrix = Matrix.CreateOrthographicOffCenter(
