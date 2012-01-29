@@ -45,7 +45,7 @@ namespace ggj_resurrection
         public EvilCow(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
-            mHealth = 200;
+            this.setHealth(1200);
             mPlayer = player;
             lightningPlayer = new SpriteAnimationPlayer();
             lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
@@ -186,6 +186,7 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
+            //mHealth -= 10;
             if (mHealth <= 0)
             {
                 for (int i = 0; i < 10; i++)
@@ -204,6 +205,7 @@ namespace ggj_resurrection
                         Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
                         Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
                     GetGameWorld().AddGameObject(smoke);
+                    //Console.Out.WriteLine("Okay Cows are like smoke");
                  
                 }
 

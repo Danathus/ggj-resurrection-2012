@@ -29,7 +29,7 @@ namespace ggj_resurrection
         private bool justSpawned;
         private DIRECTION currentDirection;
 
-        float snakeSpeed = .02f;
+        float snakeSpeed = .04f;
 
         Color tempColor = Color.White;
 
@@ -45,9 +45,9 @@ namespace ggj_resurrection
         public Snake(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
-            mHealth = 300;
-
-            mFixture = FixtureFactory.AttachRectangle(40f * Camera.kPixelsToUnits, 50f * Camera.kPixelsToUnits, .015f, new Vector2(-20.5f, 30f) * Camera.kPixelsToUnits, new Body(mPhysicsWorld));
+            //mHealth = 300;
+            this.setHealth(300);
+            mFixture = FixtureFactory.AttachRectangle(40f * Camera.kPixelsToUnits, 50f * Camera.kPixelsToUnits, .03f, new Vector2(-20.5f, 30f) * Camera.kPixelsToUnits, new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
             mFixture.CollidesWith = Category.All & ~Category.Cat4;

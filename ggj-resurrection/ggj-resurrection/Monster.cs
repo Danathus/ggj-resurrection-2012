@@ -19,6 +19,7 @@ namespace ggj_resurrection
     {
 
         float mMaxSpeed = 0.05f;
+       
         //float mHealth;
         Color tempColor = Color.White;
         bool isHit = false;
@@ -40,8 +41,9 @@ namespace ggj_resurrection
 
         private static float mMonMonCollVolume;
         protected static Texture2D mHackSmoke;
+        static Texture2D critical, pow, hit;
 
-
+        Particle smoke;
 
         public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
@@ -92,8 +94,40 @@ namespace ggj_resurrection
                 mFixture.Body.Mass *= 0.8f;
                 //mFixture.Body.
                 isHit = true;
-                mHealth -= 500;
+                //this.mHealth -= 100;
                 mHitMonsterSEI.Play();
+                Random rand = new Random();
+               // Particle smoke;
+                switch(rand.Next(0,3))
+                {
+                    case 0:
+                        smoke = new Particle(critical, one.Body.Position, 1.0f);
+                        break;
+                    case 1:
+                        smoke = new Particle(pow, one.Body.Position, 1.0f);
+                        break;
+                    case 2:
+                        smoke = new Particle(hit, one.Body.Position, 1.0f);
+                        break;
+                    //case 3:
+                    //    smoke = new Particle(hit, one.Body.Position, 1.0f);
+                }
+                smoke.mScale = new Vector2(1f, -1f);
+                float precision = 100f;
+                float maxSmokeSpeed = 2.0f;
+                float maxRotSpeed = 1.0f;
+                float maxScaleSpeed = 2.0f;
+                smoke.mVelocity = new Vector2(
+                    Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2),
+                    Particle.Random(-maxSmokeSpeed / 2, +maxSmokeSpeed / 2));
+                smoke.mRotVel = Particle.Random(-maxRotSpeed / 2, +maxRotSpeed / 2);
+                smoke.mScaleVel = -new Vector2(
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                if(GetGameWorld() != null)
+                GetGameWorld().AddGameObject(smoke);
+                
+
             }
             else mMonMonCollSnd.Play(mMonMonCollVolume, -.5f, 0);
 
@@ -132,8 +166,10 @@ namespace ggj_resurrection
             mHitMonsterSEI.Volume = .35f;
             mHitMonsterSEI.Pitch = -.3f; //lower pitch of bat collision
 
-
-            mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
+            critical = myGame.Content.Load<Texture2D>("Particles/CriticalStrike");
+            pow = myGame.Content.Load<Texture2D>("Particles/Pow");
+            hit = myGame.Content.Load<Texture2D>("Particles/Hit");
+            
             mMonMonCollSnd = myGame.Content.Load<SoundEffect>("Audio/monsterMonsterColl");
 
         }
