@@ -117,7 +117,7 @@ namespace ggj_resurrection
         {
             base.WakeUp();
             AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
-            score = 0;
+            mScore = 0;
         }
 
         public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)
