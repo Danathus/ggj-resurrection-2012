@@ -43,7 +43,6 @@ namespace ggj_resurrection
             mFixture.Body.UserData = "Sword";
             
             mBody.OnCollision += swordOnCollision;
-
         }
 
         public bool swordOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -69,6 +68,7 @@ namespace ggj_resurrection
         public override void Update(GameTime gameTime)
         {
             mSlashTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            SetVelocity(GetVelocity() * 0.9f);
            
             if (mSlashTimeout < 0.0f)
             {

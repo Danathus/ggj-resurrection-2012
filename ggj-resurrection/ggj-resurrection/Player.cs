@@ -137,7 +137,7 @@ namespace ggj_resurrection
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && !mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
                 SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, mPosition + (1 * mDirection));
-                newSwordSlash.SetVelocity(mDirection);
+                newSwordSlash.SetVelocity(GetVelocity() + mDirection);
                 GetGameWorld().AddGameObject(newSwordSlash);
             }
         }

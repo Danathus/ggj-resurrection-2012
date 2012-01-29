@@ -34,7 +34,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
-            spriteBatch.Draw(mTexture, mFixture.Body.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
           
         }
 
