@@ -71,7 +71,8 @@ namespace ggj_resurrection
         
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 spriteOffset = new Vector2(0, 0);
+            Vector2 spriteOffset =
+                -new Vector2(30, -50) * Camera.kPixelsToUnits;
             mSpriteAnimPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(
                 mPosition + spriteOffset, 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
         }
