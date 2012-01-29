@@ -19,14 +19,14 @@ namespace ggj_resurrection
     class Particle : GameObject
     {
         private Texture2D mTexture;
-        float mTimeout;
+        float mMaxTimeout, mTimeout;
         float mRotation;
 
         public Particle(Texture2D texture, Vector2 initPos, float timeout)
             : base(null, initPos)
         {
             mTexture  = texture;
-            mTimeout  = timeout;
+            mTimeout = mMaxTimeout = timeout;
             mRotation = 0;
         }
 
@@ -34,7 +34,7 @@ namespace ggj_resurrection
         {
             if (mTimeout > 0)
             {
-                int opacity = (int)(mTimeout / mTimeout * 255);
+                int opacity = (int)(mTimeout / mMaxTimeout * 255);
                 spriteBatch.Draw(mTexture, mPosition, null, new Color(opacity, opacity, opacity, opacity),
                                 mRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
