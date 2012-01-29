@@ -26,7 +26,7 @@ namespace ggj_resurrection
         public World     mPhysicsWorld;
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
-        public static int mScore;
+        public static int mScore = 0;
         protected SpriteFont drawFont;
 
         protected bool mAwake;

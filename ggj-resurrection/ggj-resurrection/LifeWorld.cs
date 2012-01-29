@@ -117,6 +117,7 @@ namespace ggj_resurrection
         {
             base.WakeUp();
             AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
+            mPlayer.mHealth = Math.Min(Math.Max(3, mScore), 10);
             mScore = 0;
         }
 
