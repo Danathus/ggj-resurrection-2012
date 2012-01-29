@@ -46,6 +46,7 @@ namespace ggj_resurrection
             mFixture = FixtureFactory.AttachRectangle(40f * Camera.kPixelsToUnits, 50f * Camera.kPixelsToUnits, .015f, new Vector2(-20.5f, 30f) * Camera.kPixelsToUnits, new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
+            mFixture.CollidesWith = Category.All & ~Category.Cat4;
             mFixture.Body.OnCollision += monsterOnCollision;
 
             //Correct for meters vs pixels
