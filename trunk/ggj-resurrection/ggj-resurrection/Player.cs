@@ -181,7 +181,19 @@ namespace ggj_resurrection
                  (mCurrControllerState.Buttons.X == ButtonState.Pressed && mPrevControllerState.Buttons.X != ButtonState.Pressed)
                 )
             {
-                GetGameWorld().AddGameObject(new Particle(mHackSmoke, mPosition, 1.0f));
+                Particle smoke  = new Particle(mHackSmoke, mPosition, 1.0f);
+                float precision     = 100f;
+                float maxSmokeSpeed = 2.0f;
+                float maxRotSpeed   = 1.0f;
+                float maxScaleSpeed = 1.0f;
+                smoke.mVelocity = new Vector2(
+                    Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2),
+                    Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2));
+                smoke.mRotVel   = Particle.Random(-maxRotSpeed/2, +maxRotSpeed/2);
+                smoke.mScaleVel = -new Vector2(
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+                GetGameWorld().AddGameObject(smoke);
             }
         }
 

@@ -18,16 +18,32 @@ namespace ggj_resurrection
 {
     class Particle : GameObject
     {
+        private static Random mRand = new Random(); // a friendly hack, for convenience!
+
         private Texture2D mTexture;
         float mMaxTimeout, mTimeout;
-        float mRotation;
+
+        // these are variables you can freely edit after construction
+        public Vector2 mVelocity;
+        public float mRotation, mRotVel;
+        public Vector2 mScale, mScaleVel;
+
+        // helper for generating randomness!
+        public static float Random(float minValue, float maxValue, float precision = 100)
+        {
+            return (float)mRand.Next(0, (int)((maxValue - minValue) * precision)) / precision + minValue;
+        }
 
         public Particle(Texture2D texture, Vector2 initPos, float timeout)
             : base(null, initPos)
         {
             mTexture  = texture;
             mTimeout = mMaxTimeout = timeout;
-            mRotation = 0;
+
+            mVelocity = new Vector2(0, 0);
+            mRotation = mRotVel = 0;
+            mScale    = new Vector2(1, 1);
+            mScaleVel = new Vector2(0, 0);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -36,7 +52,7 @@ namespace ggj_resurrection
             {
                 int opacity = (int)(mTimeout / mMaxTimeout * 255);
                 spriteBatch.Draw(mTexture, mPosition, null, new Color(opacity, opacity, opacity, opacity),
-                                mRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
+                                mRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mScale * Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }
 
@@ -45,6 +61,10 @@ namespace ggj_resurrection
             if (mTimeout > 0.0f)
             {
                 mTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                SetPosition(GetPosition() + (float)gameTime.ElapsedGameTime.TotalSeconds * mVelocity);
+                mRotation += (float)gameTime.ElapsedGameTime.TotalSeconds * mRotVel;
+                mScale    += (float)gameTime.ElapsedGameTime.TotalSeconds * mScaleVel;
 
                 if (mTimeout <= 0.0f)
                 {
