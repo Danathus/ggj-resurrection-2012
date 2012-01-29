@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enemies\x100y100LightningCow5fps.png">
-      <Name>x100y100LightningCow5fps</Name>
+      <Name>LightningCow5fps</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
