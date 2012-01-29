@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace ggj_resurrection
 {
-    class SpriteAnimationPlayer
+    public class SpriteAnimationPlayer
     {
         SpriteAnimation mAnimToPlay;
         int             mCurrFrame;

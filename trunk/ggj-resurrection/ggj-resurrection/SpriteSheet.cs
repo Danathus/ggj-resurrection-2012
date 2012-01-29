@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace ggj_resurrection
 {
-    class SpriteSheet
+    public class SpriteSheet
     {
         class Sprite
         {

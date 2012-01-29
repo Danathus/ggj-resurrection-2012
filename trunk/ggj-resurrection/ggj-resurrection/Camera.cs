@@ -30,17 +30,11 @@ namespace ggj_resurrection
 
         // matrices ("cooked" values)
         public Matrix mProjectionMatrix;
-        public Matrix mTopViewMatrix, mSideViewMatrix;//, mViewMatrix;
-        public Vector3 mSideViewOffset;
+        public Matrix mTopViewMatrix;
 
         public Matrix GetTopViewMatrix()
         {
             return mTopViewMatrix;
-        }
-
-        public Matrix GetSideViewMatrix()
-        {
-            return mSideViewMatrix;
         }
 
         public Camera(World world, Vector2 initPos, Vector2 screenDimensions)
@@ -57,11 +51,8 @@ namespace ggj_resurrection
                 -mScreenDimensions.X / 2 * kPixelsToUnits, mScreenDimensions.X / 2 * kPixelsToUnits, // left, right
                 -mScreenDimensions.Y / 2 * kPixelsToUnits, mScreenDimensions.Y / 2 * kPixelsToUnits, // bottom, top
                 -1000f, 1000f);                                              // near, far
-            //mViewMatrix = Matrix.Identity;
             //
             mTopViewMatrix  = Matrix.Identity;
-            mSideViewMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90f - 15f));
-            mSideViewOffset = new Vector3(0, 0, 0);
         }
 
         public override void Update(GameTime gameTime)
@@ -92,20 +83,6 @@ namespace ggj_resurrection
                 Matrix compositeMatrix = preRotTranslationMatrix * rotationMatrix * postRotTranslationMatrix * zoomMatrix;
 
                 mTopViewMatrix = compositeMatrix;
-            }
-
-            // generate side-view matrix from positional data
-            {
-                Matrix preRotTranslationMatrix =
-                    Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0) + mSideViewOffset);
-                Matrix rotationMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90 - mRot.X));
-                Matrix postRotTranslationMatrix =
-                    Matrix.Identity;
-                Matrix zoomMatrix = Matrix.CreateScale(mZoom);
-
-                Matrix compositeMatrix = preRotTranslationMatrix * rotationMatrix * postRotTranslationMatrix * zoomMatrix;
-
-                mSideViewMatrix = compositeMatrix;
             }
         }
 

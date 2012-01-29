@@ -20,12 +20,11 @@ namespace ggj_resurrection
     public abstract class GameWorld
     {
         public Camera    mCamera;
-        List<GameObject> mGameObjects;
+        protected List<GameObject> mGameObjects;
         List<GameObject> mAddList, mRemoveList;
         public World     mPhysicsWorld;
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
-        //SpriteBatch mSpriteBatch;
 
         public GameWorld(Camera camera)
         {
@@ -55,7 +54,10 @@ namespace ggj_resurrection
         {
             foreach (GameObject go in mGameObjects)
             {
-                go.Update(gameTime);
+                if (go.IsEnabled())
+                {
+                    go.Update(gameTime);
+                }
             }
 
             mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -102,7 +104,10 @@ namespace ggj_resurrection
 
             foreach (GameObject go in mGameObjects)
             {
-                go.Draw(spriteBatch);
+                if (go.IsEnabled())
+                {
+                    go.Draw(spriteBatch);
+                }
             }
 
             spriteBatch.End();
@@ -113,5 +118,7 @@ namespace ggj_resurrection
             mDebugView.LoadContent(device, content);
             mRenderingEffect = new BasicEffect(device);
         }
+
+        public virtual void WakeUp() {}
     }
 }
