@@ -104,14 +104,17 @@ namespace ggj_resurrection
 
         public void Draw(SpriteBatch spriteBatch, int spriteIdx, SpriteRenderingParameters parameters)
         {
+            // hmm...how to draw a sprite standing up?
             spriteBatch.Draw(
                 mTexture,                           // texture
-                parameters.GetPosition(),           // position
+                new Vector2(                        // position
+                    parameters.GetPosition().X, parameters.GetPosition().Y),
                 mSprites[spriteIdx].GetRectangle(), // source rectangle
                 parameters.GetColor(),              // color
                 parameters.GetRotation(),           // rotation
                 new Vector2(0, 0),                  // origin
-                parameters.GetScale(),              // scale
+                new Vector2(                        // scale
+                    parameters.GetScale().X, parameters.GetScale().Y),
                 parameters.ShouldFlipX()            // effects
                     ? SpriteEffects.FlipHorizontally
                     : SpriteEffects.None,

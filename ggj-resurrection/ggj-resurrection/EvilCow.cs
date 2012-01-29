@@ -35,7 +35,6 @@ namespace ggj_resurrection
         {
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
             spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
-          
         }
 
         new public static void LoadData(Game myGame)

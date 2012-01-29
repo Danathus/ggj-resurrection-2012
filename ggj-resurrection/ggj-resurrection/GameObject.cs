@@ -17,7 +17,9 @@ namespace ggj_resurrection
 {
     public abstract class GameObject
     {
-        protected Vector2   mPosition, mDirection ;//, mVelocity;
+        protected Vector2   mPosition;
+        protected Vector2   mDirection;
+        // protected Vector2   mVelocity;
         protected Fixture   mFixture;
         protected Body      mBody;
         protected World     mPhysicsWorld;

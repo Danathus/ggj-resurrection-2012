@@ -40,10 +40,10 @@ namespace ggj_resurrection
             mBody.UserData = "Sword";
 
             mFixture = FixtureFactory.AttachRectangle(mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
-            mBody.Position = mPosition;
-            
+            mBody.Position = new Vector2(mPosition.X, mPosition.Y);
+
             mFixture = FixtureFactory.AttachRectangle(mTexture.Width / 64f, mTexture.Height / 64f, .1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
-            mBody.Position = mPosition * 1;
+            mBody.Position = new Vector2(mPosition.X, mPosition.Y);
             mFixture.CollisionCategories = Category.Cat2;
             mFixture.Body.CollisionCategories = Category.Cat2;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
