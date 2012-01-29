@@ -57,6 +57,7 @@ namespace ggj_resurrection
         {
             // update positional data
             //mRot.Z += 10.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //mRot.X += 10.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // generate view matrix from positional data
             {
@@ -66,7 +67,7 @@ namespace ggj_resurrection
                 //-mScreenDimensions.X / 2,
                 //-mScreenDimensions.Y / 2, 0
                 //);
-                Matrix rotationMatrix = Matrix.CreateRotationZ(MathHelper.ToRadians(mRot.Z));
+                Matrix rotationMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(mRot.X));
                 Matrix postRotTranslationMatrix =
                     Matrix.Identity;
                 //Matrix.CreateTranslation(

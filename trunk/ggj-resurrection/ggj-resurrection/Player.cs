@@ -174,10 +174,15 @@ namespace ggj_resurrection
 
             if (mCurrControllerState.IsConnected)
             {
-                direction.X = mCurrControllerState.ThumbSticks.Left.X;
-                direction.Y = mCurrControllerState.ThumbSticks.Left.Y;
+                direction.X += mCurrControllerState.DPad.Right - mCurrControllerState.DPad.Left;
+                direction.Y += mCurrControllerState.DPad.Up    - mCurrControllerState.DPad.Down;
+                if (direction.Length() < .065f)
+                {
+                    direction.X = mCurrControllerState.ThumbSticks.Left.X;
+                    direction.Y = mCurrControllerState.ThumbSticks.Left.Y;
 
-                direction.Y *= 1f;
+                    direction.Y *= 1f;
+                }
             }
 
             if (mCurrKeyboardState.IsKeyDown(Keys.Right))

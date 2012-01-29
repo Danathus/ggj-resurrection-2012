@@ -67,7 +67,7 @@ namespace ggj_resurrection
             if (currFrame.IsFlipped())
             {
                 parameters = new SpriteSheet.SpriteRenderingParameters(parameters);
-                parameters.SetScale(parameters.GetScale() * new Vector2(-1, 1));
+                parameters.SetFlipX(true);
             }
             currFrame.GetSpriteSheet().Draw(
                 spriteBatch, currFrame.GetSpriteIdx(), parameters);
