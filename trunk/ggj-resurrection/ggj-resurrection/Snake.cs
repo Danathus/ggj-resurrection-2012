@@ -25,16 +25,19 @@ namespace ggj_resurrection
         SpriteAnimationPlayer BasicEnemyPlayer;
 
         private double timeElapsed;
-        private double mTimeSinceCall;
+        //private double mTimeSinceCall;
+        private bool justSpawned;
         private DIRECTION currentDirection;
 
         float snakeSpeed = .02f;
 
         Color tempColor = Color.White;
 
+        static Random mSnakeRand = new Random();
+
         private static SoundEffect mBatSnd;
 
-        private static int mCallFrequency;
+        //private static int mCallFrequency;
 
         private static float mVolume;
              
@@ -63,10 +66,11 @@ namespace ggj_resurrection
            mPlayer = player;
            BasicEnemyPlayer = new SpriteAnimationPlayer();
            BasicEnemyPlayer.SetAnimationToPlay(BasicEnemyAnimation);
-           
-            mTimeSinceCall = 10000; //so that they call upon spawning
-            mCallFrequency = 10000; //time between calls in ms
-            mVolume = .2f; //call volume
+
+            justSpawned = true;
+            //mTimeSinceCall = 10000; //so that they call upon spawning
+            //mCallFrequency = 10000; //time between calls in ms
+            mVolume = .1f; //call volume
         }
 
         ~Snake()
@@ -192,15 +196,28 @@ namespace ggj_resurrection
 
             BasicEnemyPlayer.Update(gameTime);
 
-            mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
+            
 
-            if (mTimeSinceCall > mCallFrequency)
+            if (justSpawned)
             {
-                mTimeSinceCall = 0;
+                justSpawned = false;
                 mBatSnd.Play(mVolume, 0, 0);
 
             }
 
+            /*Could be used for intermittent monster calls
+             * mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
+             * if (mTimeSinceCall > mCallFrequency)
+            {
+                mTimeSinceCall = 0;
+
+                if (mSnakeRand.Next() % 19 == 0)
+                {
+                    mBatSnd.Play(mVolume, 0, 0);
+                }
+            }*/
+
+            // base.Update(gameTime);
             float speedParticle = 15;
             if (mFixture.Body.LinearVelocity.Length() > speedParticle)
             {
@@ -222,7 +239,6 @@ namespace ggj_resurrection
                 mHealth -= 30;
             }
 
-           // base.Update(gameTime);
         }
         
         new public static void LoadData(Game myGame)

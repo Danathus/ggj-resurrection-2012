@@ -36,10 +36,12 @@ namespace ggj_resurrection
         static SoundEffect mHitMonsterSnd;
 
         //Monsters hit each other
-        static SoundEffectInstance mMonMonCollSEI;
         static SoundEffect mMonMonCollSnd;
 
+        private static float mMonMonCollVolume;
         protected static Texture2D mHackSmoke;
+
+
 
         public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
@@ -55,6 +57,8 @@ namespace ggj_resurrection
 
             // hit points
             //mHealth = 3;
+
+            mMonMonCollVolume = .01f;
         }
 
         Vector2 getKnockBack(Fixture a, Fixture b)
@@ -91,9 +95,7 @@ namespace ggj_resurrection
                 mHealth -= 500;
                 mHitMonsterSEI.Play();
             }
-            //else mMonMonCollSnd.Play(.05f, -.5f, 0);
-
-            
+            else mMonMonCollSnd.Play(mMonMonCollVolume, -.5f, 0);
 
             return true;
         }
@@ -127,13 +129,13 @@ namespace ggj_resurrection
         {
             mHitMonsterSnd = myGame.Content.Load<SoundEffect>("Audio/hitMonster");
             mHitMonsterSEI = mHitMonsterSnd.CreateInstance();
-            mHitMonsterSEI.Volume = .25f;
+            mHitMonsterSEI.Volume = .35f;
+            mHitMonsterSEI.Pitch = -.3f; //lower pitch of bat collision
 
 
             mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
             mMonMonCollSnd = myGame.Content.Load<SoundEffect>("Audio/monsterMonsterColl");
-            mMonMonCollSEI = mMonMonCollSnd.CreateInstance();
-            mMonMonCollSEI.Volume = .25f;
+
         }
 
         private void setRandDirection() {
