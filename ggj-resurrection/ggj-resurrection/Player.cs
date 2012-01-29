@@ -43,11 +43,16 @@ namespace ggj_resurrection
 
             mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(0f, 0f), mBody);
             mFixture.Body.CollisionCategories = Category.Cat1;
+            mFixture.Body.CollidesWith = Category.All & ~Category.Cat1;
             mFixture.CollisionCategories = Category.Cat1;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
             mBody.OnCollision += playerOnCollision;
+
+            
+
             mFixture.UserData = "Player";
             mFixture.Body.UserData = "Player";
+            mBody.UserData = "Player";
 
             mSpriteAnimPlayer = new SpriteAnimationPlayer();
             mSpriteAnimPlayer.SetAnimationToPlay(mBlinkingAnimation);
@@ -59,7 +64,7 @@ namespace ggj_resurrection
 
         public bool playerOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            if (two.Body.UserData.ToString() == "Sword")
+            if (two.UserData.ToString() == "Sword" || two.Body.UserData.ToString() == "Sword")
             {
                 tempColor = Color.Red;
                 return false;
@@ -219,7 +224,7 @@ namespace ggj_resurrection
         public static void LoadData(Game myGame)
         {
             // load all static data here
-            mBlinkingSpriteSheet = new SpriteSheet();
+           mBlinkingSpriteSheet = new SpriteSheet();
             mBlinkingSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyStandingStill"));
             for (int i = 0; i < 2; ++i)
             {

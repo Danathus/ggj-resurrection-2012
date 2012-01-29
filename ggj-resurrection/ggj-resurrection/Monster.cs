@@ -44,6 +44,8 @@ namespace ggj_resurrection
             //Correct for meters vs pixels
             mBody.Position = new Vector2(mPosition.X, mPosition.Y);
             mBody.UserData = "Monster";
+            mFixture.Body.UserData = "Monster";
+            mFixture.UserData = "Monster";
             setRandDirection();
 
             //reference to the player
@@ -176,6 +178,9 @@ namespace ggj_resurrection
                         currentDirection = DIRECTION.LEFT;
                         break;
                 }
+
         }
+
     }
+
 }
