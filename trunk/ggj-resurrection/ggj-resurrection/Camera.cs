@@ -19,7 +19,7 @@ namespace ggj_resurrection
     public class Camera : GameObject
     {
         // screen info
-        Vector2 mScreenDimensions;
+        public Vector2 mScreenDimensions;
 
         // reference frame info
         public const float kPixelsToUnits = 1 / 64f; // k for constant!

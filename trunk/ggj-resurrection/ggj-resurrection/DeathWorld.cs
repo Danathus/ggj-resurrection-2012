@@ -504,6 +504,22 @@ namespace ggj_resurrection
             mRenderingEffect.TextureEnabled = true;
             mRenderingEffect.VertexColorEnabled = true;
 
+            if (mAwake)
+            {
+                spriteBatch.Begin(
+                        SpriteSortMode.Immediate,   // sprite sort mode (which is better, immediate or deffered?)
+                        BlendState.AlphaBlend,      // blend state
+                        SamplerState.LinearClamp,   // sampler state
+                        DepthStencilState.None,     // depth stencil state
+                        RasterizerState.CullNone,   // rasterizer state
+                        null,           // effect (formerly null)
+                        Matrix.Identity);           // transform matrix
+                const float textShift = 4f / 5f;
+                spriteBatch.DrawString(drawFont, "Collect souls", new Vector2(0, mCamera.mScreenDimensions.Y * textShift), Color.DarkGreen);
+                spriteBatch.DrawString(drawFont, "from graves!", new Vector2(0, mCamera.mScreenDimensions.Y * textShift + 64), Color.DarkGreen);
+                spriteBatch.End();
+            }
+
             foreach (GameObject go in mGameObjects)
             {
                 if (go.IsEnabled())
