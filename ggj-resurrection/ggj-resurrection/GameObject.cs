@@ -21,7 +21,7 @@ namespace ggj_resurrection
         protected Vector2   mDirection;
         // protected Vector2   mVelocity;
         protected Fixture   mFixture;
-        protected Body      mBody;
+        //protected Body      mBody;
         protected World     mPhysicsWorld;
         protected GameWorld mGameWorld; // the game world this object is in
 
@@ -30,8 +30,8 @@ namespace ggj_resurrection
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
         public Vector2 GetPosition() { return mPosition; }
-        public void SetVelocity(Vector2 velo) { mBody.LinearVelocity = velo; }
-        public Vector2 GetVelocity() { return mBody.LinearVelocity; }
+        public void SetVelocity(Vector2 velo) { mFixture.Body.LinearVelocity = velo; }
+        public Vector2 GetVelocity() { return mFixture.Body.LinearVelocity; }
 
         public void SetGameWorld(GameWorld gameWorld) { mGameWorld = gameWorld; }
         public GameWorld GetGameWorld() { return mGameWorld; }
@@ -50,9 +50,9 @@ namespace ggj_resurrection
 
         public void fixtureDestory()
         {
-            if (mBody != null)
+            if (mFixture.Body != null)
             {
-                mBody.Dispose();
+                mFixture.Body.Dispose();
             }
             //mFixture.Dispose();
         }

@@ -35,15 +35,16 @@ namespace ggj_resurrection
             timeElapsed = 0;
             mRadius = 1;
             
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
-            mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachRectangle(1f, 1f, .0125f, new Vector2(0,0), mBody);
+            //Body = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
+            //mBody.BodyType = BodyType.Dynamic;
+            mFixture = FixtureFactory.AttachRectangle(1f, 1f, .0125f, new Vector2(0,0), new Body(mPhysicsWorld));
+            mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
-            mBody.OnCollision += monsterOnCollision;
+            mFixture.Body.OnCollision += monsterOnCollision;
            
             //Correct for meters vs pixels
-            mBody.Position = new Vector2(mPosition.X, mPosition.Y);
-            mBody.UserData = "Monster";
+            mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
+            //mFixture.Body.UserData = "Monster";
             mFixture.Body.UserData = "Monster";
             mFixture.UserData = "Monster";
             setRandDirection();
@@ -81,9 +82,7 @@ namespace ggj_resurrection
                 //mFixture.Body.ApplyLinearImpulse(new Vector2(5f, 5f));
                 Vector2 forceOfHit = getKnockBack(one, two);
                 one.Body.LinearDamping = .01f;
-                one.Body.ResetDynamics();
-                one.Body.LinearVelocity = Vector2.Zero;
-                mBody.ApplyLinearImpulse(forceOfHit);
+                mFixture.Body.ApplyLinearImpulse(forceOfHit * 500);
                two.Body.ResetDynamics();
 
                 isHit = true;

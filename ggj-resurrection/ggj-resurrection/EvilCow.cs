@@ -31,20 +31,17 @@ namespace ggj_resurrection
             : base(world, initPos, player)
         {
             mPlayer = player;
-            lightningPlayer = new SpriteAnimationPlayer();
+           lightningPlayer = new SpriteAnimationPlayer();
             lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
-
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 3f, 3f, .0125f);
-            mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachRectangle(3f, 3f, .0125f, new Vector2(0,0), mBody);
+            /*
+            //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 3f, 3f, .0125f);
+            
+            mFixture = FixtureFactory.AttachRectangle(3f, 3f, .0125f, new Vector2(0,0), new Body(mPhysicsWorld));
+            mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.UserData = "EvilCow";
             mFixture.Body.UserData = "EvilCow";
-            mBody.UserData = "EvilCow";
-            this.mBody.UserData = "EvilCow";
-            this.mFixture.UserData = "EvilCow";
-            this.mFixture.Body.UserData = "EvilCow";
             mFixture.CollisionCategories = Category.Cat3;
-            mBody.OnCollision += monsterOnCollision;
+            mFixture.Body.OnCollision += monsterOnCollision;*/
 
         }
 
