@@ -18,17 +18,40 @@ namespace ggj_resurrection
 {
     class Particle : GameObject
     {
-        public Particle(World world, Vector2 initPos)   //this is never called. We need it for physics object
-            : base(world, initPos)
+        private Texture2D mTexture;
+        float mTimeout;
+        float mRotation;
+
+        public Particle(Texture2D texture, Vector2 initPos, float timeout)
+            : base(null, initPos)
         {
+            mTexture  = texture;
+            mTimeout  = timeout;
+            mRotation = 0;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (mTimeout > 0)
+            {
+                int opacity = (int)(mTimeout / mTimeout * 255);
+                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(opacity, opacity, opacity, opacity),
+                                mRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-        }
-    }
-}
+            if (mTimeout > 0.0f)
+            {
+                mTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (mTimeout <= 0.0f)
+                {
+                    // remove thyself
+                    GetGameWorld().RemoveGameObject(this);
+                }
+            }
+        } // Update()
+    } // class Particle
+} // namespace ggj_resurrection
