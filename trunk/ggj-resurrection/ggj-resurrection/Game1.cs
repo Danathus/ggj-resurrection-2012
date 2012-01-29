@@ -30,7 +30,7 @@ namespace ggj_resurrection
 
         SoundEffect mLifeTheme;
         SoundEffectInstance mLifeThemeSEI;
-
+        SpriteFont drawFont;
         SoundEffect mDeathTheme;
         SoundEffectInstance mDeathThemeSEI;
 
@@ -84,6 +84,7 @@ namespace ggj_resurrection
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             mSpriteBatch = new SpriteBatch(GraphicsDevice);
+            drawFont = Content.Load<SpriteFont>("drawFont");
 
             mLifeWorld.LoadContent(mGraphics.GraphicsDevice, Content);
             mDeathWorld.LoadContent(mGraphics.GraphicsDevice, Content);
@@ -215,6 +216,10 @@ namespace ggj_resurrection
 
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
+
+            mSpriteBatch.Begin();
+            mSpriteBatch.DrawString(drawFont, "DRAW!", new Vector2(mGraphics.GraphicsDevice.Viewport.Width, mGraphics.GraphicsDevice.Viewport.Height) * .01f, Color.DarkGreen);
+            mSpriteBatch.End();
 
             base.Draw(gameTime);
         }
