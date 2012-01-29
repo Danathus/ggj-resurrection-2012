@@ -33,14 +33,13 @@ namespace ggj_resurrection
         {
             timeElapsed = 0;
             
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f / 64f, 1f);
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f, 1f);
             mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachCircle(50f / 64f, 1f, mBody);
+            mFixture = FixtureFactory.AttachCircle(50f, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat3;
             mBody.OnCollision += monsterOnCollision;
            
             //Correct for meters vs pixels
-            mPosition /= 64f;
             mBody.Position = mPosition;
             mBody.UserData = "Monster";
             setRandDirection();
@@ -66,7 +65,7 @@ namespace ggj_resurrection
 
             if (proximity < 1000)
             {
-            spriteBatch.Draw(mTexture, mFixture.Body.Position * 64f, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
             }
         }
 
