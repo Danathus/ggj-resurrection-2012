@@ -36,12 +36,6 @@ namespace ggj_resurrection
 
         BasicEffect mRenderingEffect;
 
-        // djmc hack for testing
-        SpriteAnimation       mSpriteAnim;
-        SpriteSheet           mSpriteSheet;
-        SpriteAnimationPlayer mSpriteAnimPlayer;
-        // djmc hack for testing
-
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -51,15 +45,11 @@ namespace ggj_resurrection
             mPhysicsWorld = new World(new Vector2(0, 0));
 
             mDebugView = new DebugViewXNA(mPhysicsWorld);
-            mPlayer    = new Player(mPhysicsWorld, new Vector2(0, 0));
             
             mLifeWorld    = new LifeWorld();
             mDeathWorld   = new DeathWorld();
 
             mCurrentWorld = mLifeWorld;
-          
-            mLifeWorld.AddGameObject(mPlayer);
-            mLifeWorld.AddGameObject( new MonsterSpawner(mPhysicsWorld, new Vector2(0,0), mPlayer) );
 
             mCamera = new Camera(
                 mPhysicsWorld, new Vector2(0, 0),
@@ -100,15 +90,9 @@ namespace ggj_resurrection
 
             mRenderingEffect = new BasicEffect(GraphicsDevice);
 
-            mSpriteSheet = new SpriteSheet();
-            mSpriteSheet.SetTexture(Content.Load<Texture2D>("CharSprite/boyStandingStill"));
-            mSpriteSheet.AddSprite(new Vector2( 0, 0), new Vector2(30, 50));
-            mSpriteSheet.AddSprite(new Vector2(30, 0), new Vector2(30, 50));
-            mSpriteAnim = new SpriteAnimation();
-            mSpriteAnim.AddFrame(mSpriteSheet, 1, 1.0f);
-            mSpriteAnim.AddFrame(mSpriteSheet, 0, 0.1f);
-            mSpriteAnimPlayer = new SpriteAnimationPlayer();
-            mSpriteAnimPlayer.SetAnimationToPlay(mSpriteAnim);
+            mPlayer = new Player(mPhysicsWorld, new Vector2(0, 0));
+            mLifeWorld.AddGameObject(mPlayer);
+            mLifeWorld.AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
         }
 
         /// <summary>
@@ -134,14 +118,6 @@ namespace ggj_resurrection
             mLifeWorld.Update(gameTime);
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
-
-            // djmc animation test
-            if (!mSpriteAnimPlayer.IsPlaying())
-            {
-                mSpriteAnimPlayer.Play();
-            }
-            mSpriteAnimPlayer.Update(gameTime);
-            // djmc animation test
 
             mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
@@ -174,9 +150,6 @@ namespace ggj_resurrection
                 Matrix.Identity);           // transform matrix
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
-
-            mSpriteAnimPlayer.Draw(mSpriteBatch, new SpriteSheet.SpriteRenderingParameters(
-                new Vector2(0, 0), 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
 
             mSpriteBatch.End();
 
