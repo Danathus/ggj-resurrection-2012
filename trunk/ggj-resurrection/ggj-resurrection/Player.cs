@@ -40,8 +40,10 @@ namespace ggj_resurrection
 
         static SoundEffect mSwingBatSnd;
         static SoundEffect mPlayerDamageSnd;
+        static SoundEffect mCollectSoulSnd;
 
-        private static float mPlayerDamageVolume = .05f;
+        private static float mPlayerDamageVolume = .15f;
+        private static float mCollectSoulVolume = .15f;
         
 
         public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
@@ -79,15 +81,20 @@ namespace ggj_resurrection
                 //tempColor = Color.Red;
                 return false;
             }
-            else
+            else if (two.UserData.ToString() == "Monster" || two.Body.UserData.ToString() == "Monster") 
             {
                 // kill the player
                 mPlayerDamageSnd.Play(mPlayerDamageVolume, 0, 0);
 
                 // decrease health
                 --mHealth;
+                mPlayerDamageSnd.Play(mPlayerDamageVolume, -.3f, 0);
             }
-            
+            else if (two.UserData.ToString() == "Soul" || two.Body.UserData.ToString() == "Soul")
+            {
+                mCollectSoulSnd.Play(mCollectSoulVolume, 0, 0);
+            }
+                        
             //tempColor = Color.Red;
             return true;
         }
@@ -350,6 +357,7 @@ namespace ggj_resurrection
 
             mSwingBatSnd = myGame.Content.Load<SoundEffect>("Audio/batSwing");
             mPlayerDamageSnd = myGame.Content.Load<SoundEffect>("Audio/playerDamage");
+            mCollectSoulSnd = myGame.Content.Load<SoundEffect>("Audio/collectSoul");
         } // end LoadData
     } // end Player
 } // namespace ggj_resurrection

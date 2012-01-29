@@ -65,8 +65,8 @@ namespace ggj_resurrection
             //mTimeSinceCall = 10000; //so that they call upon spawning
             //mCallFrequency = 10000; //how often cow moos, in ms
             justSpawned = true;
-            mMooVolume = .2f;
-            mThunderVolume = .1f;
+            mMooVolume = .4f;
+            mThunderVolume = .3f;
 
             //Init direction
             getNextDirection(mPlayer);
