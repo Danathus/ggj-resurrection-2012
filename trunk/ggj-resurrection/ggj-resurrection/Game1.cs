@@ -88,6 +88,8 @@ namespace ggj_resurrection
             Player.LoadData(this);
             MonsterSpawner.LoadData(this);
             Monster.LoadData(this);
+            Snake.LoadData(this);
+            EvilCow.LoadData(this);
             SwordSlash.LoadData(this);
 
             mRenderingEffect = new BasicEffect(GraphicsDevice);

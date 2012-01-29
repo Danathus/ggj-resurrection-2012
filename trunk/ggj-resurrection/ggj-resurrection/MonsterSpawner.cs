@@ -48,7 +48,7 @@ namespace ggj_resurrection
         {
             timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-           if (timeElapsed > 5000)
+           if (timeElapsed > 1000)
             {
                 timeElapsed = 0;
                 Spawn();
@@ -65,10 +65,13 @@ namespace ggj_resurrection
         private void Spawn()
         {
             //Spawn monster in a random location -- hopefully in bounds
-            //Monster newMonster = new Monster(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth-50), mRand.Next(0, mHeight-50) ), mPlayer );
-            Monster newMonster = new Monster(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
+            Monster newMonster = new Snake(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth), mRand.Next(0, mHeight) ), mPlayer );
             mMonsters.Add(newMonster);
             mGameWorld.AddGameObject(newMonster);
+
+            Monster newMonsterCow = new EvilCow(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
+            mMonsters.Add(newMonsterCow);
+            mGameWorld.AddGameObject(newMonsterCow);
         }
     }
 }

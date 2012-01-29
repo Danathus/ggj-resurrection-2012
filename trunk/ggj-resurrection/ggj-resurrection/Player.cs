@@ -88,7 +88,7 @@ namespace ggj_resurrection
                 getStick.X = mCurrControllerState.ThumbSticks.Left.X;
                 getStick.Y = mCurrControllerState.ThumbSticks.Left.Y;
 
-                getStick.Y *= -1f;
+                getStick.Y *= 1f;
 
                 multiply = getStick;
 
@@ -144,7 +144,7 @@ namespace ggj_resurrection
 
         public static void LoadData(Game myGame)
         {
-            mTexture = myGame.Content.Load<Texture2D>("monster");
+            mTexture = myGame.Content.Load<Texture2D>("enemySprites/monster");
       
             // fixture load to initial position;
         }
