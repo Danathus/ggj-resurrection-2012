@@ -35,7 +35,11 @@ namespace ggj_resurrection
         static Random cowRand = new Random();
 
         private static SoundEffect mMooSnd;
-        private static float mVolume;
+        private static SoundEffect mThunderSnd;
+        private bool justSpawned;
+        private static float mMooVolume;
+        private static float mThunderVolume;
+        private static int mCallFrequency;
 
 
         public EvilCow(World world, Vector2 initPos, Player player)
@@ -58,7 +62,10 @@ namespace ggj_resurrection
             mFixture.UserData = "Monster";
 
             mTimeSinceCall = 7500; //so that they call upon spawning
-            mVolume = .4f;
+            mCallFrequency = 5000; //how often cow moos, in ms
+            justSpawned = true;
+            mMooVolume = .6f;
+            mThunderVolume = .5f;
 
             //Init direction
             getNextDirection(mPlayer);
@@ -231,10 +238,16 @@ namespace ggj_resurrection
            mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             //Make a call every 5 seconds
-            if (mTimeSinceCall > 5000)
+            if (mTimeSinceCall > mCallFrequency)
             {
                 mTimeSinceCall = 0;
-                mMooSnd.Play(mVolume, 0f, 0f);
+
+                if (justSpawned)
+                {
+                    mThunderSnd.Play(mThunderVolume, 0f, 0f);
+                    justSpawned = false;
+                }
+                else mMooSnd.Play(mMooVolume, 0f, 0f);
 
             }
 
@@ -256,9 +269,8 @@ namespace ggj_resurrection
 
             
             mMooSnd = myGame.Content.Load<SoundEffect>("Audio/moo");
-            //mMooSEI = mMooSnd.CreateInstance();
-            //mMooSEI.Volume = .25f;
-                        
+            mThunderSnd = myGame.Content.Load<SoundEffect>("Audio/thunder");
+            
             //mTexture = myGame.Content.Load<Texture2D>("enemySprites/evilCow");
         }
     }

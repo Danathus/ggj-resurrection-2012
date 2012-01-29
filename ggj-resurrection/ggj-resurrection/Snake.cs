@@ -34,6 +34,8 @@ namespace ggj_resurrection
 
         private static SoundEffect mBatSnd;
 
+        private static int mCallFrequency;
+
         private static float mVolume;
              
 
@@ -59,9 +61,10 @@ namespace ggj_resurrection
            mPlayer = player;
            BasicEnemyPlayer = new SpriteAnimationPlayer();
            BasicEnemyPlayer.SetAnimationToPlay(BasicEnemyAnimation);
-           mTimeSinceCall = 7500; //so that they call upon spawning
-
-           mVolume = .3f;
+           
+            mTimeSinceCall = 10000; //so that they call upon spawning
+            mCallFrequency = 10000; //time between calls in ms
+            mVolume = .2f; //call volume
         }
 
         ~Snake()
@@ -170,8 +173,7 @@ namespace ggj_resurrection
 
             mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            //Make a call every 5 seconds
-            if (mTimeSinceCall > 5000)
+            if (mTimeSinceCall > mCallFrequency)
             {
                 mTimeSinceCall = 0;
                 mBatSnd.Play(mVolume, 0, 0);
