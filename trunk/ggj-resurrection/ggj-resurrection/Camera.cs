@@ -30,7 +30,17 @@ namespace ggj_resurrection
 
         // matrices ("cooked" values)
         public Matrix mProjectionMatrix;
-        public Matrix mViewMatrix;
+        public Matrix mTopViewMatrix, mSideViewMatrix;//, mViewMatrix;
+
+        public Matrix GetTopViewMatrix()
+        {
+            return mTopViewMatrix;
+        }
+
+        public Matrix GetSideViewMatrix()
+        {
+            return mSideViewMatrix;
+        }
 
         public Camera(World world, Vector2 initPos, Vector2 screenDimensions)
             : base(world, initPos)
@@ -46,7 +56,10 @@ namespace ggj_resurrection
                 -mScreenDimensions.X / 2 * kPixelsToUnits, mScreenDimensions.X / 2 * kPixelsToUnits, // left, right
                 -mScreenDimensions.Y / 2 * kPixelsToUnits, mScreenDimensions.Y / 2 * kPixelsToUnits, // bottom, top
                 -1000f, 1000f);                                              // near, far
-            mViewMatrix = Matrix.Identity;
+            //mViewMatrix = Matrix.Identity;
+            //
+            mTopViewMatrix  = Matrix.Identity;
+            mSideViewMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90f - 15f));
         }
 
         public override void Update(GameTime gameTime)
@@ -68,30 +81,29 @@ namespace ggj_resurrection
             // generate view matrix from positional data
             {
                 Matrix preRotTranslationMatrix =
-                    //Matrix.Identity;
                     Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0));
-                //-mScreenDimensions.X / 2,
-                //-mScreenDimensions.Y / 2, 0
-                //);
                 Matrix rotationMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(mRot.X));
                 Matrix postRotTranslationMatrix =
                     Matrix.Identity;
-                //Matrix.CreateTranslation(
-                //mScreenDimensions.X / 2,
-                //mScreenDimensions.Y / 2, 0
-                //);
                 Matrix zoomMatrix = Matrix.CreateScale(mZoom);
-
-                //Matrix translationMatrix =
-                //  Matrix.Identity
-                //Matrix.CreateTranslation(
-                //-mScreenDimensions.X / 2,
-                //-mScreenDimensions.Y / 2, 0)
-                //;
 
                 Matrix compositeMatrix = preRotTranslationMatrix * rotationMatrix * postRotTranslationMatrix * zoomMatrix;
 
-                mViewMatrix = compositeMatrix;
+                mTopViewMatrix = compositeMatrix;
+            }
+
+            //
+            {
+                Matrix preRotTranslationMatrix =
+                    Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0));
+                Matrix rotationMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90 - mRot.X));
+                Matrix postRotTranslationMatrix =
+                    Matrix.Identity;
+                Matrix zoomMatrix = Matrix.CreateScale(mZoom);
+
+                Matrix compositeMatrix = preRotTranslationMatrix * rotationMatrix * postRotTranslationMatrix * zoomMatrix;
+
+                mSideViewMatrix = compositeMatrix;
             }
         }
 
