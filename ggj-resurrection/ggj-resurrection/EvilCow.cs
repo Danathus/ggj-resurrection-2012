@@ -30,9 +30,23 @@ namespace ggj_resurrection
         public EvilCow(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
+
             mPlayer = player;
            lightningPlayer = new SpriteAnimationPlayer();
             lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
+
+            mFixture = FixtureFactory.AttachRectangle(90f * Camera.kPixelsToUnits, 90f * Camera.kPixelsToUnits, .0125f, new Vector2(0, 0), new Body(mPhysicsWorld));
+            mFixture.Body.BodyType = BodyType.Dynamic;
+            mFixture.CollisionCategories = Category.Cat3;
+            mFixture.Body.OnCollision += monsterOnCollision;
+
+            //Correct for meters vs pixels
+            mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
+            //mFixture.Body.UserData = "Monster";
+            mFixture.Body.UserData = "Monster";
+            mFixture.UserData = "Monster";
+            
+
             /*
             //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 3f, 3f, .0125f);
             
@@ -51,8 +65,8 @@ namespace ggj_resurrection
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 spriteOffset = -new Vector2(100, -100) * Camera.kPixelsToUnits;
-            lightningPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+            Vector2 spriteOffset = -new Vector2(50, -50) * Camera.kPixelsToUnits;
+            lightningPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
            // spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
         }

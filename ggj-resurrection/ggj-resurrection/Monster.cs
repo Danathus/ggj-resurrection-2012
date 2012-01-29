@@ -37,21 +37,10 @@ namespace ggj_resurrection
         {
             timeElapsed = 0;
             mRadius = 1;
-            
+           // setRandDirection();
             //Body = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
             //mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachRectangle(1f, 1f, .0125f, new Vector2(0,0), new Body(mPhysicsWorld));
-            mFixture.Body.BodyType = BodyType.Dynamic;
-            mFixture.CollisionCategories = Category.Cat3;
-            mFixture.Body.OnCollision += monsterOnCollision;
-            mFixture.Body.LinearDamping = 0.1f;
-            
-            //Correct for meters vs pixels
-            mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
-            //mFixture.Body.UserData = "Monster";
-            mFixture.Body.UserData = "Monster";
-            mFixture.UserData = "Monster";
-            setRandDirection();
+
 
             //reference to the player
             mPlayer = player;
@@ -117,7 +106,7 @@ namespace ggj_resurrection
             if (timeElapsed > 1000)
             {
                 timeElapsed = 0;
-                setRandDirection();
+                //setRandDirection();
             }
 
             Vector2 multiply = new Vector2(0, 0);
