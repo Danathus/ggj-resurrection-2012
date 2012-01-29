@@ -18,12 +18,12 @@ namespace ggj_resurrection
     public class Player : GameObject
     {
         // static data
-        static SpriteSheet     mBlinkingSpriteSheet;
-        static SpriteAnimation mBlinkingAnimation;
+        static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet;
+        static SpriteAnimation mBlinkingAnimation, mRunningSouthAnimation;
 
         // member data
         SpriteAnimationPlayer mSpriteAnimPlayer;
-        float mMaxSpeed = 10;
+        float mMaxSpeed = 5;
         Color tempColor = Color.YellowGreen;
         List<SwordSlash> bats = new List<SwordSlash>();
 
@@ -82,60 +82,33 @@ namespace ggj_resurrection
             mPrevControllerState = mCurrControllerState;
             mCurrControllerState = GamePad.GetState(PlayerIndex.One);
 
-            Vector2 direction = new Vector2(0, 0);
-            Vector2 multiply = new Vector2(0,0);
+            Vector2 direction = DetermineDesiredDirection();
+
             mFixture.Body.LinearVelocity = new Vector2(0, 0);
             mFixture.Body.Rotation = 0;
-            Vector2 getStick;
 
-
-            if (mCurrControllerState.IsConnected)
+            if (direction.Length() > .065f)
             {
-                getStick.X = mCurrControllerState.ThumbSticks.Left.X;
-                getStick.Y = mCurrControllerState.ThumbSticks.Left.Y;
-
-                getStick.Y *= 1f;
-
-                multiply = getStick;
-
-                if (getStick.Length() > .065f )
-                {
-                    //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
-                    mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
-                }
-
+                mFixture.Body.LinearVelocity = (direction * mMaxSpeed);
             }
 
-            //else
-            //{
-                if (mCurrKeyboardState.IsKeyDown(Keys.Right))
-                {
-                    //Vector2 velocity = new Vector2(1, 0);
-                    multiply.X = 1f;
-                }//direction needs to be LinearVelocity
-
-                if (mCurrKeyboardState.IsKeyDown(Keys.Left))
-                {
-                    multiply.X = -1f;
-                }
-
-                if (mCurrKeyboardState.IsKeyDown(Keys.Up))
-                {
-                    multiply.Y =  1f;
-                }
-
-                if (mCurrKeyboardState.IsKeyDown(Keys.Down))
-                {
-                    multiply.Y = -1f;
-                }
-                //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
-                mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
-            //}
-
-            if (multiply.Length() > 0)
+            if (direction.Length() > 0)
             {
-                multiply.Normalize();
-                mDirection = multiply;
+                direction.Normalize();
+                mDirection = direction;
+            }            
+
+            // choose animation
+            SpriteAnimation desiredAnim = mBlinkingAnimation; // the default
+            if (Vector2.Dot(direction, new Vector2(0, -1)) > 0.5f)
+            {
+                desiredAnim = mRunningSouthAnimation;
+            }
+
+            // now apply the animation
+            if (mSpriteAnimPlayer.GetAnimationToPlay() != desiredAnim)
+            {
+                mSpriteAnimPlayer.SetAnimationToPlay(desiredAnim);
             }
 
             Vector2 rightStick = mCurrControllerState.ThumbSticks.Right;
@@ -186,19 +159,66 @@ namespace ggj_resurrection
             // djmc animation test
         }
 
+        // read input state and return current direction we want to move this frame
+        private Vector2 DetermineDesiredDirection()
+        {
+            Vector2 direction = new Vector2(0, 0);
+
+            if (mCurrControllerState.IsConnected)
+            {
+                direction.X = mCurrControllerState.ThumbSticks.Left.X;
+                direction.Y = mCurrControllerState.ThumbSticks.Left.Y;
+
+                direction.Y *= 1f;
+            }
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Right))
+            {
+                direction.X += +1f;
+            }
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Left))
+            {
+                direction.X += -1f;
+            }
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Up))
+            {
+                direction.Y += +1f;
+            }
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.Down))
+            {
+                direction.Y += -1f;
+            }
+
+            return direction;
+        }
+
         public static void LoadData(Game myGame)
         {
             // load all static data here
             mBlinkingSpriteSheet = new SpriteSheet();
             mBlinkingSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyStandingStill"));
-            mBlinkingSpriteSheet.AddSprite(new Vector2(0, 0),  new Vector2(30, 50));
-            mBlinkingSpriteSheet.AddSprite(new Vector2(30, 0), new Vector2(30, 50));
+            for (int i = 0; i < 2; ++i)
+            {
+                mBlinkingSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
+            }
+            //
             mBlinkingAnimation = new SpriteAnimation();
             mBlinkingAnimation.AddFrame(mBlinkingSpriteSheet, 1, 1.0f);
             mBlinkingAnimation.AddFrame(mBlinkingSpriteSheet, 0, 0.1f);
-      
-            // fixture load to initial position;
-        }
-       
-    }
-}
+
+            mRunningSouthSpriteSheet = new SpriteSheet();
+            mRunningSouthAnimation = new SpriteAnimation();
+            mRunningSouthSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyRunningFoward5fps"));
+            for (int i = 0; i < 4; ++i)
+            {
+                mRunningSouthSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
+                mRunningSouthAnimation.AddFrame(mRunningSouthSpriteSheet, i, 0.1f);
+            }
+
+            //boyRunningSideways5fps.png
+        } // end LoadData
+    } // end Player
+} // namespace ggj_resurrection

@@ -33,6 +33,8 @@ namespace ggj_resurrection
             Stop();
         }
 
+        public SpriteAnimation GetAnimationToPlay() { return mAnimToPlay; }
+
         public bool IsPlaying() { return mPlaying; }
 
         public void Play()
