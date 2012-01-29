@@ -37,8 +37,14 @@ namespace ggj_resurrection
             mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 3f, 3f, .0125f);
             mBody.BodyType = BodyType.Dynamic;
             mFixture = FixtureFactory.AttachRectangle(3f, 3f, .0125f, new Vector2(0,0), mBody);
-            //mFixture.CollisionCategories = Category.Cat3;
-           // mBody.OnCollision += monsterOnCollision;
+            mFixture.UserData = "EvilCow";
+            mFixture.Body.UserData = "EvilCow";
+            mBody.UserData = "EvilCow";
+            this.mBody.UserData = "EvilCow";
+            this.mFixture.UserData = "EvilCow";
+            this.mFixture.Body.UserData = "EvilCow";
+            mFixture.CollisionCategories = Category.Cat3;
+            mBody.OnCollision += monsterOnCollision;
 
         }
 
