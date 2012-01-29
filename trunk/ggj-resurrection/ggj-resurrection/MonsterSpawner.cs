@@ -65,13 +65,28 @@ namespace ggj_resurrection
         private void Spawn()
         {
             //Spawn monster in a random location -- hopefully in bounds
-            Monster newMonster = new Snake(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
-            mMonsters.Add(newMonster);
-            mGameWorld.AddGameObject(newMonster);
+            while (true)
+            {
+                Vector2 playerPos = mPlayer.GetPosition();
+                Vector2 randomPos = new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight));
 
-            Monster newMonsterCow = new EvilCow(mPhysicsWorld, new Vector2(mRand.Next(-mHeight / 2, mHeight / 2), mRand.Next(-mHeight / 2, mHeight / 2)), mPlayer);
-            mMonsters.Add(newMonsterCow);
-            mGameWorld.AddGameObject(newMonsterCow);
+                Vector2 difference = playerPos - randomPos;
+
+                if (difference.Length() > (20 * Camera.kPixelsToUnits))
+                {
+
+                    Monster newMonster = new Snake(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
+                    mMonsters.Add(newMonster);
+                    mGameWorld.AddGameObject(newMonster);
+
+                    Monster newMonsterCow = new EvilCow(mPhysicsWorld, new Vector2(mRand.Next(-mHeight / 2, mHeight / 2), mRand.Next(-mHeight / 2, mHeight / 2)), mPlayer);
+                    mMonsters.Add(newMonsterCow);
+                    mGameWorld.AddGameObject(newMonsterCow);
+                    break;
+                }
+
+            }
+
         }
     }
 }
