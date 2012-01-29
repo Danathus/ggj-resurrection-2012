@@ -19,6 +19,7 @@ namespace ggj_resurrection
     class DeadPlayer : GameObject
     {
         // static data
+        static Vector2 kFrameSizeInPixels = new Vector2(30, 50); // C# won't let me make this const, but please don't change!
         static SpriteSheet mBlinkingSpriteSheet;
         static SpriteAnimation mBlinkingAnimation;
 
@@ -35,9 +36,9 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 spriteOffset =
-                -new Vector2(30, -50) * Camera.kPixelsToUnits;
+                -new Vector2(kFrameSizeInPixels.X / 2, -kFrameSizeInPixels.Y * 2 / 2) * Camera.kPixelsToUnits;
             mSpriteAnimPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(
-                mPosition + spriteOffset, 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+                mPosition + spriteOffset, 0, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
         }
 
         public override void Update(GameTime gameTime)
@@ -51,7 +52,7 @@ namespace ggj_resurrection
             mBlinkingSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyStandingStill"));
             for (int i = 0; i < 2; ++i)
             {
-                mBlinkingSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
+                mBlinkingSpriteSheet.AddSprite(new Vector2(i * kFrameSizeInPixels.X, 0), kFrameSizeInPixels);
             }
             //
             mBlinkingAnimation = new SpriteAnimation();

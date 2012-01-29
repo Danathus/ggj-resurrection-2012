@@ -31,6 +31,7 @@ namespace ggj_resurrection
         // matrices ("cooked" values)
         public Matrix mProjectionMatrix;
         public Matrix mTopViewMatrix, mSideViewMatrix;//, mViewMatrix;
+        public Vector3 mSideViewOffset;
 
         public Matrix GetTopViewMatrix()
         {
@@ -60,6 +61,7 @@ namespace ggj_resurrection
             //
             mTopViewMatrix  = Matrix.Identity;
             mSideViewMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90f - 15f));
+            mSideViewOffset = new Vector3(0, 0, 0);
         }
 
         public override void Update(GameTime gameTime)
@@ -78,7 +80,7 @@ namespace ggj_resurrection
             //weight = (1-k) ^ dt
             //
 
-            // generate view matrix from positional data
+            // generate top-view matrix from positional data
             {
                 Matrix preRotTranslationMatrix =
                     Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0));
@@ -92,10 +94,10 @@ namespace ggj_resurrection
                 mTopViewMatrix = compositeMatrix;
             }
 
-            //
+            // generate side-view matrix from positional data
             {
                 Matrix preRotTranslationMatrix =
-                    Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0));
+                    Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0) + mSideViewOffset);
                 Matrix rotationMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90 - mRot.X));
                 Matrix postRotTranslationMatrix =
                     Matrix.Identity;
