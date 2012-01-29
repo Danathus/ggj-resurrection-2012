@@ -43,9 +43,9 @@ namespace ggj_resurrection
 
             mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(0f, 0f), mBody);
             mFixture.Body.CollisionCategories = Category.Cat1;
-            mFixture.Body.CollidesWith = Category.All & ~Category.Cat1;
+            mFixture.Body.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
             mFixture.CollisionCategories = Category.Cat1;
-            mFixture.CollidesWith = Category.All & ~Category.Cat1;
+            mFixture.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
             mBody.OnCollision += playerOnCollision;
 
             
