@@ -23,6 +23,7 @@ namespace ggj_resurrection
         //float mHealth;
         Color tempColor = Color.White;
         bool isHit = false;
+        protected float mStunTimeout;
 
         
 
@@ -61,6 +62,8 @@ namespace ggj_resurrection
             //mHealth = 3;
 
             mMonMonCollVolume = .01f;
+
+            mStunTimeout = 0;
         }
 
         Vector2 getKnockBack(Fixture a, Fixture b)
@@ -76,7 +79,6 @@ namespace ggj_resurrection
             difference *= 5f;
 
             return difference;
-
         }
 
         public virtual bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -126,8 +128,8 @@ namespace ggj_resurrection
                     Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
                 if(GetGameWorld() != null)
                 GetGameWorld().AddGameObject(smoke);
-                
 
+                mStunTimeout += 0.5f;
             }
             else mMonMonCollSnd.Play(mMonMonCollVolume, -.5f, 0);
 
@@ -138,13 +140,31 @@ namespace ggj_resurrection
         {
         }
 
+        protected void HandleStun(GameTime gameTime, SpriteAnimationPlayer player, SpriteAnimation normal, SpriteAnimation pain)
+        {
+            if (mStunTimeout > 0)
+            {
+                mStunTimeout -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (player.GetAnimationToPlay() != pain)
+                {
+                    player.SetAnimationToPlay(pain);
+                }
+            }
+            else
+            {
+                if (player.GetAnimationToPlay() != normal)
+                {
+                    player.SetAnimationToPlay(normal);
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {   
         }
 
         public override void Update(GameTime gameTime)
         {
-            
             //mFixture.Body.ResetDynamics();
             mFixture.Body.Rotation = 0f;
 

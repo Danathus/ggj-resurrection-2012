@@ -19,8 +19,8 @@ namespace ggj_resurrection
     {
         //static private Texture2D mTexture;
 
-        static SpriteSheet BasicEnemySpriteSheet;
-        static SpriteAnimation BasicEnemyAnimation;
+        static SpriteSheet BasicEnemySpriteSheet, mBasicEnemyPainSpriteSheet;
+        static SpriteAnimation BasicEnemyAnimation, mBasicEnemyPainAnimation, mBasicEnemyDeathAnimation;
 
         SpriteAnimationPlayer BasicEnemyPlayer;
 
@@ -124,7 +124,9 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
-              if (mHealth <= 0)
+            HandleStun(gameTime, BasicEnemyPlayer, BasicEnemyAnimation, mBasicEnemyPainAnimation);
+
+            if (mHealth <= 0)
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -248,15 +250,22 @@ namespace ggj_resurrection
             BasicEnemySpriteSheet = new SpriteSheet();
             BasicEnemySpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("Enemies/BasicEnemy"));
             BasicEnemyAnimation = new SpriteAnimation();
+            //
+            mBasicEnemyPainSpriteSheet = new SpriteSheet();
+            mBasicEnemyPainSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("enemySprites/basicEnemyHit"));
+            mBasicEnemyPainAnimation = new SpriteAnimation();
+            mBasicEnemyDeathAnimation = new SpriteAnimation();
 
             for (int i = 0; i < 2; i++)
             {
                 BasicEnemySpriteSheet.AddSprite(new Vector2(i * 45, 0), new Vector2(45, 60));
+                mBasicEnemyPainSpriteSheet.AddSprite(new Vector2(i * 45, 0), new Vector2(45, 60));
                 BasicEnemyAnimation.AddFrame(BasicEnemySpriteSheet, i, .1f);
             }
+            mBasicEnemyPainAnimation.AddFrame(mBasicEnemyPainSpriteSheet, 0, 2f);
+            mBasicEnemyDeathAnimation.AddFrame(mBasicEnemyPainSpriteSheet, 1, 2f);
 
             mBatSnd = myGame.Content.Load<SoundEffect>("Audio/bat");
-
         }
     }
         
