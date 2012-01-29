@@ -30,11 +30,13 @@ namespace ggj_resurrection
 
         SoundEffect mLifeTheme;
         SoundEffectInstance mLifeThemeSEI;
-        SpriteFont drawFont;
+        
         SoundEffect mDeathTheme;
         SoundEffectInstance mDeathThemeSEI;
 
         SoundEffect mPlayerFallSnd;
+
+        SpriteFont drawFont;
         
         //
         public static LifeWorld  mLifeWorld;
@@ -215,10 +217,12 @@ namespace ggj_resurrection
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             mLifeWorld.Draw(mSpriteBatch);
+            mLifeWorld.drawHealth(mSpriteBatch, mGraphics);
             mDeathWorld.Draw(mSpriteBatch);
 
             mSpriteBatch.Begin();
-            mSpriteBatch.DrawString(drawFont, "DRAW!", new Vector2(mGraphics.GraphicsDevice.Viewport.Width, mGraphics.GraphicsDevice.Viewport.Height) * .01f, Color.DarkGreen);
+            int score = mCurrentWorld.getScore();
+            mSpriteBatch.DrawString(drawFont, "SCORE: " + score , new Vector2(mGraphics.GraphicsDevice.Viewport.Width, mGraphics.GraphicsDevice.Viewport.Height) * .01f, Color.DarkGreen);
             mSpriteBatch.End();
 
             base.Draw(gameTime);
