@@ -35,6 +35,8 @@ namespace ggj_resurrection
         SoundEffectInstance mDeathThemeSEI;
 
         SoundEffect mPlayerFallSnd;
+        SoundEffect mGongSnd;
+        private static float mGongVolume = .6f;
 
         SpriteFont drawFont;
         
@@ -114,6 +116,7 @@ namespace ggj_resurrection
             mDeathThemeSEI.Volume = 1;
 
             mPlayerFallSnd = Content.Load<SoundEffect>("Audio/playerFall");
+            mGongSnd = Content.Load<SoundEffect>("Audio/gong");
 
             mLifeTheme = Content.Load<SoundEffect>("Audio/LifeTheme");
             mLifeThemeSEI = mLifeTheme.CreateInstance();
@@ -194,6 +197,7 @@ namespace ggj_resurrection
                     mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
                     mCurrentWorld = mLifeWorld;
                     mDeathThemeSEI.Stop();
+                    mGongSnd.Play(mGongVolume, 0, 0);
                     mLifeThemeSEI.Play();
 
                     // turn off/on players as appropriate
