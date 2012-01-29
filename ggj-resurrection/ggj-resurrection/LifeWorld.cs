@@ -18,6 +18,7 @@ namespace ggj_resurrection
         private int[,] terrainMap;
         private int dimension;
         private Texture2D tile1, tile2, tile3, tile4, tile5;
+        
 
         public LifeWorld(Camera camera, String file, Game game)
             : base(camera)
@@ -27,8 +28,7 @@ namespace ggj_resurrection
                 //StreamReader read = new StreamReader(file);
                 String path = string.Format("Content/lifeworld.txt");
                 Stream fileStream = TitleContainer.OpenStream(path);
-                
-                
+                          
                 StreamReader read = new StreamReader(fileStream);
                 string line = read.ReadLine();
                 char[] setMatrix = line.ToCharArray();

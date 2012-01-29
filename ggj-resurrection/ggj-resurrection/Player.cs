@@ -33,6 +33,10 @@ namespace ggj_resurrection
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
         GamePadState mCurrControllerState, mPrevControllerState;
 
+        static SoundEffect mSwingBatSnd;
+        static SoundEffectInstance mSwingBatSEI;
+        
+
         public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
             : base(world, initPos)
         {
@@ -55,6 +59,8 @@ namespace ggj_resurrection
 
             mSpriteAnimPlayer = new SpriteAnimationPlayer();
             mSpriteAnimPlayer.SetAnimationToPlay(mBlinkingAnimation);
+
+            
         }
 
         ~Player()
@@ -136,6 +142,7 @@ namespace ggj_resurrection
 
             if (mCurrControllerState.IsConnected && rightStick.Length() > .25)
             {
+                
                 if (bats.Count <= 4)
                 {
                     Vector2 offset2d = mFixture.Body.Position + rightStick * 1.5f;
@@ -274,6 +281,10 @@ namespace ggj_resurrection
             }
 
             mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
+
+            mSwingBatSnd = myGame.Content.Load<SoundEffect>("Audio/batSwing");
+            mSwingBatSEI = mSwingBatSnd.CreateInstance();
+        
         } // end LoadData
     } // end Player
 } // namespace ggj_resurrection
