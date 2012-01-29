@@ -17,11 +17,15 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
+        // static data
+        static SpriteSheet     mBlinkingSpriteSheet;
+        static SpriteAnimation mBlinkingAnimation;
+
+        // member data
+        SpriteAnimationPlayer mSpriteAnimPlayer;
         float mMaxSpeed = 10;
         Color tempColor = Color.YellowGreen;
         List<SwordSlash> bats = new List<SwordSlash>();
-
-        static private Texture2D mTexture;
 
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
         GamePadState mCurrControllerState, mPrevControllerState;
@@ -42,6 +46,9 @@ namespace ggj_resurrection
             mBody.OnCollision += playerOnCollision;
             mFixture.UserData = "Player";
             mFixture.Body.UserData = "Player";
+
+            mSpriteAnimPlayer = new SpriteAnimationPlayer();
+            mSpriteAnimPlayer.SetAnimationToPlay(mBlinkingAnimation);
         }
 
         ~Player()
@@ -62,10 +69,8 @@ namespace ggj_resurrection
         
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.Draw(mTexture, mBody.Position, null, tempColor, mBody.Rotation,
-                new Vector2(mTexture.Width / 2, mTexture.Height / 2),
-                Camera.kPixelsToUnits, SpriteEffects.None, 0f);
+            mSpriteAnimPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(
+                mPosition, 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
         }
 
         public override void Update(GameTime gameTime)
@@ -163,19 +168,31 @@ namespace ggj_resurrection
                     });*/
                     //bats.RemoveAt(0);
                 }
-
-                
-
             }
 
             const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
             mPosition = mBody.Position;       //converts Body.Position (meters) into pixels
+
+            // djmc animation test
+            if (!mSpriteAnimPlayer.IsPlaying())
+            {
+                mSpriteAnimPlayer.Play();
+            }
+            mSpriteAnimPlayer.Update(gameTime);
+            // djmc animation test
         }
 
         public static void LoadData(Game myGame)
         {
-            mTexture = myGame.Content.Load<Texture2D>("enemySprites/monster");
+            // load all static data here
+            mBlinkingSpriteSheet = new SpriteSheet();
+            mBlinkingSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyStandingStill"));
+            mBlinkingSpriteSheet.AddSprite(new Vector2(0, 0),  new Vector2(30, 50));
+            mBlinkingSpriteSheet.AddSprite(new Vector2(30, 0), new Vector2(30, 50));
+            mBlinkingAnimation = new SpriteAnimation();
+            mBlinkingAnimation.AddFrame(mBlinkingSpriteSheet, 1, 1.0f);
+            mBlinkingAnimation.AddFrame(mBlinkingSpriteSheet, 0, 0.1f);
       
             // fixture load to initial position;
         }
