@@ -35,7 +35,7 @@ namespace ggj_resurrection
 
         public class SpriteRenderingParameters
         {
-            Vector2 mPosition;
+            Vector2 mPosition, mScale;
             float   mRotation;
             Color   mColor;
 
@@ -44,18 +44,21 @@ namespace ggj_resurrection
                 mPosition = new Vector2(0, 0);
                 mRotation = 0.0f;
                 mColor    = Color.White;
+                mScale    = new Vector2(1, 1);
             }
 
-            public SpriteRenderingParameters(Vector2 position, float rotation, Color color)
+            public SpriteRenderingParameters(Vector2 position, float rotation, Color color, Vector2 scale)
             {
                 mPosition = position;
                 mRotation = rotation;
                 mColor    = color;
+                mScale    = scale;
             }
 
             public Vector2 GetPosition() { return mPosition; }
             public float   GetRotation() { return mRotation; }
             public Color   GetColor()    { return mColor; }
+            public Vector2 GetScale()    { return mScale; }
         }
 
         Texture2D mTexture;
@@ -93,7 +96,7 @@ namespace ggj_resurrection
                 parameters.GetColor(),              // color
                 parameters.GetRotation(),           // rotation
                 new Vector2(0, 0),                  // origin
-                2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits), // scale
+                parameters.GetScale(),              // scale
                 SpriteEffects.None,                 // effects
                 0f);                                // layer depth
         }
