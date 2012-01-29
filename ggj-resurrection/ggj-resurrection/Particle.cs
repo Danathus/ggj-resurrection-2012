@@ -35,7 +35,7 @@ namespace ggj_resurrection
             if (mTimeout > 0)
             {
                 int opacity = (int)(mTimeout / mTimeout * 255);
-                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(opacity, opacity, opacity, opacity),
+                spriteBatch.Draw(mTexture, mPosition, null, new Color(opacity, opacity, opacity, opacity),
                                 mRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }

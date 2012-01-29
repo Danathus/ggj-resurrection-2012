@@ -136,6 +136,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Particles\SmokeParticleEffectSprite.png">
+      <Name>SmokeParticleEffectSprite</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Audio\bat.mp3">
       <Name>bat</Name>
       <Importer>Mp3Importer</Importer>
