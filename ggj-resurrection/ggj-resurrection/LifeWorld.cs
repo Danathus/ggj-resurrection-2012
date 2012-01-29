@@ -24,10 +24,14 @@ namespace ggj_resurrection
             : base()
         {
 
-            try
-            {
-                StreamReader read = new StreamReader(file);
-
+           // try
+            //{
+                //StreamReader read = new StreamReader(file);
+                String path = string.Format("Content/lifeworld.txt");
+                Stream fileStream = TitleContainer.OpenStream(path);
+                
+                
+                StreamReader read = new StreamReader(fileStream);
                 string line = read.ReadLine();
                 char[] setMatrix = line.ToCharArray();
                 char[] chars;
@@ -61,9 +65,9 @@ namespace ggj_resurrection
 
                 read.Close();
 
-            }
+           // }
 
-            catch (FileNotFoundException e)
+          /*  catch (FileNotFoundException e)
             {
                 Console.WriteLine(e.Message);
                 throw e;
@@ -72,7 +76,7 @@ namespace ggj_resurrection
             catch (DirectoryNotFoundException e)
             {
                 Console.WriteLine(e.Message);
-            }
+            }*/
 
 
            
