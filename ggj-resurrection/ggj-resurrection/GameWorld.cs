@@ -26,6 +26,8 @@ namespace ggj_resurrection
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
 
+        bool mAwake;
+
         Texture2D mHackSmoke;
 
         public GameWorld(Camera camera)
@@ -38,6 +40,8 @@ namespace ggj_resurrection
 
             mPhysicsWorld = new World(new Vector2(0, 0));
             mDebugView    = new DebugViewXNA(mPhysicsWorld);
+
+            mAwake = false;
         }
 
         public void AddGameObject(GameObject go)
@@ -55,39 +59,39 @@ namespace ggj_resurrection
         public virtual void Update(GameTime gameTime)
         {
             mGameObjects.Sort();
-
-            foreach (GameObject go in mGameObjects)
+            if (mAwake)
             {
-                if (go.IsEnabled())
+                foreach (GameObject go in mGameObjects)
                 {
-                    go.Update(gameTime);
+                    if (go.IsEnabled())
+                    {
+                        go.Update(gameTime);
+                    }
+
+                    if (go.mHealth < 0)
+                    {
+                        this.RemoveGameObject(go);
+                    }
                 }
 
-                if (go.mHealth < 0)
+                mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+                // handle all add requests
+                foreach (GameObject go in mAddList)
                 {
-                   
-                    this.RemoveGameObject(go);
+                    mGameObjects.Add(go);
                 }
-            }
+                mAddList.Clear();
 
-            mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
-
-            // handle all add requests
-            foreach (GameObject go in mAddList)
-            {
-                mGameObjects.Add(go);
-                
+                // handle all remove requests
+                foreach (GameObject go in mRemoveList)
+                {
+                    //remove in farseer?
+                    go.fixtureDestory();
+                    mGameObjects.Remove(go);
+                }
+                mRemoveList.Clear();
             }
-            mAddList.Clear();
-
-            // handle all remove requests
-            foreach (GameObject go in mRemoveList)
-            {
-                //remove in farseer?
-                go.fixtureDestory();
-                mGameObjects.Remove(go);
-            }
-            mRemoveList.Clear();
         }
 
         public abstract void DrawCustomWorldDetails(SpriteBatch spriteBatch);
@@ -100,6 +104,10 @@ namespace ggj_resurrection
             //
             mRenderingEffect.TextureEnabled     = true;
             mRenderingEffect.VertexColorEnabled = true;
+
+            mRenderingEffect.DiffuseColor = mAwake
+                ? new Vector3(1f, 1f, 1f)
+                : new Vector3(0.5f, 0.5f, 0.5f);
 
             // custom drawing code here
             spriteBatch.Begin(
@@ -132,6 +140,16 @@ namespace ggj_resurrection
              mHackSmoke = content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
         }
 
-        public virtual void WakeUp() {}
+        public virtual void GoToSleep()
+        {
+            mAwake = false;
+            // todo: on-sleep processing
+        }
+
+        public virtual void WakeUp()
+        {
+            mAwake = true;
+            // todo: on-wake processing
+        }
     }
 }

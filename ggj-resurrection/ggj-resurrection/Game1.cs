@@ -98,6 +98,8 @@ namespace ggj_resurrection
             mLifeThemeSEI.IsLooped = true;
             mLifeThemeSEI.Volume = 1;
             mLifeThemeSEI.Play();
+
+            mLifeWorld.WakeUp();
         }
 
         /// <summary>
@@ -141,6 +143,10 @@ namespace ggj_resurrection
                     mDeadPlayer.Enable();
                     mDeadPlayer.SetPosition(mAlivePlayer.GetPosition());
                     mDeadPlayer.WakeUp();
+
+                    // complete transition
+                    mLifeWorld.GoToSleep();
+                    mDeathWorld.WakeUp();
                 }
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
@@ -156,6 +162,10 @@ namespace ggj_resurrection
                     mDeadPlayer.Disable();
                     mAlivePlayer.SetPosition(mDeadPlayer.GetPosition());
                     mAlivePlayer.WakeUp();
+
+                    // complete transition
+                    mDeathWorld.GoToSleep();
+                    mLifeWorld.WakeUp();
                 }
             }
 
