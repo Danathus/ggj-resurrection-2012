@@ -46,7 +46,7 @@ namespace ggj_resurrection
 
             mDebugView = new DebugViewXNA(mPhysicsWorld);
             
-            mLifeWorld    = new LifeWorld();
+            mLifeWorld    = new LifeWorld("Content/lifeworld.txt", this);
             mDeathWorld   = new DeathWorld();
 
             mCurrentWorld = mLifeWorld;
@@ -91,6 +91,9 @@ namespace ggj_resurrection
             mRenderingEffect = new BasicEffect(GraphicsDevice);
 
             mPlayer = new Player(mPhysicsWorld, new Vector2(0, 0));
+
+            mLifeWorld.loadTiles(this);
+
             mLifeWorld.AddGameObject(mPlayer);
             mLifeWorld.AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
         }
