@@ -41,7 +41,7 @@ namespace ggj_resurrection
 
         public GameObject(World world, Vector2 initPos){
             mPosition = initPos;
-            mDirection = new Vector2(1, 0);
+           // mDirection = new Vector2(1, 0);
             //mVelocity = new Vector2(0, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             mPhysicsWorld = world;

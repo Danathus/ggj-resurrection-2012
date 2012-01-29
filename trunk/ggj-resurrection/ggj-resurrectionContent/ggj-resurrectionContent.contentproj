@@ -95,7 +95,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="Enemies\x45y60BasicEnemy.png">
-      <Name>x45y60BasicEnemy</Name>
+      <Name>BasicEnemy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -131,13 +131,6 @@
   <ItemGroup>
     <Compile Include="Grass003.png">
       <Name>Grass003</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Particles\SmokeParticleEffectSprite.png">
-      <Name>SmokeParticleEffectSprite</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -197,6 +190,13 @@
       <Name>thunder</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Particles\SmokeParticleEffectSprite.png">
+      <Name>SmokeParticleEffectSprite</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
