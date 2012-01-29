@@ -117,7 +117,7 @@ namespace ggj_resurrection
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
 
-            mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 

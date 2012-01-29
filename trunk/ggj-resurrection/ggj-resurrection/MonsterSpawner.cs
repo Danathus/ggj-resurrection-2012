@@ -32,7 +32,6 @@ namespace ggj_resurrection
             mMonsters = new List<Monster>();
 
             mPlayer = player;
-            
         }
 
         ~MonsterSpawner()
@@ -58,15 +57,16 @@ namespace ggj_resurrection
 
         public static void LoadData(Game myGame)
         {
-            mHeight = myGame.Window.ClientBounds.Height;
-            mWidth = myGame.Window.ClientBounds.Width;
+            mHeight = 10;// myGame.Window.ClientBounds.Height;
+            mWidth  = 10;// myGame.Window.ClientBounds.Width;
         }
 
 
         private void Spawn()
         {
             //Spawn monster in a random location -- hopefully in bounds
-            Monster newMonster = new Monster(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth-50), mRand.Next(0, mHeight-50) ), mPlayer );
+            //Monster newMonster = new Monster(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth-50), mRand.Next(0, mHeight-50) ), mPlayer );
+            Monster newMonster = new Monster(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
             mMonsters.Add(newMonster);
             mGameWorld.AddGameObject(newMonster);
         }

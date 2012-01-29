@@ -19,7 +19,7 @@ namespace ggj_resurrection
     {
         static private Texture2D mTexture;
 
-        Vector2 maxSpeed = new Vector2(.02f, .02f);
+        float mMaxSpeed = 5;
         Color tempColor = Color.White;
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
@@ -32,10 +32,11 @@ namespace ggj_resurrection
             : base(world, initPos)
         {
             timeElapsed = 0;
+            mRadius = 1;
             
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 50f, 1f);
+            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 1f, 1f);
             mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachCircle(50f, 1f, mBody);
+            mFixture = FixtureFactory.AttachCircle(mRadius, 1f, mBody);
             mFixture.CollisionCategories = Category.Cat3;
             mBody.OnCollision += monsterOnCollision;
            
@@ -59,13 +60,12 @@ namespace ggj_resurrection
         }
 
         public override void Draw(SpriteBatch spriteBatch)
-        {
-            
+        {   
             float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
 
             if (proximity < 1000)
             {
-            spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }
 
@@ -104,8 +104,8 @@ namespace ggj_resurrection
                     break;
             }
 
-            mFixture.Body.ApplyLinearImpulse(multiply * maxSpeed);
-
+            //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
+            mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
         }
 
         public static void LoadData(Game myGame)
