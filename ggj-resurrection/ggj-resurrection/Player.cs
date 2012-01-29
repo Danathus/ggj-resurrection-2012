@@ -172,6 +172,11 @@ namespace ggj_resurrection
                 }
             }
 
+            // clamp position to screen
+            mFixture.Body.Position = new Vector2(
+                Math.Min(Math.Max(-800 / 2 * Camera.kPixelsToUnits, mFixture.Body.Position.X), 800 / 2 * Camera.kPixelsToUnits),
+                Math.Min(Math.Max(-600 / 2 * Camera.kPixelsToUnits, mFixture.Body.Position.Y), 600 / 2 * Camera.kPixelsToUnits));
+
             mPosition = new Vector2(mFixture.Body.Position.X, mFixture.Body.Position.Y); // converts Body.Position (meters) into pixels
 
             UpdateAnimation(gameTime, direction);
