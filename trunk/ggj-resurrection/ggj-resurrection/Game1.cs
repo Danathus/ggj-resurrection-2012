@@ -119,11 +119,13 @@ namespace ggj_resurrection
                 keyState.IsKeyDown(Keys.Q))
             {
                 mCamera.mTargetRot = new Vector3(90f-15f, 0f, 0f);
+                mCurrentWorld = mDeathWorld;
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.W))
             {
                 mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
+                mCurrentWorld = mLifeWorld;
             }
 
             base.Update(gameTime);
