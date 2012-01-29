@@ -31,6 +31,7 @@ namespace ggj_resurrection
         protected float mDensity;
 
         public int mHealth;
+        public void setHealth(int health) { mHealth = health; }
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
         public Vector2 GetPosition() { return mPosition; }
