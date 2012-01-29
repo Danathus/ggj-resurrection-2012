@@ -49,6 +49,7 @@ namespace ggj_resurrection
 
             mAwake = false;
             mMaxFadeCountdown = 3f;
+            mFadeCountdown = 0;
 
             mMonsterDeathVolume = .4f;
         }
@@ -77,7 +78,7 @@ namespace ggj_resurrection
                         go.Update(gameTime);
                     }
 
-                    if (go.mHealth < 0)
+                    if (go.mHealth < 0 && !(go is Player))
                     {
 
                         this.RemoveGameObject(go);

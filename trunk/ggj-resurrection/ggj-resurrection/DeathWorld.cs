@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace ggj_resurrection
 {
-    class DeathWorld : GameWorld
+    public class DeathWorld : GameWorld
     {
         float mCountdownTimer; // counts down until the end of the game
 

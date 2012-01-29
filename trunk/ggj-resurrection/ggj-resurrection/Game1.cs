@@ -159,7 +159,14 @@ namespace ggj_resurrection
                 mDesiredWorld = mLifeWorld;
             }
 
-            if (mCurrentWorld != mDesiredWorld && mLifeWorld.ReadyToTransition() && mDeathWorld.ReadyToTransition())
+            // should we die?
+            if (mCurrentWorld == mLifeWorld && mAlivePlayer.mHealth <= 0)
+            {
+                // player should die...
+                mDesiredWorld = mDeathWorld;
+            }
+
+            if (mCurrentWorld != mDesiredWorld )//&& mCurrentWorld.ReadyToTransition() && mDesiredWorld.ReadyToTransition())
             {
                 if (mDesiredWorld == mDeathWorld)
                 {

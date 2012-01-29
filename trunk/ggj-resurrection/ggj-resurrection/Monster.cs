@@ -19,7 +19,7 @@ namespace ggj_resurrection
     {
 
         float mMaxSpeed = 0.05f;
-        float mHealth;
+        //float mHealth;
         Color tempColor = Color.White;
         bool isHit = false;
 

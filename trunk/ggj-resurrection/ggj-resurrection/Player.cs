@@ -79,7 +79,14 @@ namespace ggj_resurrection
                 //tempColor = Color.Red;
                 return false;
             }
-            else mPlayerDamageSnd.Play(mPlayerDamageVolume, 0, 0);
+            else
+            {
+                // kill the player
+                mPlayerDamageSnd.Play(mPlayerDamageVolume, 0, 0);
+
+                // decrease health
+                --mHealth;
+            }
             
             //tempColor = Color.Red;
             return true;
@@ -90,6 +97,9 @@ namespace ggj_resurrection
         {
             // copy position -> physics
             mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
+
+            // start up health! Hard-coded 3 for now...
+            mHealth = 3;
         }
 
         // this is called when that player "goes to sleep" on a world transition
