@@ -89,6 +89,12 @@ namespace ggj_resurrection
             //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
         }
 
+        public override void WakeUp()
+        {
+            base.WakeUp();
+            AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
+        }
+
         public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)
         {
             for (int i = dimension - 1; i >= 0; --i)

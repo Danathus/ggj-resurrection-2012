@@ -89,8 +89,9 @@ namespace ggj_resurrection
             mLifeWorld.loadTiles(this);
 
             mLifeWorld.AddGameObject(mAlivePlayer = new AlivePlayer(mLifeWorld.mPhysicsWorld, new Vector2(0, 0)));
+            mLifeWorld.mPlayer = mAlivePlayer;
             mDeathWorld.AddGameObject(mDeadPlayer = new DeadPlayer(mDeathWorld.mPhysicsWorld, new Vector2(0, 0)));
-            mLifeWorld.AddGameObject(new MonsterSpawner(mLifeWorld.mPhysicsWorld, new Vector2(0, 0), mAlivePlayer));
+            mDeathWorld.mPlayer = mDeadPlayer;
 
             mLifeTheme = Content.Load<SoundEffect>("Audio/LifeTheme");
             //We'll need to load the Death song here!
@@ -130,7 +131,7 @@ namespace ggj_resurrection
             if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.Q))
             {
-                if (mCurrentWorld != mDeathWorld)
+                if (mCurrentWorld != mDeathWorld && mLifeWorld.ReadyToTransition() && mDeathWorld.ReadyToTransition())
                 {
                     // start transition to death world
                     mCamera.mTargetRot = new Vector3(90f - 15f, 0f, 0f);
@@ -139,10 +140,7 @@ namespace ggj_resurrection
                     mLifeThemeSEI.Stop();
 
                     // turn off/on players as appropriate
-                    mAlivePlayer.Disable();
-                    mDeadPlayer.Enable();
                     mDeadPlayer.SetPosition(mAlivePlayer.GetPosition());
-                    mDeadPlayer.WakeUp();
 
                     // complete transition
                     mLifeWorld.GoToSleep();
@@ -152,16 +150,14 @@ namespace ggj_resurrection
             if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.W))
             {
-                if (mCurrentWorld != mLifeWorld)
+                if (mCurrentWorld != mLifeWorld && mLifeWorld.ReadyToTransition() && mDeathWorld.ReadyToTransition())
                 {
                     mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
                     mCurrentWorld = mLifeWorld;
                     mLifeThemeSEI.Play();
+
                     // turn off/on players as appropriate
-                    mAlivePlayer.Enable();
-                    mDeadPlayer.Disable();
                     mAlivePlayer.SetPosition(mDeadPlayer.GetPosition());
-                    mAlivePlayer.WakeUp();
 
                     // complete transition
                     mDeathWorld.GoToSleep();

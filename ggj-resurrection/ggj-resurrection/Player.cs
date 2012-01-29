@@ -91,6 +91,12 @@ namespace ggj_resurrection
             // copy position -> physics
             mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
         }
+
+        // this is called when that player "goes to sleep" on a world transition
+        public void GoToSleep()
+        {
+            // nothing yet
+        }
         
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -211,13 +217,12 @@ namespace ggj_resurrection
             mSpriteAnimPlayer.Update(gameTime);
             if (!mSpriteAnimPlayer.IsPlaying())
             {
-
-                t += gameTime.ElapsedGameTime.Milliseconds;
-                if (t > 150)
-                {
+                //t += gameTime.ElapsedGameTime.Milliseconds;
+                //if (t > 150)
+                //{
                     mSpriteAnimPlayer.Play();
-                    t = 0;
-                }
+                //    t = 0;
+                //}
             }
         }
 
@@ -333,9 +338,6 @@ namespace ggj_resurrection
 
             mSwingBatSnd = myGame.Content.Load<SoundEffect>("Audio/batSwing");
             mPlayerDamageSnd = myGame.Content.Load<SoundEffect>("Audio/playerDamage");
-
-
-        
         } // end LoadData
     } // end Player
 } // namespace ggj_resurrection
