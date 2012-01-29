@@ -17,9 +17,11 @@ namespace ggj_resurrection
 {
     class Monster : GameObject
     {
+
         float mMaxSpeed = 5;
         float mHealth;
         Color tempColor = Color.White;
+        bool isHit = false;
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
         private DIRECTION currentDirection;
@@ -33,11 +35,11 @@ namespace ggj_resurrection
             timeElapsed = 0;
             mRadius = 1;
             
-            mBody = BodyFactory.CreateCircle(mPhysicsWorld, 1f, 1f);
+            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, .0125f);
             mBody.BodyType = BodyType.Dynamic;
-            mFixture = FixtureFactory.AttachCircle(mRadius, 1f, mBody);
+            mFixture = FixtureFactory.AttachRectangle(1f, 1f, .0125f, new Vector2(0,0), mBody);
             mFixture.CollisionCategories = Category.Cat3;
-           mBody.OnCollision += monsterOnCollision;
+            mBody.OnCollision += monsterOnCollision;
            
             //Correct for meters vs pixels
             mBody.Position = mPosition;
@@ -48,17 +50,42 @@ namespace ggj_resurrection
             mPlayer = player;
 
             // hit points
-            mHealth = 1;
+            mHealth = 3;
         }
 
-        
+        Vector2 getKnockBack(Fixture a, Fixture b)
+        {
+            Vector2 apos, bpos;
+            apos = a.Body.Position;
+            apos.Y *= -1;
+            bpos = b.Body.Position;
+            bpos.Y *= -1;
+
+            Vector2 difference = bpos - apos;
+            difference.Normalize();
+            difference *= 5f;
+
+            return difference;
+
+        }
+
         public virtual bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
             tempColor = Color.Red;
 
-            if (one.UserData == "Sword" || two.UserData == "Sword")
+            if ((String)two.Body.UserData == "Sword")
             {
-                --mHealth;
+               // --mHealth;
+                //mFixture.Body.ApplyLinearImpulse(new Vector2(5f, 5f));
+                Vector2 forceOfHit = getKnockBack(one, two);
+                one.Body.LinearDamping = .01f;
+                one.Body.ResetDynamics();
+                one.Body.LinearVelocity = Vector2.Zero;
+                mBody.ApplyLinearImpulse(forceOfHit);
+               two.Body.ResetDynamics();
+
+                isHit = true;
+
             }
 
             return true;
@@ -74,6 +101,9 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
+            
+            mFixture.Body.ResetDynamics();
+            mFixture.Body.Rotation = 0f;
             timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (timeElapsed > 1000)
@@ -107,8 +137,8 @@ namespace ggj_resurrection
                     break;
             }
 
-            //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
-            mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
+            mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed * .03f);
+            //mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
 
             if (mHealth <= 0)
             {

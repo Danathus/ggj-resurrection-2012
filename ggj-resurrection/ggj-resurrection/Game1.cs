@@ -148,6 +148,8 @@ namespace ggj_resurrection
                 RasterizerState.CullNone,   // rasterizer state
                 mRenderingEffect,           // effect (formerly null)
                 Matrix.Identity);           // transform matrix
+ 
+            //mSpriteBatch.Begin();
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
 

@@ -39,7 +39,7 @@ namespace ggj_resurrection
             mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, 1f);
             mBody.BodyType = BodyType.Dynamic;
 
-            mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(.5f, .5f), mBody);
+            mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(0f, 0f), mBody);
             mFixture.Body.CollisionCategories = Category.Cat1;
             mFixture.CollisionCategories = Category.Cat1;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
@@ -75,6 +75,7 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
+            mFixture.Body.ResetDynamics();
             tempColor = Color.YellowGreen;
             mPrevKeyboardState = mCurrKeyboardState;
             mCurrKeyboardState = Keyboard.GetState();
@@ -144,11 +145,11 @@ namespace ggj_resurrection
             {
                 if (bats.Count <= 4)
                 {
-                    Vector2 offset = mPosition + (1 * rightStick);
+                    Vector2 offset = mFixture.Body.Position + (rightStick);
                     SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset);
                     newSwordSlash.setRotation(rightStick);
                     newSwordSlash.SetPosition(offset);
-                    newSwordSlash.SetVelocity(mBody.LinearVelocity);
+                    newSwordSlash.SetVelocity(mFixture.Body.LinearVelocity);
                     bats.Add(newSwordSlash);
                     GetGameWorld().AddGameObject(newSwordSlash);
                 }
@@ -158,6 +159,8 @@ namespace ggj_resurrection
                     SwordSlash apply = bats.ElementAt(0);
                     apply.setAngularVelocity(bats.ElementAt(2), bats.ElementAt(1));
                     bats.RemoveAt(0);
+
+
                    /* bats.ForEach(delegate(SwordSlash curr)
                     {
                         if (curr.isTimedOut())
