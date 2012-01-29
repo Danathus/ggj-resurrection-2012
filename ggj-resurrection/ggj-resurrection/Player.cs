@@ -92,6 +92,12 @@ namespace ggj_resurrection
                 // decrease health
                 --mHealth;
                 mPlayerDamageSnd.Play(mPlayerDamageVolume, -.3f, 0);
+                if (this is AlivePlayer)
+                {
+                    Particle ouch = new Particle(mOuch, mFixture.Body.Position + (new Vector2(30, 30) * Camera.kPixelsToUnits), 0.5f);
+                    ouch.mScale = new Vector2(1f, -1f);
+                    GetGameWorld().AddGameObject(ouch);
+                }
             }
             else if (two.UserData.ToString() == "Soul" || two.Body.UserData.ToString() == "Soul")
             {

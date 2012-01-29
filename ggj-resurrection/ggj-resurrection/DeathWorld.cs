@@ -14,12 +14,15 @@ namespace ggj_resurrection
 {
     public class DeathWorld : GameWorld
     {
+        
+
         float mCountdownTimer; // counts down until the end of the game
 
         int[,] graveyardMap;
         Random deathRand = new Random();
         PuzzleGenerator graveyardMaker;
         List<int[,]> puzzleChunks;
+        public static Texture2D mClock, mClockHand;
 
         enum DeathWorldStates
         {
@@ -522,7 +525,9 @@ namespace ggj_resurrection
                 //
                 if (mState == DeathWorldStates.DWS_MAIN)
                 {
+                   
                     spriteBatch.DrawString(drawFont, "" + (int)mCountdownTimer, new Vector2(mCamera.mScreenDimensions.X - 64, 0), Color.DarkGreen);
+                    //spriteBatch.Draw(mClock, new Vector2(mCamera.mScreenDimensions.X / 2, mCamera.mScreenDimensions.Y / 2), null, Color.White, 0f, new Vector2(mClock.Width/2, mClock.Height/2), 1f, SpriteEffects.None, 0);
                 }
                 spriteBatch.End();
             }

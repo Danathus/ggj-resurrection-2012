@@ -19,6 +19,7 @@ namespace ggj_resurrection
         private int dimension;
         private Texture2D tile1, tile2, tile3, heart;
         
+        
 
         public LifeWorld(Camera camera, String file, Game game)
             : base(camera)
