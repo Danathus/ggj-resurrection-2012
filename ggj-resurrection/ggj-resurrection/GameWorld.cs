@@ -128,6 +128,7 @@ namespace ggj_resurrection
                 ? new Vector3(1f, 1f, 1f)
                 : new Vector3(0.5f, 0.5f, 0.5f);
             mRenderingEffect.Alpha = 1f;
+            mRenderingEffect.World = Matrix.Identity;
 
             // custom drawing code here
             spriteBatch.Begin(
@@ -149,6 +150,14 @@ namespace ggj_resurrection
             mRenderingEffect.Alpha = mAwake
                 ? 1f
                 : mFadeCountdown / mMaxFadeCountdown;
+
+            if (!mAwake)
+            {
+                mRenderingEffect.World = Matrix.CreateScale(
+                    2f - mFadeCountdown / mMaxFadeCountdown,
+                    2f - mFadeCountdown / mMaxFadeCountdown,
+                    1f);
+            }
 
             spriteBatch.Begin(
                 SpriteSortMode.Immediate,   // sprite sort mode (which is better, immediate or deffered?)
