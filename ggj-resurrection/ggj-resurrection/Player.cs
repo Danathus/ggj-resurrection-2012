@@ -18,8 +18,10 @@ namespace ggj_resurrection
     public class Player : GameObject
     {
         // static data
-        static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet, mRunningSidewaysSpriteSheet;
-        static SpriteAnimation mBlinkingAnimation, mRunningSouthAnimation, mRunningEastAnimation, mRunningWestAnimation;
+        static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet, mRunningSidewaysSpriteSheet, mRunningNorthSpriteSheet;
+        static SpriteAnimation mBlinkingAnimation,
+            mRunningNorthAnimation, mRunningSouthAnimation,
+            mRunningEastAnimation,  mRunningWestAnimation;
 
         // member data
         SpriteAnimationPlayer mSpriteAnimPlayer;
@@ -69,8 +71,9 @@ namespace ggj_resurrection
         
         public override void Draw(SpriteBatch spriteBatch)
         {
+            Vector2 spriteOffset = new Vector2(0, 0);
             mSpriteAnimPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(
-                mPosition, 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+                mPosition + spriteOffset, 0, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
         }
 
         public override void Update(GameTime gameTime)
@@ -100,7 +103,11 @@ namespace ggj_resurrection
 
             // choose animation
             SpriteAnimation desiredAnim = mBlinkingAnimation; // the default
-            if (Vector2.Dot(direction, new Vector2(0, -1)) > 0.5f)
+            if (Vector2.Dot(direction, new Vector2(0, +1)) > 0.5f)
+            {
+                desiredAnim = mRunningNorthAnimation;
+            }
+            else if (Vector2.Dot(direction, new Vector2(0, -1)) > 0.5f)
             {
                 desiredAnim = mRunningSouthAnimation;
             }
@@ -224,18 +231,23 @@ namespace ggj_resurrection
 
             mRunningSouthSpriteSheet = new SpriteSheet();
             mRunningSouthSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyRunningFoward5fps"));
+            mRunningNorthSpriteSheet = new SpriteSheet();
+            mRunningNorthSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyRunningBackward5fps"));
             mRunningSidewaysSpriteSheet = new SpriteSheet();
             mRunningSidewaysSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyRunningSideways5fps"));
             mRunningSouthAnimation = new SpriteAnimation();
-            mRunningEastAnimation = new SpriteAnimation();
-            mRunningWestAnimation = new SpriteAnimation();
+            mRunningEastAnimation  = new SpriteAnimation();
+            mRunningWestAnimation  = new SpriteAnimation();
+            mRunningNorthAnimation = new SpriteAnimation();
             for (int i = 0; i < 4; ++i)
             {
                 mRunningSouthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
                 mRunningSidewaysSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
+                mRunningNorthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
                 mRunningSouthAnimation.AddFrame(mRunningSouthSpriteSheet, i, 0.1f);
                 mRunningEastAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f, true); // flip this one
                 mRunningWestAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f);
+                mRunningNorthAnimation.AddFrame(mRunningNorthSpriteSheet, i, 0.1f);
             }
 
             //boyRunningSideways5fps.png
