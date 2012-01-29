@@ -16,8 +16,12 @@ using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
+   
+
     class DeadPlayer : Player
     {
+       
+
         public DeadPlayer(World world, Vector2 initPos)   //this is never called. We need it for physics object
             : base(world, initPos)
         {

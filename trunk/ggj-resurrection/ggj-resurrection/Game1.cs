@@ -46,6 +46,8 @@ namespace ggj_resurrection
         GameWorld  mCurrentWorld; // this is to point to whichever one we're in
         public static GameWorld mDesiredWorld;
 
+        public static Texture2D mClock, mClockhand;
+
         public Game1()
         {
             mGraphics = new GraphicsDeviceManager(this);
@@ -123,6 +125,9 @@ namespace ggj_resurrection
             mLifeThemeSEI.IsLooped = true;
             mLifeThemeSEI.Volume = 1;
             mLifeThemeSEI.Play();
+
+            mClock = Content.Load<Texture2D>("Clock");
+            mClockhand = Content.Load<Texture2D>("ClockHand");
 
             mLifeWorld.WakeUp();
         }
