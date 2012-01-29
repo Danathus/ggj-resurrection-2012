@@ -457,12 +457,41 @@ namespace ggj_resurrection
         public virtual void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             mCountdownTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (mCountdownTimer < 0)
+            switch (mState)
             {
-                // todo: switch back
-                Game1.mDesiredWorld = Game1.mLifeWorld;
+            case DeathWorldStates.DWS_MAIN:
+                if (mCountdownTimer < 0)
+                {
+                    // go to coalesce phase
+                    mState = DeathWorldStates.DWS_WRAPUP;
+                    // three seconds should be safe, right?
+                    mCountdownTimer = 3.0f;
+                    //mPlayer.Disable();
+                    mPlayer.mControllable = false;
+                }
+                break;
+            case DeathWorldStates.DWS_WRAPUP:
+                // collect all the souls
+                foreach (GameObject go in mGameObjects)
+                {
+                    if (go is Soul)
+                    {
+                        float k = 0.99f;
+                        float weight = (float)Math.Pow(1f - k, (float)gameTime.ElapsedGameTime.TotalSeconds); //0.9f;
+                        go.SetPosition(weight * go.GetPosition() + (1f - weight) * mPlayer.GetPosition());
+                    }
+                }
+                // when you're done, transition out
+                if (mCountdownTimer < 0)
+                {
+                    // go to coalesce phase
+                    Game1.mDesiredWorld = Game1.mLifeWorld;
+                }
+                break;
             }
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -44,24 +44,29 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
-            //base.Update(gameTime);
-            UpdateInput();
-
-            Vector2 direction = DetermineDesiredDirection();
+            Vector2 direction = new Vector2(0, 0);
 
             mFixture.Body.ResetDynamics();
             mFixture.Body.LinearVelocity = new Vector2(0, 0);
             mFixture.Body.Rotation = 0;
 
-            if (direction.Length() > .065f)
-            {
-                mFixture.Body.LinearVelocity = (direction * mMaxSpeed);
-            }
+            UpdateInput();
 
-            if (direction.Length() > 0)
+            //base.Update(gameTime);
+            if (mControllable)
             {
-                direction.Normalize();
-                mDirection = direction;
+                direction = DetermineDesiredDirection();
+
+                if (direction.Length() > .065f)
+                {
+                    mFixture.Body.LinearVelocity = (direction * mMaxSpeed);
+                }
+
+                if (direction.Length() > 0)
+                {
+                    direction.Normalize();
+                    mDirection = direction;
+                }
             }
 
             mPosition = new Vector2(mFixture.Body.Position.X, mFixture.Body.Position.Y); // converts Body.Position (meters) into pixels

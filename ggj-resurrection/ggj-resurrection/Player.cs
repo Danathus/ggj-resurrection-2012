@@ -25,6 +25,8 @@ namespace ggj_resurrection
             mRunningEastAnimation,  mRunningWestAnimation;
         protected static Texture2D mHackSmoke;
 
+        public bool mControllable;
+
         int t = 0;
 
         //Boolean isDead;
@@ -107,12 +109,15 @@ namespace ggj_resurrection
 
             // start up health! Hard-coded 3 for now...
             mHealth = 3;
+
+            mControllable = true;
         }
 
         // this is called when that player "goes to sleep" on a world transition
         public void GoToSleep()
         {
             // nothing yet
+            mControllable = false;
         }
         
         public override void Draw(SpriteBatch spriteBatch)
@@ -127,39 +132,42 @@ namespace ggj_resurrection
         {
             //tempColor = Color.YellowGreen;
 
-            UpdateInput();
-
-            Vector2 direction = DetermineDesiredDirection();
-
             mFixture.Body.ResetDynamics();
             mFixture.Body.LinearVelocity = new Vector2(0, 0);
             mFixture.Body.Rotation = 0;
 
-            if (direction.Length() > .065f)
+            UpdateInput();
+
+            Vector2 direction = new Vector2(0, 0);
+            if (mControllable)
             {
-                mFixture.Body.LinearVelocity = (direction * mMaxSpeed);
-               // Fart();
+                direction = DetermineDesiredDirection();
 
+                if (direction.Length() > .065f)
+                {
+                    mFixture.Body.LinearVelocity = (direction * mMaxSpeed);
+                    // Fart();
+                }
+
+                if (direction.Length() > 0)
+                {
+                    direction.Normalize();
+                    mDirection = direction;
+                }
+
+                UpdateBat();
+
+                if ((mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X)) ||
+                 (mCurrControllerState.Buttons.X == ButtonState.Pressed && mPrevControllerState.Buttons.X != ButtonState.Pressed)
+                )
+                {
+                    Fart();
+                }
             }
-
-            if (direction.Length() > 0)
-            {
-                direction.Normalize();
-                mDirection = direction;
-            }
-
-            UpdateBat();
 
             mPosition = new Vector2(mFixture.Body.Position.X, mFixture.Body.Position.Y); // converts Body.Position (meters) into pixels
 
             UpdateAnimation(gameTime, direction);
-
-            if ( (mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X)) ||
-                 (mCurrControllerState.Buttons.X == ButtonState.Pressed && mPrevControllerState.Buttons.X != ButtonState.Pressed)
-                )
-            {
-                Fart();
-            }
         }
 
         protected void UpdateInput()
