@@ -17,7 +17,6 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
-        float mMaxSpeed = .03f;
         float mMaxSpeed = 10;
         Color tempColor = Color.YellowGreen;
         List<SwordSlash> bats = new List<SwordSlash>();
@@ -33,10 +32,10 @@ namespace ggj_resurrection
             mRadius = 1f;
 
 
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 64f / 64f, 64f / 64f, 1f);
+            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, 1f);
             mBody.BodyType = BodyType.Dynamic;
 
-            mFixture = FixtureFactory.AttachRectangle(64f / 64f, 64f / 64f, 1f, new Vector2(.5f, .5f), mBody);
+            mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(.5f, .5f), mBody);
             mFixture.Body.CollisionCategories = Category.Cat1;
             mFixture.CollisionCategories = Category.Cat1;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
@@ -138,11 +137,6 @@ namespace ggj_resurrection
 
             if (mCurrControllerState.IsConnected && rightStick.Length() > .25)
             {
-                SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, mPosition);
-          
-                newSwordSlash.SetPosition(mPosition + (100 * mDirection));
-                newSwordSlash.SetVelocity(mBody.LinearVelocity);
-                GetGameWorld().AddGameObject(newSwordSlash);
                 if (bats.Count <= 4)
                 {
                     Vector2 offset = mPosition + (50 * rightStick);
@@ -176,7 +170,7 @@ namespace ggj_resurrection
 
             const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mPosition = mBody.Position * 64f;       //converts Body.Position (meters) into pixels
+            mPosition = mBody.Position;       //converts Body.Position (meters) into pixels
         }
 
         public static void LoadData(Game myGame)
