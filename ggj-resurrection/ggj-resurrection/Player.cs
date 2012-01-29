@@ -36,6 +36,9 @@ namespace ggj_resurrection
 
         static SoundEffect mSwingBatSnd;
         static SoundEffectInstance mSwingBatSEI;
+
+        static SoundEffect mPlayerDamageSnd;
+        static SoundEffectInstance mPlayerDamageSEI;
         
 
         public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
@@ -73,6 +76,7 @@ namespace ggj_resurrection
                 tempColor = Color.Red;
                 return false;
             }
+            else mPlayerDamageSnd.Play(.2f, 0, 0);
             
             tempColor = Color.Red;
             return true;
@@ -283,6 +287,11 @@ namespace ggj_resurrection
 
             mSwingBatSnd = myGame.Content.Load<SoundEffect>("Audio/batSwing");
             mSwingBatSEI = mSwingBatSnd.CreateInstance();
+
+            mPlayerDamageSnd = myGame.Content.Load<SoundEffect>("Audio/playerDamage");
+            mPlayerDamageSEI = mPlayerDamageSnd.CreateInstance();
+
+
         
         } // end LoadData
     } // end Player
