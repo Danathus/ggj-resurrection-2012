@@ -18,13 +18,10 @@ namespace ggj_resurrection
     class EvilCow : Monster
     {
         //static private Texture2D mTexture;
+        static SpriteSheet lightningCowSpriteSheet, mPainSheet;
+        static SpriteAnimation lightningCowAnimation, mPainAnimation;
 
-        
-
-        static SpriteSheet lightningCowSpriteSheet;
-        static SpriteAnimation lightningCowAnimation;
-
-        SpriteAnimationPlayer lightningPlayer;
+        SpriteAnimationPlayer mAnimationPlayer;
 
         Color tempColor = Color.White;
 
@@ -47,8 +44,8 @@ namespace ggj_resurrection
         {
             this.setHealth(1200);
             mPlayer = player;
-            lightningPlayer = new SpriteAnimationPlayer();
-            lightningPlayer.SetAnimationToPlay(lightningCowAnimation);
+            mAnimationPlayer = new SpriteAnimationPlayer();
+            mAnimationPlayer.SetAnimationToPlay(lightningCowAnimation);
 
             mFixture = FixtureFactory.AttachRectangle(90f * Camera.kPixelsToUnits, 90f * Camera.kPixelsToUnits, 1f, new Vector2(0, 0), new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
@@ -90,7 +87,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 spriteOffset = -new Vector2(50, -50) * Camera.kPixelsToUnits;
-            lightningPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 1* new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+            mAnimationPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
            // spriteBatch.Draw(mTexture, mFixture.Body.Position, null, tempColor, 0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
         }
@@ -186,6 +183,8 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
+            HandleStun(gameTime, mAnimationPlayer, lightningCowAnimation, mPainAnimation);
+
             //mHealth -= 10;
             if (mHealth <= 0)
             {
@@ -253,12 +252,12 @@ namespace ggj_resurrection
 
             mFixture.Body.ApplyLinearImpulse(multiply * cowMaxSpeed * .03f);
 
-            if (!lightningPlayer.IsPlaying())
+            if (!mAnimationPlayer.IsPlaying())
             {
-                lightningPlayer.Play();
+                mAnimationPlayer.Play();
             }
 
-            lightningPlayer.Update(gameTime);
+            mAnimationPlayer.Update(gameTime);
 
            base.Update(gameTime);
 
@@ -311,14 +310,19 @@ namespace ggj_resurrection
         {
             lightningCowSpriteSheet = new SpriteSheet();
             lightningCowSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("Enemies/CowRun"));//("Enemies/LightningCow5fps"));
+            mPainSheet = new SpriteSheet();
+            mPainSheet.SetTexture(myGame.Content.Load<Texture2D>("enemySprites/lightningCowHurtDeath"));//("Enemies/LightningCow5fps"));
 
             lightningCowAnimation = new SpriteAnimation();
+            mPainAnimation = new SpriteAnimation();
 
             for (int i = 0; i < 4; i++)
             {
                 lightningCowSpriteSheet.AddSprite(new Vector2(i * 100, 0), new Vector2(100, 100));
                 lightningCowAnimation.AddFrame(lightningCowSpriteSheet, i, .1f);
             }
+            mPainSheet.AddSprite(new Vector2(0, 0), new Vector2(100, 100));
+            mPainAnimation.AddFrame(mPainSheet, 0, 2f);
 
             mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
             mMooSnd = myGame.Content.Load<SoundEffect>("Audio/moo");
