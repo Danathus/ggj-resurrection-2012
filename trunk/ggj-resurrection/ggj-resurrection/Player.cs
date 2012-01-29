@@ -11,15 +11,15 @@ using Microsoft.Xna.Framework.Media;
 
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
-using FarseerPhysics.Common;    
+using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
     public class Player : GameObject
     {
         // static data
-        static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet;
-        static SpriteAnimation mBlinkingAnimation, mRunningSouthAnimation;
+        static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet, mRunningSidewaysSpriteSheet;
+        static SpriteAnimation mBlinkingAnimation, mRunningSouthAnimation, mRunningEastAnimation, mRunningWestAnimation;
 
         // member data
         SpriteAnimationPlayer mSpriteAnimPlayer;
@@ -103,6 +103,14 @@ namespace ggj_resurrection
             if (Vector2.Dot(direction, new Vector2(0, -1)) > 0.5f)
             {
                 desiredAnim = mRunningSouthAnimation;
+            }
+            else if (Vector2.Dot(direction, new Vector2(-1, 0)) > 0.5f)
+            {
+                desiredAnim = mRunningWestAnimation;
+            }
+            else if (Vector2.Dot(direction, new Vector2(+1, 0)) > 0.5f)
+            {
+                desiredAnim = mRunningEastAnimation;
             }
 
             // now apply the animation
@@ -210,12 +218,19 @@ namespace ggj_resurrection
             mBlinkingAnimation.AddFrame(mBlinkingSpriteSheet, 0, 0.1f);
 
             mRunningSouthSpriteSheet = new SpriteSheet();
-            mRunningSouthAnimation = new SpriteAnimation();
             mRunningSouthSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyRunningFoward5fps"));
+            mRunningSidewaysSpriteSheet = new SpriteSheet();
+            mRunningSidewaysSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyRunningSideways5fps"));
+            mRunningSouthAnimation = new SpriteAnimation();
+            mRunningEastAnimation = new SpriteAnimation();
+            mRunningWestAnimation = new SpriteAnimation();
             for (int i = 0; i < 4; ++i)
             {
-                mRunningSouthSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
+                mRunningSouthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
+                mRunningSidewaysSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
                 mRunningSouthAnimation.AddFrame(mRunningSouthSpriteSheet, i, 0.1f);
+                mRunningEastAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f, true); // flip this one
+                mRunningWestAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f);
             }
 
             //boyRunningSideways5fps.png

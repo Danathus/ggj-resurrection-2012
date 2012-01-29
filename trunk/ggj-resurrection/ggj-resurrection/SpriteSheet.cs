@@ -55,6 +55,16 @@ namespace ggj_resurrection
                 mScale    = scale;
             }
 
+            public SpriteRenderingParameters(SpriteRenderingParameters copyMe)
+            {
+                mPosition = copyMe.mPosition;
+                mRotation = copyMe.mRotation;
+                mColor    = copyMe.mColor;
+                mScale    = copyMe.mScale;
+            }
+
+            public void SetScale(Vector2 scale) { mScale = scale; }
+
             public Vector2 GetPosition() { return mPosition; }
             public float   GetRotation() { return mRotation; }
             public Color   GetColor()    { return mColor; }

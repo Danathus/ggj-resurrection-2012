@@ -19,17 +19,20 @@ namespace ggj_resurrection
             SpriteSheet mSpriteSheet; // reference to a sprite sheet
             int         mSpriteIdx;
             float       mDuration; // in seconds
+            bool        mFlipped;
 
-            public Frame(SpriteSheet spriteSheet, int spriteIdx, float duration)
+            public Frame(SpriteSheet spriteSheet, int spriteIdx, float duration, bool flipped)
             {
                 mSpriteSheet = spriteSheet;
                 mSpriteIdx   = spriteIdx;
                 mDuration    = duration;
+                mFlipped     = flipped;
             }
 
             public SpriteSheet GetSpriteSheet() { return mSpriteSheet; }
             public int GetSpriteIdx() { return mSpriteIdx; }
             public float GetDuration() { return mDuration; }
+            public bool IsFlipped() { return mFlipped; }
         }
 
         Frame[] mFrames;
@@ -41,7 +44,7 @@ namespace ggj_resurrection
             mNextFrameToAdd = 0;
         }
 
-        public int AddFrame(SpriteSheet spriteSheet, int spriteIdx, float durationInSeconds)
+        public int AddFrame(SpriteSheet spriteSheet, int spriteIdx, float durationInSeconds, bool flipped = false)
         {
             if (mNextFrameToAdd >= mFrames.Length)
             {
@@ -49,7 +52,7 @@ namespace ggj_resurrection
                 return -1;
             }
 
-            mFrames[mNextFrameToAdd] = new Frame(spriteSheet, spriteIdx, durationInSeconds);
+            mFrames[mNextFrameToAdd] = new Frame(spriteSheet, spriteIdx, durationInSeconds, flipped);
 
             // move up for next time, return current value
             return mNextFrameToAdd++;
@@ -61,6 +64,11 @@ namespace ggj_resurrection
         public void Draw(SpriteBatch spriteBatch, int frameIdx, SpriteSheet.SpriteRenderingParameters parameters)
         {
             Frame currFrame = mFrames[frameIdx];
+            if (currFrame.IsFlipped())
+            {
+                parameters = new SpriteSheet.SpriteRenderingParameters(parameters);
+                parameters.SetScale(parameters.GetScale() * new Vector2(-1, 1));
+            }
             currFrame.GetSpriteSheet().Draw(
                 spriteBatch, currFrame.GetSpriteIdx(), parameters);
         }
