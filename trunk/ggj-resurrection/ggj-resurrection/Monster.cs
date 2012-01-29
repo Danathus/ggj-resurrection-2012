@@ -42,7 +42,7 @@ namespace ggj_resurrection
             mBody.OnCollision += monsterOnCollision;
            
             //Correct for meters vs pixels
-            mBody.Position = mPosition;
+            mBody.Position = new Vector2(mPosition.X, mPosition.Y);
             mBody.UserData = "Monster";
             setRandDirection();
 

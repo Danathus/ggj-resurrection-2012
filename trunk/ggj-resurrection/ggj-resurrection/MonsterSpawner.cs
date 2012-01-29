@@ -65,7 +65,7 @@ namespace ggj_resurrection
         private void Spawn()
         {
             //Spawn monster in a random location -- hopefully in bounds
-            Monster newMonster = new Snake(mPhysicsWorld, new Vector2( mRand.Next(0, mWidth), mRand.Next(0, mHeight) ), mPlayer );
+            Monster newMonster = new Snake(mPhysicsWorld, new Vector2(mRand.Next(0, mWidth), mRand.Next(0, mHeight)), mPlayer);
             mMonsters.Add(newMonster);
             mGameWorld.AddGameObject(newMonster);
 

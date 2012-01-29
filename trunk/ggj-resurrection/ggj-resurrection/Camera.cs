@@ -25,7 +25,7 @@ namespace ggj_resurrection
         public const float kPixelsToUnits = 1 / 64f; // k for constant!
 
         // positional data ("raw" values)
-        Vector3 mRot;
+        public Vector3 mRot, mTargetRot;
         float mZoom;
 
         // matrices ("cooked" values)
@@ -37,13 +37,9 @@ namespace ggj_resurrection
         {
             mScreenDimensions = screenDimensions;
             //
-            mRot = new Vector3(0, 0, 0);
-            mZoom =
-                /*
-                0.5f;
-                 /*/
-                1.0f;
-            //*/
+            mRot       = new Vector3(0, 0, 0);
+            mTargetRot = new Vector3(0, 0, 0);
+            mZoom      = 1.0f;
             //
             // multiply by kPixelsToUnits to make 1.0 in space equal the appropriate number of pixels
             mProjectionMatrix = Matrix.CreateOrthographicOffCenter(
@@ -59,11 +55,21 @@ namespace ggj_resurrection
             //mRot.Z += 10.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             //mRot.X += 10.0f * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            // framerate-independent ease-in
+            float k = 0.99f;
+            float weight = (float)Math.Pow(1f - k, (float)gameTime.ElapsedGameTime.TotalSeconds); //0.9f;
+            mRot = weight * mRot + (1f - weight) * mTargetRot;
+            //weight = 0.99
+            //camera_position = weight*camera_position + (1-weight)*target_position
+            //
+            //weight = (1-k) ^ dt
+            //
+
             // generate view matrix from positional data
             {
                 Matrix preRotTranslationMatrix =
-                    Matrix.Identity;
-                //Matrix.CreateTranslation(
+                    //Matrix.Identity;
+                    Matrix.CreateTranslation(new Vector3(mPosition.X, mPosition.Y, 0));
                 //-mScreenDimensions.X / 2,
                 //-mScreenDimensions.Y / 2, 0
                 //);

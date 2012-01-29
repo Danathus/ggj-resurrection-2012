@@ -122,6 +122,15 @@ namespace ggj_resurrection
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
 
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+            {
+                mCamera.mTargetRot = new Vector3(90f-15f, 0f, 0f);
+            }
+            if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed)
+            {
+                mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
+            }
+
             mPhysicsWorld.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
@@ -139,7 +148,7 @@ namespace ggj_resurrection
             mRenderingEffect.View       = mCamera.mViewMatrix;
             mRenderingEffect.Projection = mCamera.mProjectionMatrix;
             //
-            mRenderingEffect.TextureEnabled = true;
+            mRenderingEffect.TextureEnabled     = true;
             mRenderingEffect.VertexColorEnabled = true;
 
             // custom drawing code here
@@ -151,8 +160,7 @@ namespace ggj_resurrection
                 RasterizerState.CullNone,   // rasterizer state
                 mRenderingEffect,           // effect (formerly null)
                 Matrix.Identity);           // transform matrix
- 
-            //mSpriteBatch.Begin();
+
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
 

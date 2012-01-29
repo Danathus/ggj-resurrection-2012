@@ -18,12 +18,10 @@ namespace ggj_resurrection
         private int[,] terrainMap;
         private int dimension;
         private Texture2D tile1, tile2, tile3, tile4, tile5;
-        
 
         public LifeWorld(String file, Game game)
             : base()
         {
-
            // try
             //{
                 //StreamReader read = new StreamReader(file);
@@ -56,7 +54,6 @@ namespace ggj_resurrection
                         {
                             terrainMap[count, i] = (chars[i] - 48);
                         }
-
                     }
 
                     line = read.ReadLine();
@@ -64,7 +61,6 @@ namespace ggj_resurrection
                 }
 
                 read.Close();
-
            // }
 
           /*  catch (FileNotFoundException e)
@@ -77,10 +73,7 @@ namespace ggj_resurrection
             {
                 Console.WriteLine(e.Message);
             }*/
-
-
-           
-        }
+        } // LifeWorld
 
         public void loadTiles(Game game)
         {
@@ -91,34 +84,36 @@ namespace ggj_resurrection
 
         public void Draw(SpriteBatch mSpriteBatch)
         {
-
             for (int i = dimension - 1; i >= 0; --i)
             {
                 for (int j = dimension - 1; j >= 0 ; --j)
                 {
                     int temp = terrainMap[i, j];
-                    
+
+                    Texture2D tileToDraw = null;
                     switch (temp)
                     {
-                        case 1:
-                            mSpriteBatch.Draw(tile1, new Vector2((50f * j) -400, (50 * i) - 460) * Camera.kPixelsToUnits, null, Color.White, 0f, new Vector2(0, 0), Camera.kPixelsToUnits, SpriteEffects.FlipVertically, 1f);
-                            break;
-                        case 2:
-                            mSpriteBatch.Draw(tile2, new Vector2((50 * j) - 400, (50 * i) - 460) * Camera.kPixelsToUnits, null, Color.White, 0f, new Vector2(0, 0), Camera.kPixelsToUnits, SpriteEffects.FlipVertically, 1f);
-                            break;
-                        case 3:
-                            mSpriteBatch.Draw(tile3, new Vector2((50 * j) - 400, (50 * i) - 460) * Camera.kPixelsToUnits, null, Color.White, 0f, new Vector2(0, 0), Camera.kPixelsToUnits, SpriteEffects.FlipVertically, 1f);
-                            break;
+                    case 1: tileToDraw = tile1; break;
+                    case 2: tileToDraw = tile2; break;
+                    case 3: tileToDraw = tile3; break;
+                    }
+                    if (tileToDraw != null)
+                    {
+                        mSpriteBatch.Draw(tileToDraw,     // texture
+                            new Vector2(                  // position
+                                (50f * j) - 400, (50 * i) - 460) * Camera.kPixelsToUnits,
+                            null,                         // source rectangle
+                            Color.White,                  // color
+                            0f,                           // rotation
+                            new Vector2(0, 0),            // origin
+                            Camera.kPixelsToUnits,        // scale
+                            SpriteEffects.FlipVertically, // effects
+                            0f);                          // layer depth
                     }
                 }
-
-            }
+            } // for
 
             base.Draw(mSpriteBatch);
-
-
-        }
-
-    }
-
-}
+        } // Draw
+    } // LifeWorld
+} // namespace ggj_resurrection

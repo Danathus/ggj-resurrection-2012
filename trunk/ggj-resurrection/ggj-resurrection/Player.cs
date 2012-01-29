@@ -134,10 +134,11 @@ namespace ggj_resurrection
             {
                 if (bats.Count <= 4)
                 {
-                    Vector2 offset = mFixture.Body.Position + (rightStick) * 1.5f;
-                    SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset);
+                    Vector2 offset2d = mFixture.Body.Position + rightStick * 1.5f;
+                    //Vector3 offset3d = new Vector2(offset2d.X, offset2d.Y, 0);
+                    SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset2d);
                     newSwordSlash.setRotation(rightStick);
-                    newSwordSlash.SetPosition(offset);
+                    newSwordSlash.SetPosition(offset2d); // it's lame, but this set after-the-fact may be necessary
                     newSwordSlash.SetVelocity(mFixture.Body.LinearVelocity);
                     bats.Add(newSwordSlash);
                     GetGameWorld().AddGameObject(newSwordSlash);
@@ -163,7 +164,7 @@ namespace ggj_resurrection
 
             const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mPosition = mBody.Position;       //converts Body.Position (meters) into pixels
+            mPosition = new Vector2(mBody.Position.X, mBody.Position.Y);       //converts Body.Position (meters) into pixels
 
             // djmc animation test
             if (!mSpriteAnimPlayer.IsPlaying())
