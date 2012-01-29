@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace ggj_resurrection
 {
-    class LifeWorld : GameWorld
+    public class LifeWorld : GameWorld
     {
         private int[,] terrainMap;
         private int dimension;

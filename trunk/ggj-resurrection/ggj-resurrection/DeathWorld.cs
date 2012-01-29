@@ -14,6 +14,8 @@ namespace ggj_resurrection
 {
     class DeathWorld : GameWorld
     {
+        float mCountdownTimer; // counts down until the end of the game
+
         int[,] graveyardMap;
         Random deathRand = new Random();
         PuzzleGenerator graveyardMaker;
@@ -393,9 +395,63 @@ namespace ggj_resurrection
 
                         }
                         break;
-
                 }
+            }
+        }
 
+        public override void WakeUp()
+        {
+            base.WakeUp();
+            //AddGameObject(new Grave(mPhysicsWorld, new Vector2(0, 0)));
+
+            for (int y = 0; y < 16; ++y)
+            {
+                for (int x = 0; x < 16; ++x)
+                {
+                    if (graveyardMap[y, x] == 1)
+                    {
+                        Grave grave = new Grave(
+                            mPhysicsWorld,
+                            new Vector2(x - 8, y - 8) * 50 * Camera.kPixelsToUnits,
+                            new Vector2(x, y));
+                        grave.mDeathWorld = this;
+                        AddGameObject(grave);
+                    }
+                }
+            }
+
+            // for now set countdown timer to 10 seconds
+            mCountdownTimer = 10f;
+        }
+
+        public bool IsTileOccupied(Vector2 tileIdx)
+        {
+            if (tileIdx.X < 0 || tileIdx.X >= 16 ||
+                tileIdx.Y < 0 || tileIdx.Y >= 16)
+            {
+                return true;
+            }
+            return graveyardMap[(int)tileIdx.Y, (int)tileIdx.X] == 1;
+        }
+
+        public void SetTileOccupied(Vector2 tileIdx, bool occupied)
+        {
+            if (tileIdx.X < 0 || tileIdx.X >= 16 ||
+                tileIdx.Y < 0 || tileIdx.Y >= 16)
+            {
+                return;
+            }
+            graveyardMap[(int)tileIdx.Y, (int)tileIdx.X] = occupied ? 1 : 0;
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            mCountdownTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (mCountdownTimer < 0)
+            {
+                // todo: switch back
+                Game1.mDesiredWorld = Game1.mLifeWorld;
             }
         }
 
@@ -445,6 +501,14 @@ namespace ggj_resurrection
         public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)
         {
             // this doesn't really apply to the Death World, right?
+        }
+
+        public override void GoToSleep()
+        {
+            base.GoToSleep();
+
+            // regenerate map
+            generateGraveyard();
         }
     }
 }

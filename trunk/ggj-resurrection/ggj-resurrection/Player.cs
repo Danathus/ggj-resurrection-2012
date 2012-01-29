@@ -54,11 +54,11 @@ namespace ggj_resurrection
 
             mFixture = FixtureFactory.AttachRectangle(30 * Camera.kPixelsToUnits, 50 * Camera.kPixelsToUnits, 1f, new Vector2(0f, 0f), new Body(mPhysicsWorld));
             mFixture.Body.CollisionCategories = Category.Cat1;
-            mFixture.Body.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
-            mFixture.CollisionCategories = Category.Cat1;
-            mFixture.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
-            mFixture.Body.OnCollision += playerOnCollision;
-            mFixture.Body.BodyType = BodyType.Dynamic;
+            mFixture.Body.CollidesWith        = Category.All & ~Category.Cat1 & ~Category.Cat2;
+            mFixture.CollisionCategories      = Category.Cat1;
+            mFixture.CollidesWith             = Category.All & ~Category.Cat1 & ~Category.Cat2;
+            mFixture.Body.OnCollision        += playerOnCollision;
+            mFixture.Body.BodyType            = BodyType.Dynamic;
 
             mFixture.UserData      = "Player";
             mFixture.Body.UserData = "Player";

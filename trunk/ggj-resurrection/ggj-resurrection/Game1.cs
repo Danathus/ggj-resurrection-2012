@@ -31,9 +31,10 @@ namespace ggj_resurrection
         SoundEffectInstance mLifeThemeSEI;
         
         //
-        LifeWorld  mLifeWorld;
+        public static LifeWorld  mLifeWorld;
         DeathWorld mDeathWorld;
         GameWorld  mCurrentWorld; // this is to point to whichever one we're in
+        public static GameWorld mDesiredWorld;
 
         public Game1()
         {
@@ -44,9 +45,7 @@ namespace ggj_resurrection
 
             mCamera = new Camera(
                 null, new Vector2(0, 0),
-                new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));
-
-            
+                new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));            
 
             mLifeWorld  = new LifeWorld(mCamera, "Content/lifeworld.txt", this);
             //puzzleChunks = graveyardMaker.generatePuzzleSections(8);
@@ -54,6 +53,7 @@ namespace ggj_resurrection
             
             //
             mCurrentWorld = mLifeWorld;
+            mDesiredWorld = mCurrentWorld;
 
             //FarseerPhysics.Settings.ContinuousPhysics = false;
         }
@@ -90,6 +90,7 @@ namespace ggj_resurrection
             EvilCow.LoadData(this);
             SwordSlash.LoadData(this);
             Grave.LoadData(this);
+            Soul.LoadData(this);
 
             mLifeWorld.loadTiles(this);
 
@@ -132,11 +133,23 @@ namespace ggj_resurrection
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
 
+            //mDesiredWorld
+
             KeyboardState keyState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.Q))
             {
-                if (mCurrentWorld != mDeathWorld && mLifeWorld.ReadyToTransition() && mDeathWorld.ReadyToTransition())
+                mDesiredWorld = mDeathWorld;
+            }
+            if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
+                keyState.IsKeyDown(Keys.W))
+            {
+                mDesiredWorld = mLifeWorld;
+            }
+
+            if (mCurrentWorld != mDesiredWorld && mLifeWorld.ReadyToTransition() && mDeathWorld.ReadyToTransition())
+            {
+                if (mDesiredWorld == mDeathWorld)
                 {
                     // start transition to death world
                     mCamera.mTargetRot = new Vector3(90f - 15f, 0f, 0f);
@@ -151,11 +164,7 @@ namespace ggj_resurrection
                     mLifeWorld.GoToSleep();
                     mDeathWorld.WakeUp();
                 }
-            }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
-                keyState.IsKeyDown(Keys.W))
-            {
-                if (mCurrentWorld != mLifeWorld && mLifeWorld.ReadyToTransition() && mDeathWorld.ReadyToTransition())
+                if (mDesiredWorld == mLifeWorld)
                 {
                     mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
                     mCurrentWorld = mLifeWorld;

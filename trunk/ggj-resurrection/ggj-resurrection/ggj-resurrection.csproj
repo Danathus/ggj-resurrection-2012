@@ -125,6 +125,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="PuzzleGenerator.cs" />
     <Compile Include="Snake.cs" />
+    <Compile Include="Soul.cs" />
     <Compile Include="SpriteAnimation.cs" />
     <Compile Include="SpriteAnimationPlayer.cs" />
     <Compile Include="SpriteSheet.cs" />
