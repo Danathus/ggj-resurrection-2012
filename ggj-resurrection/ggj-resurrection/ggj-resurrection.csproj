@@ -114,6 +114,7 @@
     <Compile Include="EvilCow.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="Grave.cs" />
     <Compile Include="LifeWorld.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterSpawner.cs" />
