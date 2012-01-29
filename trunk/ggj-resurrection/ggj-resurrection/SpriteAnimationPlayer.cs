@@ -78,11 +78,11 @@ namespace ggj_resurrection
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, Color color)
+        public void Draw(SpriteBatch spriteBatch, SpriteSheet.SpriteRenderingParameters parameters)
         {
             if (mAnimToPlay != null)
             {
-                mAnimToPlay.Draw(spriteBatch, mCurrFrame, position, rotation, color);
+                mAnimToPlay.Draw(spriteBatch, mCurrFrame, parameters);
             }
         }
     }
