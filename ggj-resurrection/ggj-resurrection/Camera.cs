@@ -40,7 +40,7 @@ namespace ggj_resurrection
             mRot = new Vector3(0, 0, 0);
             mZoom = 0.5f;// 1.0f;
             //
-            // divide by 64 to make 1.0 in space equal 64 pixels
+            // multiply by kPixelsToUnits to make 1.0 in space equal the appropriate number of pixels
             mProjectionMatrix = Matrix.CreateOrthographicOffCenter(
                 -mScreenDimensions.X / 2 * kPixelsToUnits, mScreenDimensions.X / 2 * kPixelsToUnits, // left, right
                 -mScreenDimensions.Y / 2 * kPixelsToUnits, mScreenDimensions.Y / 2 * kPixelsToUnits, // bottom, top

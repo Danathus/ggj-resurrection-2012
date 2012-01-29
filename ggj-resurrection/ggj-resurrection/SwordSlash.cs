@@ -33,14 +33,14 @@ namespace ggj_resurrection
             mSlashTimeout = mMaxSlashTimeout;
             mRadius = 1;
 
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, mTexture.Width / 64f, mTexture.Height / 64f, 1f);
+            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f);
             mBody.BodyType = BodyType.Dynamic;
 
             mBody.CollisionCategories = Category.Cat2;
             mBody.UserData = "Sword";
-            
-            mFixture = FixtureFactory.AttachRectangle(mTexture.Width / 64f, mTexture.Height / 64f, 1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
-            mBody.Position = mPosition / 64f;
+
+            mFixture = FixtureFactory.AttachRectangle(mTexture.Width * Camera.kPixelsToUnits, mTexture.Height * Camera.kPixelsToUnits, 1f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), mBody);
+            mBody.Position = mPosition;
             mFixture.CollisionCategories = Category.Cat2;
             mFixture.Body.CollisionCategories = Category.Cat2;
             mFixture.CollidesWith = Category.All & ~Category.Cat1;
@@ -70,8 +70,8 @@ namespace ggj_resurrection
             if (mSlashTimeout > 0)
             {
                 //spriteBatch.Draw(mTexture, mPosition, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255));
-                spriteBatch.Draw(mTexture, mBody.Position * 64f, null, new Color(255, 255, 255, opacity),
-                                batRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(255, 255, 255, opacity),
+                                batRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }
 
