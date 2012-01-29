@@ -55,20 +55,18 @@ namespace ggj_resurrection
             timeCowElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
            if (timeBasicElapsed >= (nextBasic * 1000))
-            {
-                timeBasicElapsed = 0;
-                nextBasic = mRand.Next(1, 3);
-                SpawnBasic();
-            }
+           {
+               timeBasicElapsed = 0;
+               nextBasic = mRand.Next(1, 3);
+               SpawnBasic();
+           }
 
            if (timeCowElapsed >= (nextCow * 1000))
            {
                timeCowElapsed = 0;
                nextCow = mRand.Next(3, 7);
                SpawnCow();
-
            }
-
         }
 
         public static void LoadData(Game myGame)

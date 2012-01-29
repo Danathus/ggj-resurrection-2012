@@ -88,7 +88,7 @@ namespace ggj_resurrection
 
             mLifeWorld.loadTiles(this);
 
-            mLifeWorld.AddGameObject(mAlivePlayer = new Player(mLifeWorld.mPhysicsWorld, new Vector2(0, 0)));
+            mLifeWorld.AddGameObject(mAlivePlayer = new AlivePlayer(mLifeWorld.mPhysicsWorld, new Vector2(0, 0)));
             mDeathWorld.AddGameObject(mDeadPlayer = new DeadPlayer(mDeathWorld.mPhysicsWorld, new Vector2(0, 0)));
             mLifeWorld.AddGameObject(new MonsterSpawner(mLifeWorld.mPhysicsWorld, new Vector2(0, 0), mAlivePlayer));
 
@@ -98,7 +98,6 @@ namespace ggj_resurrection
             mLifeThemeSEI.IsLooped = true;
             mLifeThemeSEI.Volume = 1;
             mLifeThemeSEI.Play();
-
         }
 
         /// <summary>
@@ -126,11 +125,6 @@ namespace ggj_resurrection
             mCamera.Update(gameTime);
 
             KeyboardState keyState = Keyboard.GetState();
-            //
-            //mCamera.mSideViewOffset.X += ((keyState.IsKeyDown(Keys.U)?1:0) - (keyState.IsKeyDown(Keys.J)?1:0)) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //mCamera.mSideViewOffset.Y += ((keyState.IsKeyDown(Keys.I)?1:0) - (keyState.IsKeyDown(Keys.K)?1:0)) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //mCamera.mSideViewOffset.Z += ((keyState.IsKeyDown(Keys.O)?1:0) - (keyState.IsKeyDown(Keys.L)?1:0)) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //
             if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.Q))
             {
@@ -140,13 +134,13 @@ namespace ggj_resurrection
                     mCamera.mTargetRot = new Vector3(90f - 15f, 0f, 0f);
                     mCurrentWorld = mDeathWorld;
 
-                    mDeadPlayer.SetPosition(new Vector2(mAlivePlayer.GetPosition().X, 0));
-                    mCamera.mSideViewOffset = new Vector3(0, 0,
-                        -mAlivePlayer.GetPosition().Y +
-                        //+50 * Camera.kPixelsToUnits // this is the "height" (incidently half of it, doubled) of the player sprite
-                        +Player.kFrameSizeInPixels.Y/2 * Camera.kPixelsToUnits
-                        );
                     mLifeThemeSEI.Stop();
+
+                    // turn off/on players as appropriate
+                    mAlivePlayer.Disable();
+                    mDeadPlayer.Enable();
+                    mDeadPlayer.SetPosition(mAlivePlayer.GetPosition());
+                    mDeadPlayer.WakeUp();
                 }
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
@@ -157,6 +151,11 @@ namespace ggj_resurrection
                     mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
                     mCurrentWorld = mLifeWorld;
                     mLifeThemeSEI.Play();
+                    // turn off/on players as appropriate
+                    mAlivePlayer.Enable();
+                    mDeadPlayer.Disable();
+                    mAlivePlayer.SetPosition(mDeadPlayer.GetPosition());
+                    mAlivePlayer.WakeUp();
                 }
             }
 
@@ -171,42 +170,8 @@ namespace ggj_resurrection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // draw life world
-            {
-            }
-
-            // draw death world
-            {
-            }
-
-            /*
-            // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
-            mRenderingEffect.World      = Matrix.Identity;
-            mRenderingEffect.View       = mCamera.mViewMatrix;
-            mRenderingEffect.Projection = mCamera.mProjectionMatrix;
-            //
-            mRenderingEffect.TextureEnabled = true;
-            mRenderingEffect.VertexColorEnabled = true;
-
-            // custom drawing code here
-            mSpriteBatch.Begin(
-                SpriteSortMode.Immediate,   // sprite sort mode (which is better, immediate or deffered?)
-                BlendState.AlphaBlend,      // blend state
-                SamplerState.LinearClamp,   // sampler state
-                DepthStencilState.None,     // depth stencil state
-                RasterizerState.CullNone,   // rasterizer state
-                mRenderingEffect,           // effect (formerly null)
-                Matrix.Identity);           // transform matrix
-             * /*/
-
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
-
-            /*
-            mSpriteBatch.End();
-             * //*/
-
-            //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
 
             base.Draw(gameTime);
         }

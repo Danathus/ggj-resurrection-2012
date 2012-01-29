@@ -15,20 +15,20 @@ using FarseerPhysics.Common;
 
 namespace ggj_resurrection
 {
-    public class Player : GameObject
+    public abstract class Player : GameObject
     {
         // static data
         public static Vector2 kFrameSizeInPixels = new Vector2(30, 50); // C# won't let me make this const, but please don't change!
-        static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet, mRunningSidewaysSpriteSheet, mRunningNorthSpriteSheet;
-        static SpriteAnimation mBlinkingAnimation,
+        protected static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet, mRunningSidewaysSpriteSheet, mRunningNorthSpriteSheet;
+        protected static SpriteAnimation mBlinkingAnimation,
             mRunningNorthAnimation, mRunningSouthAnimation,
             mRunningEastAnimation,  mRunningWestAnimation;
-        static Texture2D mHackSmoke;
+        protected static Texture2D mHackSmoke;
 
         // member data
-        SpriteAnimationPlayer mSpriteAnimPlayer;
-        float mMaxSpeed = 5;
-        Color tempColor = Color.YellowGreen;
+        protected SpriteAnimationPlayer mSpriteAnimPlayer;
+        protected float mMaxSpeed = 5;
+        //Color tempColor = Color.YellowGreen;
         List<SwordSlash> bats = new List<SwordSlash>();
 
         KeyboardState mCurrKeyboardState, mPrevKeyboardState;
@@ -57,7 +57,7 @@ namespace ggj_resurrection
             mFixture.Body.OnCollision += playerOnCollision;
             mFixture.Body.BodyType = BodyType.Dynamic;
 
-            mFixture.UserData = "Player";
+            mFixture.UserData      = "Player";
             mFixture.Body.UserData = "Player";
             //mBody.UserData = "Player";
 
@@ -73,13 +73,20 @@ namespace ggj_resurrection
         {
             if (two.UserData.ToString() == "Sword" || two.Body.UserData.ToString() == "Sword")
             {
-                tempColor = Color.Red;
+                //tempColor = Color.Red;
                 return false;
             }
             else mPlayerDamageSnd.Play(.2f, 0, 0);
             
-            tempColor = Color.Red;
+            //tempColor = Color.Red;
             return true;
+        }
+
+        // this is called when that player "wakes up" on a world transition
+        public void WakeUp()
+        {
+            // copy position -> physics
+            mFixture.Body.Position = new Vector2(mPosition.X, mPosition.Y);
         }
         
         public override void Draw(SpriteBatch spriteBatch)
@@ -92,15 +99,13 @@ namespace ggj_resurrection
 
         public override void Update(GameTime gameTime)
         {
-            mFixture.Body.ResetDynamics();
-            tempColor = Color.YellowGreen;
-            mPrevKeyboardState = mCurrKeyboardState;
-            mCurrKeyboardState = Keyboard.GetState();
-            mPrevControllerState = mCurrControllerState;
-            mCurrControllerState = GamePad.GetState(PlayerIndex.One);
+            //tempColor = Color.YellowGreen;
+
+            UpdateInput();
 
             Vector2 direction = DetermineDesiredDirection();
 
+            mFixture.Body.ResetDynamics();
             mFixture.Body.LinearVelocity = new Vector2(0, 0);
             mFixture.Body.Rotation = 0;
 
@@ -113,8 +118,68 @@ namespace ggj_resurrection
             {
                 direction.Normalize();
                 mDirection = direction;
-            }            
+            }
 
+            UpdateBat();
+
+            mPosition = new Vector2(mFixture.Body.Position.X, mFixture.Body.Position.Y); // converts Body.Position (meters) into pixels
+
+            UpdateAnimation(gameTime, direction);
+
+            if ( (mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X)) ||
+                 (mCurrControllerState.Buttons.X == ButtonState.Pressed && mPrevControllerState.Buttons.X != ButtonState.Pressed)
+                )
+            {
+                Fart();
+            }
+        }
+
+        protected void UpdateInput()
+        {
+            mPrevKeyboardState = mCurrKeyboardState;
+            mCurrKeyboardState = Keyboard.GetState();
+            mPrevControllerState = mCurrControllerState;
+            mCurrControllerState = GamePad.GetState(PlayerIndex.One);
+        }
+
+        protected void UpdateBat()
+        {
+            Vector2 rightStick = mCurrControllerState.ThumbSticks.Right;
+
+            if (mCurrControllerState.IsConnected && rightStick.Length() > .25)
+            {
+                if (bats.Count <= 4)
+                {
+                    Vector2 offset2d = mFixture.Body.Position + rightStick * 1.5f;
+                    //Vector3 offset3d = new Vector2(offset2d.X, offset2d.Y, 0);
+                    SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset2d);
+                    newSwordSlash.setRotation(rightStick);
+                    newSwordSlash.SetPosition(offset2d); // it's lame, but this set after-the-fact may be necessary
+                    newSwordSlash.SetVelocity(mFixture.Body.LinearVelocity);
+                    bats.Add(newSwordSlash);
+                    GetGameWorld().AddGameObject(newSwordSlash);
+                }
+                else
+                {
+                    SwordSlash apply = bats.ElementAt(0);
+                    apply.setAngularVelocity(bats.ElementAt(2), bats.ElementAt(1));
+                    bats.RemoveAt(0);
+
+                    /* bats.ForEach(delegate(SwordSlash curr)
+                     {
+                         if (curr.isTimedOut())
+                         {
+                             bats.Remove(curr);
+                         }
+
+                     });*/
+                    //bats.RemoveAt(0);
+                }
+            }
+        }
+
+        protected void UpdateAnimation(GameTime gameTime, Vector2 direction)
+        {
             // choose animation
             SpriteAnimation desiredAnim = mBlinkingAnimation; // the default
             if (Vector2.Dot(direction, new Vector2(0, +1)) > 0.5f)
@@ -140,75 +205,32 @@ namespace ggj_resurrection
                 mSpriteAnimPlayer.SetAnimationToPlay(desiredAnim);
             }
 
-            Vector2 rightStick = mCurrControllerState.ThumbSticks.Right;
-            rightStick.Y *= 1f;
-
-            if (mCurrControllerState.IsConnected && rightStick.Length() > .25)
-            {
-                
-                if (bats.Count <= 4)
-                {
-                    Vector2 offset2d = mFixture.Body.Position + rightStick * 1.5f;
-                    //Vector3 offset3d = new Vector2(offset2d.X, offset2d.Y, 0);
-                    SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset2d);
-                    newSwordSlash.setRotation(rightStick);
-                    newSwordSlash.SetPosition(offset2d); // it's lame, but this set after-the-fact may be necessary
-                    newSwordSlash.SetVelocity(mFixture.Body.LinearVelocity);
-                    bats.Add(newSwordSlash);
-                    GetGameWorld().AddGameObject(newSwordSlash);
-                }
-                else
-                {
-                    SwordSlash apply = bats.ElementAt(0);
-                    apply.setAngularVelocity(bats.ElementAt(2), bats.ElementAt(1));
-                    bats.RemoveAt(0);
-
-                   /* bats.ForEach(delegate(SwordSlash curr)
-                    {
-                        if (curr.isTimedOut())
-                        {
-                            bats.Remove(curr);
-                        }
-
-                    });*/
-                    //bats.RemoveAt(0);
-                }
-            }
-
-            const float speed = 300.0f;
-            //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mPosition = new Vector2(mFixture.Body.Position.X, mFixture.Body.Position.Y);       //converts Body.Position (meters) into pixels
-
-            // djmc animation test
+            mSpriteAnimPlayer.Update(gameTime);
             if (!mSpriteAnimPlayer.IsPlaying())
             {
                 mSpriteAnimPlayer.Play();
             }
-            mSpriteAnimPlayer.Update(gameTime);
-            // djmc animation test
+        }
 
-            if ( (mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X)) ||
-                 (mCurrControllerState.Buttons.X == ButtonState.Pressed && mPrevControllerState.Buttons.X != ButtonState.Pressed)
-                )
-            {
-                Particle smoke  = new Particle(mHackSmoke, mPosition, 1.0f);
-                float precision     = 100f;
-                float maxSmokeSpeed = 2.0f;
-                float maxRotSpeed   = 1.0f;
-                float maxScaleSpeed = 1.0f;
-                smoke.mVelocity = new Vector2(
-                    Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2),
-                    Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2));
-                smoke.mRotVel   = Particle.Random(-maxRotSpeed/2, +maxRotSpeed/2);
-                smoke.mScaleVel = -new Vector2(
-                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
-                    Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
-                GetGameWorld().AddGameObject(smoke);
-            }
+        protected void Fart()
+        {
+            Particle smoke  = new Particle(mHackSmoke, mPosition, 1.0f);
+            float precision     = 100f;
+            float maxSmokeSpeed = 2.0f;
+            float maxRotSpeed   = 1.0f;
+            float maxScaleSpeed = 1.0f;
+            smoke.mVelocity = new Vector2(
+                Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2),
+                Particle.Random(-maxSmokeSpeed/2, +maxSmokeSpeed/2));
+            smoke.mRotVel   = Particle.Random(-maxRotSpeed/2, +maxRotSpeed/2);
+            smoke.mScaleVel = -new Vector2(
+                Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2),
+                Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
+            GetGameWorld().AddGameObject(smoke);
         }
 
         // read input state and return current direction we want to move this frame
-        private Vector2 DetermineDesiredDirection()
+        protected Vector2 DetermineDesiredDirection()
         {
             Vector2 direction = new Vector2(0, 0);
 
