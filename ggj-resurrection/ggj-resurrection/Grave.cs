@@ -27,6 +27,12 @@ namespace ggj_resurrection
         Vector2 mTilePos;
         bool mMoved;
 
+        static private SoundEffect mMoveGraveSnd;
+        static private float mMoveGraveSndVolume;
+
+        static private SoundEffect mSoulEmergeSnd;
+        static private float mSoulEmergeSndVolume;
+
         public Grave(World world, Vector2 initPos, Vector2 tilePos)   //this is never called. We need it for physics object
             : base(world, initPos)
         {
@@ -49,6 +55,9 @@ namespace ggj_resurrection
             mFixture.Body.Position = mPosition;
 
             mMoved = false;
+
+            mMoveGraveSndVolume = 1f;
+            mSoulEmergeSndVolume = 1f;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -78,6 +87,10 @@ namespace ggj_resurrection
         public static void LoadData(Game myGame)
         {
             mTexture = myGame.Content.Load<Texture2D>("Grave");
+
+            mMoveGraveSnd = myGame.Content.Load<SoundEffect>("Audio/moveGrave");
+            mSoulEmergeSnd = myGame.Content.Load<SoundEffect>("Audio/soulEmerge");
+            
         }
 
         public bool graveOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
@@ -113,8 +126,11 @@ namespace ggj_resurrection
                 {
                     // no -- allow self to move
                     mMoved = true;
+                    mMoveGraveSnd.Play(mMoveGraveSndVolume, 0, 0);
+
 
                     // spawn soul
+                    mSoulEmergeSnd.Play(mSoulEmergeSndVolume, 0, 0);
                     GetGameWorld().AddGameObject(new Soul(mPhysicsWorld,
                         (mTilePos - new Vector2(8, 8)) * 50 * Camera.kPixelsToUnits)
                         //+ kFrameSizeInPixels/2

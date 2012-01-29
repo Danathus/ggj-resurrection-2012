@@ -177,7 +177,7 @@ namespace ggj_resurrection
 
                     mLifeThemeSEI.Stop();
                     mPlayerFallSnd.Play(.4f, 0f, 0f);
-                    mDeathTheme.Play();
+                    mDeathThemeSEI.Play();
                     
 
                     // turn off/on players as appropriate
