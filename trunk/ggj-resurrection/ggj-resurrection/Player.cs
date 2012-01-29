@@ -22,6 +22,7 @@ namespace ggj_resurrection
         static SpriteAnimation mBlinkingAnimation,
             mRunningNorthAnimation, mRunningSouthAnimation,
             mRunningEastAnimation,  mRunningWestAnimation;
+        static Texture2D mHackSmoke;
 
         // member data
         SpriteAnimationPlayer mSpriteAnimPlayer;
@@ -37,7 +38,6 @@ namespace ggj_resurrection
         {
             mRadius = 1f;
 
-
             //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, 1f);
            // mBody.BodyType = BodyType.Dynamic;
 
@@ -48,8 +48,6 @@ namespace ggj_resurrection
             mFixture.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
             mFixture.Body.OnCollision += playerOnCollision;
             mFixture.Body.BodyType = BodyType.Dynamic;
-
-            
 
             mFixture.UserData = "Player";
             mFixture.Body.UserData = "Player";
@@ -178,6 +176,11 @@ namespace ggj_resurrection
             }
             mSpriteAnimPlayer.Update(gameTime);
             // djmc animation test
+
+            if (mCurrKeyboardState.IsKeyDown(Keys.X) && !mPrevKeyboardState.IsKeyDown(Keys.X))
+            {
+                GetGameWorld().AddGameObject(new Particle(mHackSmoke, mPosition, 1.0f));
+            }
         }
 
         // read input state and return current direction we want to move this frame
@@ -224,7 +227,7 @@ namespace ggj_resurrection
         public static void LoadData(Game myGame)
         {
             // load all static data here
-           mBlinkingSpriteSheet = new SpriteSheet();
+            mBlinkingSpriteSheet = new SpriteSheet();
             mBlinkingSpriteSheet.SetTexture(myGame.Content.Load<Texture2D>("CharSprite/boyStandingStill"));
             for (int i = 0; i < 2; ++i)
             {
@@ -250,13 +253,13 @@ namespace ggj_resurrection
                 mRunningSouthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
                 mRunningSidewaysSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
                 mRunningNorthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
-                mRunningSouthAnimation.AddFrame(mRunningSouthSpriteSheet, i, 0.1f);
+                mRunningSouthAnimation.AddFrame(mRunningSouthSpriteSheet,   i, 0.1f);
                 mRunningEastAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f, true); // flip this one
                 mRunningWestAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f);
-                mRunningNorthAnimation.AddFrame(mRunningNorthSpriteSheet, i, 0.1f);
+                mRunningNorthAnimation.AddFrame(mRunningNorthSpriteSheet,   i, 0.1f);
             }
 
-            //boyRunningSideways5fps.png
+            mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
         } // end LoadData
     } // end Player
 } // namespace ggj_resurrection
