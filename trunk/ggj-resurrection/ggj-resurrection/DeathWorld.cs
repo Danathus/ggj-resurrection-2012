@@ -19,10 +19,6 @@ namespace ggj_resurrection
         {
         }
 
-        public override void WakeUp()
-        {
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
