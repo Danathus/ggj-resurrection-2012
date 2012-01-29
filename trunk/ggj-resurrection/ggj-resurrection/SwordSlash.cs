@@ -20,7 +20,6 @@ namespace ggj_resurrection
     {
         static private Texture2D mTexture;
 
-        int opacity = 255;
         bool timedOut = false;
         float mSlashTimeout;
         Vector2 rightStickRotation;
@@ -81,8 +80,8 @@ namespace ggj_resurrection
         {
             if (mSlashTimeout > 0)
             {
-                //spriteBatch.Draw(mTexture, mPosition, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255));
-                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(255, 255, 255, opacity),
+                int opacity = (int)(mSlashTimeout / mMaxSlashTimeout * 255);
+                spriteBatch.Draw(mTexture, mBody.Position, null, new Color(opacity, opacity, opacity, opacity),
                                 batRotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }
@@ -127,9 +126,6 @@ namespace ggj_resurrection
                 // remove thyself
                 GetGameWorld().RemoveGameObject(this);
             }
-
-            opacity -= 5;
-
         }
 
         public static void LoadData(Game myGame)

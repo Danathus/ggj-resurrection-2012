@@ -134,7 +134,7 @@ namespace ggj_resurrection
             {
                 if (bats.Count <= 4)
                 {
-                    Vector2 offset = mFixture.Body.Position + (rightStick);
+                    Vector2 offset = mFixture.Body.Position + (rightStick) * 1.5f;
                     SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, offset);
                     newSwordSlash.setRotation(rightStick);
                     newSwordSlash.SetPosition(offset);
@@ -142,7 +142,6 @@ namespace ggj_resurrection
                     bats.Add(newSwordSlash);
                     GetGameWorld().AddGameObject(newSwordSlash);
                 }
-
                 else
                 {
                     SwordSlash apply = bats.ElementAt(0);
