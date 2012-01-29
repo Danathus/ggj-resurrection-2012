@@ -21,18 +21,16 @@ namespace ggj_resurrection
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        Camera mCamera;
-
-        Player mPlayer;
+        Camera     mCamera;
+        Player     mAlivePlayer;
+        DeadPlayer mDeadPlayer;
 
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
         //
-        LifeWorld mLifeWorld;
+        LifeWorld  mLifeWorld;
         DeathWorld mDeathWorld;
-        GameWorld mCurrentWorld; // this is to point to whichever one we're in
-
-        BasicEffect mRenderingEffect;
+        GameWorld  mCurrentWorld; // this is to point to whichever one we're in
 
         public Game1()
         {
@@ -40,15 +38,15 @@ namespace ggj_resurrection
             mGraphics.PreferredBackBufferWidth  = 800;
             mGraphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
-            
-            mLifeWorld    = new LifeWorld("Content/lifeworld.txt", this);
-            mDeathWorld   = new DeathWorld();
-
-            mCurrentWorld = mLifeWorld;
 
             mCamera = new Camera(
                 null, new Vector2(0, 0),
                 new Vector2(mGraphics.PreferredBackBufferWidth, mGraphics.PreferredBackBufferHeight));
+
+            mLifeWorld  = new LifeWorld(mCamera, "Content/lifeworld.txt", this);
+            mDeathWorld = new DeathWorld(mCamera);
+            //
+            mCurrentWorld = mLifeWorld;
 
             //FarseerPhysics.Settings.ContinuousPhysics = false;
         }
@@ -78,19 +76,18 @@ namespace ggj_resurrection
             mDeathWorld.LoadContent(mGraphics.GraphicsDevice, Content);
 
             Player.LoadData(this);
+            DeadPlayer.LoadData(this);
             MonsterSpawner.LoadData(this);
             Monster.LoadData(this);
             Snake.LoadData(this);
             EvilCow.LoadData(this);
             SwordSlash.LoadData(this);
 
-            mRenderingEffect = new BasicEffect(GraphicsDevice);
-
             mLifeWorld.loadTiles(this);
 
-            mPlayer = new Player(mLifeWorld.mPhysicsWorld, new Vector2(0, 0));
-            mLifeWorld.AddGameObject(mPlayer);
-            mLifeWorld.AddGameObject(new MonsterSpawner(mLifeWorld.mPhysicsWorld, new Vector2(0, 0), mPlayer));
+            mLifeWorld.AddGameObject(mAlivePlayer = new Player(mLifeWorld.mPhysicsWorld, new Vector2(0, 0)));
+            mDeathWorld.AddGameObject(mDeadPlayer = new DeadPlayer(mDeathWorld.mPhysicsWorld, new Vector2(0, 0)));
+            mLifeWorld.AddGameObject(new MonsterSpawner(mLifeWorld.mPhysicsWorld, new Vector2(0, 0), mAlivePlayer));
         }
 
         /// <summary>
@@ -117,11 +114,14 @@ namespace ggj_resurrection
             mDeathWorld.Update(gameTime);
             mCamera.Update(gameTime);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+            KeyboardState keyState = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
+                keyState.IsKeyDown(Keys.Q))
             {
                 mCamera.mTargetRot = new Vector3(90f-15f, 0f, 0f);
             }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
+                keyState.IsKeyDown(Keys.W))
             {
                 mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
             }
@@ -137,12 +137,21 @@ namespace ggj_resurrection
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            // draw life world
+            {
+            }
+
+            // draw death world
+            {
+            }
+
+            /*
             // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
             mRenderingEffect.World      = Matrix.Identity;
             mRenderingEffect.View       = mCamera.mViewMatrix;
             mRenderingEffect.Projection = mCamera.mProjectionMatrix;
             //
-            mRenderingEffect.TextureEnabled     = true;
+            mRenderingEffect.TextureEnabled = true;
             mRenderingEffect.VertexColorEnabled = true;
 
             // custom drawing code here
@@ -154,15 +163,22 @@ namespace ggj_resurrection
                 RasterizerState.CullNone,   // rasterizer state
                 mRenderingEffect,           // effect (formerly null)
                 Matrix.Identity);           // transform matrix
+             * /*/
 
             mLifeWorld.Draw(mSpriteBatch);
             mDeathWorld.Draw(mSpriteBatch);
 
+            /*
             mSpriteBatch.End();
+             * //*/
 
-           // mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
+            //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mViewMatrix);
 
             base.Draw(gameTime);
+        }
+
+        private void DrawGameWorld()
+        {
         }
     }
 }

@@ -154,7 +154,6 @@ namespace ggj_resurrection
                     apply.setAngularVelocity(bats.ElementAt(2), bats.ElementAt(1));
                     bats.RemoveAt(0);
 
-
                    /* bats.ForEach(delegate(SwordSlash curr)
                     {
                         if (curr.isTimedOut())

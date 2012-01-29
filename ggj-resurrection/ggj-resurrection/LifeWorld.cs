@@ -19,8 +19,8 @@ namespace ggj_resurrection
         private int dimension;
         private Texture2D tile1, tile2, tile3, tile4, tile5;
 
-        public LifeWorld(String file, Game game)
-            : base()
+        public LifeWorld(Camera camera, String file, Game game)
+            : base(camera)
         {
            // try
             //{
@@ -82,7 +82,14 @@ namespace ggj_resurrection
             tile3 = game.Content.Load<Texture2D>("Grass003");
         }
 
-        public void Draw(SpriteBatch mSpriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            mRenderingEffect.View = mCamera.GetTopViewMatrix();
+            base.Draw(spriteBatch);
+            mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
+        }
+
+        public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)
         {
             for (int i = dimension - 1; i >= 0; --i)
             {
@@ -99,7 +106,7 @@ namespace ggj_resurrection
                     }
                     if (tileToDraw != null)
                     {
-                        mSpriteBatch.Draw(tileToDraw,     // texture
+                        spriteBatch.Draw(tileToDraw,     // texture
                             new Vector2(                  // position
                                 (50f * j) - 400, (50 * i) - 460) * Camera.kPixelsToUnits,
                             null,                         // source rectangle
@@ -112,8 +119,6 @@ namespace ggj_resurrection
                     }
                 }
             } // for
-
-            base.Draw(mSpriteBatch);
-        } // Draw
+        } // DrawCustomWorldDetails
     } // LifeWorld
 } // namespace ggj_resurrection

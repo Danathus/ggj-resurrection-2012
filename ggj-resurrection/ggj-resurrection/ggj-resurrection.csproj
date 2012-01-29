@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="DeadPlayer.cs" />
     <Compile Include="DeathWorld.cs" />
     <Compile Include="EvilCow.cs" />
     <Compile Include="GameObject.cs" />
