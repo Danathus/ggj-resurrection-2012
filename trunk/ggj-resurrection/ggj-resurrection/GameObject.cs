@@ -27,8 +27,9 @@ namespace ggj_resurrection
         protected float mDensity;
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
-        public void SetVelocity(Vector2 velo) { mBody.LinearVelocity = velo; }
         public Vector2 GetPosition() { return mPosition; }
+        public void SetVelocity(Vector2 velo) { mBody.LinearVelocity = velo; }
+        public Vector2 GetVelocity() { return mBody.LinearVelocity; }
 
         public void SetGameWorld(GameWorld gameWorld) { mGameWorld = gameWorld; }
         public GameWorld GetGameWorld() { return mGameWorld; }

@@ -18,6 +18,7 @@ namespace ggj_resurrection
     class Monster : GameObject
     {
         float mMaxSpeed = 5;
+        float mHealth;
         Color tempColor = Color.White;
 
         public enum DIRECTION { UP, DOWN, LEFT, RIGHT } //Enum for direction of the char
@@ -45,12 +46,21 @@ namespace ggj_resurrection
 
             //reference to the player
             mPlayer = player;
+
+            // hit points
+            mHealth = 1;
         }
 
         
         public virtual bool monsterOnCollision(Fixture one, Fixture two, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
             tempColor = Color.Red;
+
+            if (one.UserData == "Sword" || two.UserData == "Sword")
+            {
+                --mHealth;
+            }
+
             return true;
         }
 
@@ -99,6 +109,11 @@ namespace ggj_resurrection
 
             //mFixture.Body.ApplyLinearImpulse(multiply * mMaxSpeed);
             mFixture.Body.LinearVelocity = (multiply * mMaxSpeed);
+
+            if (mHealth <= 0)
+            {
+                GetGameWorld().RemoveGameObject(this);
+            }
         }
 
         public static void LoadData(Game myGame)
