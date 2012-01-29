@@ -427,9 +427,11 @@ namespace ggj_resurrection
                 }
             }
 
-            mScore = 0;
             // for now set countdown timer to 10 seconds
-            mCountdownTimer = 10f;
+            mCountdownTimer = 2f * (float)Math.Log(mScore, 2);
+
+            // clear the score
+            mScore = 0;
 
             // initialize state to first
             mState = DeathWorldStates.DWS_MAIN;
