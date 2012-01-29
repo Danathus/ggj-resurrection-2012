@@ -38,21 +38,22 @@ namespace ggj_resurrection
             mRadius = 1f;
 
 
-            mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, 1f);
-            mBody.BodyType = BodyType.Dynamic;
+            //mBody = BodyFactory.CreateRectangle(mPhysicsWorld, 1f, 1f, 1f);
+           // mBody.BodyType = BodyType.Dynamic;
 
-            mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(0f, 0f), mBody);
+            mFixture = FixtureFactory.AttachRectangle(1f, 1f, 1f, new Vector2(0f, 0f), new Body(mPhysicsWorld));
             mFixture.Body.CollisionCategories = Category.Cat1;
             mFixture.Body.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
             mFixture.CollisionCategories = Category.Cat1;
             mFixture.CollidesWith = Category.All & ~Category.Cat1 & ~Category.Cat2;
-            mBody.OnCollision += playerOnCollision;
+            mFixture.Body.OnCollision += playerOnCollision;
+            mFixture.Body.BodyType = BodyType.Dynamic;
 
             
 
             mFixture.UserData = "Player";
             mFixture.Body.UserData = "Player";
-            mBody.UserData = "Player";
+            //mBody.UserData = "Player";
 
             mSpriteAnimPlayer = new SpriteAnimationPlayer();
             mSpriteAnimPlayer.SetAnimationToPlay(mBlinkingAnimation);
@@ -168,7 +169,7 @@ namespace ggj_resurrection
 
             const float speed = 300.0f;
             //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mPosition = new Vector2(mBody.Position.X, mBody.Position.Y);       //converts Body.Position (meters) into pixels
+            mPosition = new Vector2(mFixture.Body.Position.X, mFixture.Body.Position.Y);       //converts Body.Position (meters) into pixels
 
             // djmc animation test
             if (!mSpriteAnimPlayer.IsPlaying())
