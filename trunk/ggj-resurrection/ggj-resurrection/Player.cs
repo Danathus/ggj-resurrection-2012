@@ -18,6 +18,7 @@ namespace ggj_resurrection
     public class Player : GameObject
     {
         // static data
+        public static Vector2 kFrameSizeInPixels = new Vector2(30, 50); // C# won't let me make this const, but please don't change!
         static SpriteSheet mBlinkingSpriteSheet, mRunningSouthSpriteSheet, mRunningSidewaysSpriteSheet, mRunningNorthSpriteSheet;
         static SpriteAnimation mBlinkingAnimation,
             mRunningNorthAnimation, mRunningSouthAnimation,
@@ -59,8 +60,6 @@ namespace ggj_resurrection
 
             mSpriteAnimPlayer = new SpriteAnimationPlayer();
             mSpriteAnimPlayer.SetAnimationToPlay(mBlinkingAnimation);
-
-            
         }
 
         ~Player()
@@ -82,7 +81,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 spriteOffset =
-                -new Vector2(15, -25) * Camera.kPixelsToUnits;
+                -new Vector2(kFrameSizeInPixels.X / 2, -kFrameSizeInPixels.Y/2) * Camera.kPixelsToUnits;
             mSpriteAnimPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(
                 mPosition + spriteOffset, 0, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
         }
@@ -271,9 +270,9 @@ namespace ggj_resurrection
             mRunningNorthAnimation = new SpriteAnimation();
             for (int i = 0; i < 4; ++i)
             {
-                mRunningSouthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
-                mRunningSidewaysSpriteSheet.AddSprite(new Vector2(i * 30, 0), new Vector2(30, 50));
-                mRunningNorthSpriteSheet.AddSprite(   new Vector2(i * 30, 0), new Vector2(30, 50));
+                mRunningSouthSpriteSheet.AddSprite(   new Vector2(i * kFrameSizeInPixels.X, 0), kFrameSizeInPixels);
+                mRunningSidewaysSpriteSheet.AddSprite(new Vector2(i * kFrameSizeInPixels.X, 0), kFrameSizeInPixels);
+                mRunningNorthSpriteSheet.AddSprite(   new Vector2(i * kFrameSizeInPixels.X, 0), kFrameSizeInPixels);
                 mRunningSouthAnimation.AddFrame(mRunningSouthSpriteSheet,   i, 0.1f);
                 mRunningEastAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f, true); // flip this one
                 mRunningWestAnimation.AddFrame(mRunningSidewaysSpriteSheet, i, 0.1f);

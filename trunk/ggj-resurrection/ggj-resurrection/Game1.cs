@@ -124,19 +124,38 @@ namespace ggj_resurrection
             mCamera.Update(gameTime);
 
             KeyboardState keyState = Keyboard.GetState();
+            //
+            //mCamera.mSideViewOffset.X += ((keyState.IsKeyDown(Keys.U)?1:0) - (keyState.IsKeyDown(Keys.J)?1:0)) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //mCamera.mSideViewOffset.Y += ((keyState.IsKeyDown(Keys.I)?1:0) - (keyState.IsKeyDown(Keys.K)?1:0)) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //mCamera.mSideViewOffset.Z += ((keyState.IsKeyDown(Keys.O)?1:0) - (keyState.IsKeyDown(Keys.L)?1:0)) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //
             if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.Q))
             {
-                mCamera.mTargetRot = new Vector3(90f-15f, 0f, 0f);
-                mCurrentWorld = mDeathWorld;
-                MediaPlayer.Stop();
+                if (mCurrentWorld != mDeathWorld)
+                {
+                    // start transition to death world
+                    mCamera.mTargetRot = new Vector3(90f - 15f, 0f, 0f);
+                    mCurrentWorld = mDeathWorld;
+
+                    mDeadPlayer.SetPosition(new Vector2(mAlivePlayer.GetPosition().X, 0));
+                    mCamera.mSideViewOffset = new Vector3(0, 0,
+                        -mAlivePlayer.GetPosition().Y +
+                        //+50 * Camera.kPixelsToUnits // this is the "height" (incidently half of it, doubled) of the player sprite
+                        +Player.kFrameSizeInPixels.Y/2 * Camera.kPixelsToUnits
+                        );
+                    MediaPlayer.Stop();
+                }
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed ||
                 keyState.IsKeyDown(Keys.W))
             {
-                mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
-                mCurrentWorld = mLifeWorld;
-                MediaPlayer.Play(mLifeTheme);
+                if (mCurrentWorld != mLifeWorld)
+                {
+                    mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
+                    mCurrentWorld = mLifeWorld;
+                    MediaPlayer.Play(mLifeTheme);
+                }
             }
 
             base.Update(gameTime);
