@@ -21,6 +21,9 @@ namespace ggj_resurrection
         // screen info
         Vector2 mScreenDimensions;
 
+        // reference frame info
+        public const float kPixelsToUnits = 1 / 64f; // k for constant!
+
         // positional data ("raw" values)
         Vector3 mRot;
         float mZoom;
@@ -35,12 +38,13 @@ namespace ggj_resurrection
             mScreenDimensions = screenDimensions;
             //
             mRot = new Vector3(0, 0, 0);
-            mZoom = 1.0f;
+            mZoom = 0.5f;// 1.0f;
             //
+            // divide by 64 to make 1.0 in space equal 64 pixels
             mProjectionMatrix = Matrix.CreateOrthographicOffCenter(
-                -mScreenDimensions.X / 2, mScreenDimensions.X / 2, // left, right
-                -mScreenDimensions.Y / 2, mScreenDimensions.Y / 2, // bottom, top
-                -1000f, 1000f);                                // near, far
+                -mScreenDimensions.X / 2 * kPixelsToUnits, mScreenDimensions.X / 2 * kPixelsToUnits, // left, right
+                -mScreenDimensions.Y / 2 * kPixelsToUnits, mScreenDimensions.Y / 2 * kPixelsToUnits, // bottom, top
+                -1000f, 1000f);                                              // near, far
             mViewMatrix = Matrix.Identity;
         }
 

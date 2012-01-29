@@ -17,7 +17,7 @@ namespace ggj_resurrection
 {
     public class Player : GameObject
     {
-        float mMaxSpeed = 3000;
+        float mMaxSpeed = 10;
         Color tempColor = Color.YellowGreen;
         
 
@@ -29,7 +29,7 @@ namespace ggj_resurrection
         public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
             : base(world, initPos)
         {
-            mRadius = 50f;
+            mRadius = 1f;
             
 
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius, 1f, new Vector2(mPosition.X, mPosition.Y));
@@ -63,7 +63,9 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(mTexture, mPosition, Color.YellowGreen);
-            spriteBatch.Draw(mTexture, mBody.Position, null, tempColor, mBody.Rotation, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(mTexture, mBody.Position, null, tempColor, mBody.Rotation,
+                new Vector2(mTexture.Width / 2, mTexture.Height / 2),
+                Camera.kPixelsToUnits, SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -130,18 +132,14 @@ namespace ggj_resurrection
                 mDirection = multiply;
             }
 
+            mPosition = mBody.Position;       //converts Body.Position (meters) into pixels
+
             if (mCurrKeyboardState.IsKeyDown(Keys.Z) && !mPrevKeyboardState.IsKeyDown(Keys.Z))
             {
-                SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, mPosition);
-          
-                newSwordSlash.SetPosition(mPosition + (100 * mDirection));
-                newSwordSlash.SetVelocity(mBody.LinearVelocity);
+                SwordSlash newSwordSlash = new SwordSlash(mPhysicsWorld, mPosition + (1 * mDirection));
+                newSwordSlash.SetVelocity(mDirection);
                 GetGameWorld().AddGameObject(newSwordSlash);
             }
-
-            //const float speed = 300.0f;
-            //mPosition += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mPosition = mBody.Position;       //converts Body.Position (meters) into pixels
         }
 
         public static void LoadData(Game myGame)

@@ -27,7 +27,7 @@ namespace ggj_resurrection
             : base(world, initPos)
         {
             mSlashTimeout = mMaxSlashTimeout;
-            mRadius = 50;
+            mRadius = 1;
 
             mBody = BodyFactory.CreateCircle(mPhysicsWorld, mRadius, 1f, mPosition);
             mBody.BodyType = BodyType.Dynamic;
@@ -62,7 +62,7 @@ namespace ggj_resurrection
             {
                 //spriteBatch.Draw(mTexture, mPosition, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255));
                 spriteBatch.Draw(mTexture, mBody.Position, null, new Color(255, 255, 255, mSlashTimeout / mMaxSlashTimeout * 255),
-                                0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+                                0f, new Vector2(mTexture.Width / 2, mTexture.Height / 2), Camera.kPixelsToUnits, SpriteEffects.None, 0f);
             }
         }
 

@@ -17,7 +17,7 @@ namespace ggj_resurrection
 {
     public abstract class GameObject
     {
-        protected Vector2   mPosition, mDirection, mVelocity;
+        protected Vector2   mPosition, mDirection ;//, mVelocity;
         protected Fixture   mFixture;
         protected Body      mBody;
         protected World     mPhysicsWorld;
@@ -27,7 +27,7 @@ namespace ggj_resurrection
         protected float mDensity;
 
         public void SetPosition(Vector2 pos) { mPosition = pos; }
-        public void SetVelocity(Vector2 velo) { mVelocity = velo; }
+        public void SetVelocity(Vector2 velo) { mBody.LinearVelocity = velo; }
         public Vector2 GetPosition() { return mPosition; }
 
         public void SetGameWorld(GameWorld gameWorld) { mGameWorld = gameWorld; }
@@ -39,7 +39,7 @@ namespace ggj_resurrection
         public GameObject(World world, Vector2 initPos){
             mPosition = initPos;
             mDirection = new Vector2(1, 0);
-            mVelocity = new Vector2(0, 0);
+            //mVelocity = new Vector2(0, 0);
             Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             mPhysicsWorld = world;
             //mTexture = CreateRectangle(gdm.GraphicsDevice, 32, 32, color);
