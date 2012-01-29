@@ -31,7 +31,7 @@ namespace ggj_resurrection
         private DIRECTION cowDirection;
         private float cowMaxSpeed = 3f;
         private double timeElapsed;
-        private double mTimeSinceCall = 0;
+        //private double mTimeSinceCall = 0;
         static Random cowRand = new Random();
 
         private static SoundEffect mMooSnd;
@@ -39,7 +39,7 @@ namespace ggj_resurrection
         private bool justSpawned;
         private static float mMooVolume;
         private static float mThunderVolume;
-        private static int mCallFrequency;
+        //private static int mCallFrequency;
         static Texture2D mHackSmoke;
 
         public EvilCow(World world, Vector2 initPos, Player player)
@@ -62,11 +62,11 @@ namespace ggj_resurrection
             mFixture.Body.UserData = "Monster";
             mFixture.UserData = "Monster";
 
-            mTimeSinceCall = 7500; //so that they call upon spawning
-            mCallFrequency = 5000; //how often cow moos, in ms
+            //mTimeSinceCall = 10000; //so that they call upon spawning
+            //mCallFrequency = 10000; //how often cow moos, in ms
             justSpawned = true;
-            mMooVolume = .6f;
-            mThunderVolume = .5f;
+            mMooVolume = .2f;
+            mThunderVolume = .1f;
 
             //Init direction
             getNextDirection(mPlayer);
@@ -259,21 +259,27 @@ namespace ggj_resurrection
             lightningPlayer.Update(gameTime);
 
            base.Update(gameTime);
-           mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            //Make a call every 5 seconds
+            if (justSpawned)
+                {
+                    if (cowRand.Next() % 2 == 0) mThunderSnd.Play(mThunderVolume, 0f, 0f);
+                    else mMooSnd.Play(mMooVolume, 0, 0);
+                    justSpawned = false;
+                }
+
+            /*Could be used for intermittent monster calls
+             * mTimeSinceCall += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (mTimeSinceCall > mCallFrequency)
             {
                 mTimeSinceCall = 0;
 
-                if (justSpawned)
+                
+                else if (cowRand.Next() % 19 == 0)
                 {
-                    mThunderSnd.Play(mThunderVolume, 0f, 0f);
-                    justSpawned = false;
+                    mMooSnd.Play(mMooVolume, 0f, 0f);
                 }
-                else mMooSnd.Play(mMooVolume, 0f, 0f);
 
-            }
+            }*/
 
             float speedParticle = 10f;
             if (mFixture.Body.LinearVelocity.Length() > speedParticle)

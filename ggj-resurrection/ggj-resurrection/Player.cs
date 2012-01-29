@@ -39,10 +39,9 @@ namespace ggj_resurrection
         GamePadState mCurrControllerState, mPrevControllerState;
 
         static SoundEffect mSwingBatSnd;
-        static SoundEffectInstance mSwingBatSEI;
-
         static SoundEffect mPlayerDamageSnd;
-        static SoundEffectInstance mPlayerDamageSEI;
+
+        private static float mPlayerDamageVolume = .05f;
         
 
         public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
@@ -80,7 +79,7 @@ namespace ggj_resurrection
                 //tempColor = Color.Red;
                 return false;
             }
-            else mPlayerDamageSnd.Play(.2f, 0, 0);
+            else mPlayerDamageSnd.Play(mPlayerDamageVolume, 0, 0);
             
             //tempColor = Color.Red;
             return true;
@@ -333,10 +332,7 @@ namespace ggj_resurrection
             mHackSmoke = myGame.Content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
 
             mSwingBatSnd = myGame.Content.Load<SoundEffect>("Audio/batSwing");
-            mSwingBatSEI = mSwingBatSnd.CreateInstance();
-
             mPlayerDamageSnd = myGame.Content.Load<SoundEffect>("Audio/playerDamage");
-            mPlayerDamageSEI = mPlayerDamageSnd.CreateInstance();
 
 
         
