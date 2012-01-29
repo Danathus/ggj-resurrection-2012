@@ -33,6 +33,9 @@ namespace ggj_resurrection
 
         Texture2D mHackSmoke;
 
+        static SoundEffect mMonsterDeathSnd;
+        static private float mMonsterDeathVolume;
+
         public GameWorld(Camera camera)
         {
             mCamera      = camera;
@@ -46,6 +49,8 @@ namespace ggj_resurrection
 
             mAwake = false;
             mMaxFadeCountdown = 3f;
+
+            mMonsterDeathVolume = .4f;
         }
 
         public void AddGameObject(GameObject go)
@@ -74,7 +79,9 @@ namespace ggj_resurrection
 
                     if (go.mHealth < 0)
                     {
+
                         this.RemoveGameObject(go);
+                        mMonsterDeathSnd.Play(mMonsterDeathVolume, 0f, 0f);
                     }
                 }
 
@@ -90,7 +97,7 @@ namespace ggj_resurrection
                     {
                         if (!(go is Player))
                         {
-                            Console.WriteLine("killing object...");
+                            //Console.WriteLine("killing object...");
                             RemoveGameObject(go);
                         }
                     }
@@ -185,6 +192,8 @@ namespace ggj_resurrection
             mDebugView.LoadContent(device, content);
             mRenderingEffect = new BasicEffect(device);
             mHackSmoke = content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");
+
+            mMonsterDeathSnd = content.Load<SoundEffect>("Audio/monsterDeath");
         }
 
         public virtual bool ReadyToTransition()

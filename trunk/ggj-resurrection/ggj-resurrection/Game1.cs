@@ -27,8 +27,14 @@ namespace ggj_resurrection
 
         GraphicsDeviceManager mGraphics;
         SpriteBatch mSpriteBatch;
+
         SoundEffect mLifeTheme;
         SoundEffectInstance mLifeThemeSEI;
+
+        SoundEffect mDeathTheme;
+        SoundEffectInstance mDeathThemeSEI;
+
+        SoundEffect mPlayerFallSnd;
         
         //
         public static LifeWorld  mLifeWorld;
@@ -99,8 +105,14 @@ namespace ggj_resurrection
             mDeathWorld.AddGameObject(mDeadPlayer = new DeadPlayer(mDeathWorld.mPhysicsWorld, new Vector2(0, 0)));
             mDeathWorld.mPlayer = mDeadPlayer;
 
+            mDeathTheme = Content.Load<SoundEffect>("Audio/DeathTheme");
+            mDeathThemeSEI = mDeathTheme.CreateInstance();
+            mDeathThemeSEI.IsLooped = true;
+            mDeathThemeSEI.Volume = 1;
+
+            mPlayerFallSnd = Content.Load<SoundEffect>("Audio/playerFall");
+
             mLifeTheme = Content.Load<SoundEffect>("Audio/LifeTheme");
-            //We'll need to load the Death song here!
             mLifeThemeSEI = mLifeTheme.CreateInstance();
             mLifeThemeSEI.IsLooped = true;
             mLifeThemeSEI.Volume = 1;
@@ -156,6 +168,9 @@ namespace ggj_resurrection
                     mCurrentWorld = mDeathWorld;
 
                     mLifeThemeSEI.Stop();
+                    mPlayerFallSnd.Play(.4f, 0f, 0f);
+                    mDeathTheme.Play();
+                    
 
                     // turn off/on players as appropriate
                     mDeadPlayer.SetPosition(mAlivePlayer.GetPosition());
@@ -168,6 +183,7 @@ namespace ggj_resurrection
                 {
                     mCamera.mTargetRot = new Vector3(0f, 0f, 0f);
                     mCurrentWorld = mLifeWorld;
+                    mDeathThemeSEI.Stop();
                     mLifeThemeSEI.Play();
 
                     // turn off/on players as appropriate
