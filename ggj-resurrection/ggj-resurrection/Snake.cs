@@ -27,7 +27,7 @@ namespace ggj_resurrection
         private double timeElapsed;
         private DIRECTION currentDirection;
 
-        float snakeSpeed = 5;
+        float snakeSpeed = .1f;
 
         Color tempColor = Color.White;
              
@@ -35,7 +35,7 @@ namespace ggj_resurrection
         public Snake(World world, Vector2 initPos, Player player)
             : base(world, initPos, player)
         {
-            mFixture = FixtureFactory.AttachRectangle(50f * Camera.kPixelsToUnits, 75f * Camera.kPixelsToUnits, .0125f, new Vector2(0, 0), new Body(mPhysicsWorld));
+            mFixture = FixtureFactory.AttachRectangle(40f * Camera.kPixelsToUnits, 50f * Camera.kPixelsToUnits, .015f, new Vector2(-20.5f, 30f) * Camera.kPixelsToUnits, new Body(mPhysicsWorld));
             mFixture.Body.BodyType = BodyType.Dynamic;
             mFixture.CollisionCategories = Category.Cat3;
             mFixture.Body.OnCollision += monsterOnCollision;
@@ -62,7 +62,7 @@ namespace ggj_resurrection
         public override void Draw(SpriteBatch spriteBatch) {
             //float proximity = Vector2.Distance(mBody.Position, mPlayer.GetPosition());
             Vector2 spriteOffset = -new Vector2(45, -60) * Camera.kPixelsToUnits;
-            BasicEnemyPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
+            BasicEnemyPlayer.Draw(spriteBatch, new SpriteSheet.SpriteRenderingParameters(mFixture.Body.Position + spriteOffset, 0f, Color.White, 1 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits)));
            
         }
 
@@ -107,7 +107,8 @@ namespace ggj_resurrection
         public override void Update(GameTime gameTime)
         {
 
-            mFixture.Body.ResetDynamics();
+           // mFixture.Body.ResetDynamics();
+            mFixture.Body.LinearDamping = 1f;
             mFixture.Body.Rotation = 0f;
             timeElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
 
