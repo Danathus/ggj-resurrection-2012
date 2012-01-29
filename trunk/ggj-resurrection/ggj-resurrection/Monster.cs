@@ -29,6 +29,9 @@ namespace ggj_resurrection
         static Random mRand = new Random();
         protected Player mPlayer;
 
+        static SoundEffectInstance mHitMonsterSEI;
+        static SoundEffect mHitMonsterSnd;
+
         public Monster(World world, Vector2 initPos, Player player)
             : base(world, initPos)
         {
@@ -88,7 +91,10 @@ namespace ggj_resurrection
 
                 isHit = true;
 
+                mHitMonsterSEI.Play();
             }
+
+            
 
             return true;
         }
@@ -150,6 +156,9 @@ namespace ggj_resurrection
 
         public static void LoadData(Game myGame)
         {
+            mHitMonsterSnd = myGame.Content.Load<SoundEffect>("Audio/hitMonster");
+            mHitMonsterSEI = mHitMonsterSnd.CreateInstance();
+            mHitMonsterSEI.Volume = .25f;
         }
 
         private void setRandDirection() {
