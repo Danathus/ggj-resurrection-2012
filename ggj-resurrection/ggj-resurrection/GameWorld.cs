@@ -26,7 +26,8 @@ namespace ggj_resurrection
         public World     mPhysicsWorld;
         public DebugViewXNA     mDebugView;
         protected BasicEffect mRenderingEffect;
-        
+        protected static int score;
+        protected SpriteFont drawFont;
 
         protected bool mAwake;
         float mFadeCountdown, mMaxFadeCountdown;
@@ -52,6 +53,12 @@ namespace ggj_resurrection
             mFadeCountdown = 0;
 
             mMonsterDeathVolume = .4f;
+        }
+
+        public int getScore()
+        {
+            int reference = score;
+            return reference;
         }
 
         public void AddGameObject(GameObject go)
@@ -83,6 +90,7 @@ namespace ggj_resurrection
 
                         this.RemoveGameObject(go);
                         mMonsterDeathSnd.Play(mMonsterDeathVolume, 0f, 0f);
+                        score++;
                     }
                 }
 
@@ -126,6 +134,9 @@ namespace ggj_resurrection
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            /*spriteBatch.Begin();
+            spriteBatch.DrawString(drawFont, "SCORE: " + score, new Vector2(5, 5) * .01f, Color.DarkGreen);
+            spriteBatch.End();*/
             // apply the camera view and projection matrices by passing a BasicEffect to the SpriteBatch
             mRenderingEffect.World      = Matrix.Identity;
             mRenderingEffect.Projection = mCamera.mProjectionMatrix;
@@ -185,11 +196,14 @@ namespace ggj_resurrection
                 }
             }
 
+            
+            
             spriteBatch.End();
         }
 
         public void LoadContent(GraphicsDevice device, ContentManager content)
         {
+            drawFont = content.Load<SpriteFont>("drawFont");
             mDebugView.LoadContent(device, content);
             mRenderingEffect = new BasicEffect(device);
             mHackSmoke = content.Load<Texture2D>("Particles/SmokeParticleEffectSprite");

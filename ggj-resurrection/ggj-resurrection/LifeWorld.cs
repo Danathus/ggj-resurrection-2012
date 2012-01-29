@@ -17,7 +17,7 @@ namespace ggj_resurrection
     {
         private int[,] terrainMap;
         private int dimension;
-        private Texture2D tile1, tile2, tile3, tile4, tile5;
+        private Texture2D tile1, tile2, tile3, heart;
         
 
         public LifeWorld(Camera camera, String file, Game game)
@@ -80,19 +80,44 @@ namespace ggj_resurrection
             tile1 = game.Content.Load<Texture2D>("Grass001");
             tile2 = game.Content.Load<Texture2D>("Grass002");
             tile3 = game.Content.Load<Texture2D>("Grass003");
+            heart = game.Content.Load<Texture2D>("Heart");
         }
+
+        
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             mRenderingEffect.View = mCamera.GetTopViewMatrix();
             base.Draw(spriteBatch);
+
+
+            //spriteBatch.Draw(
             //mDebugView.RenderDebugData(ref mCamera.mProjectionMatrix, ref mCamera.mTopViewMatrix);
+        }
+
+        public void drawHealth(SpriteBatch mSpriteBatch, GraphicsDeviceManager manager)
+        {
+            int hitpoints = mPlayer.mHealth;
+            Vector2 referencePoint = new Vector2(manager.GraphicsDevice.Viewport.Width * .02f, manager.GraphicsDevice.Viewport.Height * .9f);
+            //referencePoint *= Camera.kPixelsToUnits;
+            mSpriteBatch.Begin();
+
+            for (int i = 0; i < hitpoints; i++)
+            {
+                
+                mSpriteBatch.Draw(heart, referencePoint, Color.White);
+                referencePoint.X += (50f);
+                
+            }
+
+            mSpriteBatch.End();
         }
 
         public override void WakeUp()
         {
             base.WakeUp();
             AddGameObject(new MonsterSpawner(mPhysicsWorld, new Vector2(0, 0), mPlayer));
+            score = 0;
         }
 
         public override void DrawCustomWorldDetails(SpriteBatch spriteBatch)
