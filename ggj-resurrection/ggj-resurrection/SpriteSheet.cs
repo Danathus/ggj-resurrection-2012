@@ -31,7 +31,32 @@ namespace ggj_resurrection
                     (int)mDimensions.X, (int)mDimensions.Y // width, height
                     );
             }
-        };
+        }
+
+        public class SpriteRenderingParameters
+        {
+            Vector2 mPosition;
+            float   mRotation;
+            Color   mColor;
+
+            public SpriteRenderingParameters()
+            {
+                mPosition = new Vector2(0, 0);
+                mRotation = 0.0f;
+                mColor    = Color.White;
+            }
+
+            public SpriteRenderingParameters(Vector2 position, float rotation, Color color)
+            {
+                mPosition = position;
+                mRotation = rotation;
+                mColor    = color;
+            }
+
+            public Vector2 GetPosition() { return mPosition; }
+            public float   GetRotation() { return mRotation; }
+            public Color   GetColor()    { return mColor; }
+        }
 
         Texture2D mTexture;
         Sprite[] mSprites;
@@ -59,14 +84,14 @@ namespace ggj_resurrection
             return mNextSpriteToAdd++;
         }
 
-        public void Draw(SpriteBatch spriteBatch, int spriteIdx, Vector2 position, float rotation, Color color)
+        public void Draw(SpriteBatch spriteBatch, int spriteIdx, SpriteRenderingParameters parameters)
         {
             spriteBatch.Draw(
                 mTexture,                           // texture
-                position,                           // position
+                parameters.GetPosition(),           // position
                 mSprites[spriteIdx].GetRectangle(), // source rectangle
-                color,                              // color
-                rotation,                           // rotation
+                parameters.GetColor(),              // color
+                parameters.GetRotation(),           // rotation
                 new Vector2(0, 0),                  // origin
                 2 * new Vector2(Camera.kPixelsToUnits, -Camera.kPixelsToUnits), // scale
                 SpriteEffects.None,                 // effects

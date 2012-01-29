@@ -58,12 +58,11 @@ namespace ggj_resurrection
         public float GetFrameLength(int frameIdx) { return mFrames[frameIdx].GetDuration();  }
         public int GetNumFrames() { return mNextFrameToAdd; }
 
-        public void Draw(SpriteBatch spriteBatch, int frameIdx, Vector2 position, float rotation, Color color)
+        public void Draw(SpriteBatch spriteBatch, int frameIdx, SpriteSheet.SpriteRenderingParameters parameters)
         {
             Frame currFrame = mFrames[frameIdx];
             currFrame.GetSpriteSheet().Draw(
-                spriteBatch, currFrame.GetSpriteIdx(), position,  rotation, color
-                );
+                spriteBatch, currFrame.GetSpriteIdx(), parameters);
         }
     }
 }
