@@ -121,6 +121,8 @@ namespace ggj_resurrection
             if (direction.Length() > .065f)
             {
                 mFixture.Body.LinearVelocity = (direction * mMaxSpeed);
+               // Fart();
+
             }
 
             if (direction.Length() > 0)
@@ -242,7 +244,7 @@ namespace ggj_resurrection
                 Particle.Random(-maxScaleSpeed / 2, +maxScaleSpeed / 2));
             GetGameWorld().AddGameObject(smoke);*/
 			
-			    Particle smoke  = new Particle(mHackSmoke, new Vector2(mPosition.X, mPosition.Y - (20.0f * Camera.kPixelsToUnits)), 1.0f);
+			    Particle smoke  = new Particle(mHackSmoke, new Vector2(mPosition.X, mPosition.Y - (20.0f * Camera.kPixelsToUnits)), .75f);
                 smoke.mScale = new Vector2(0.1f);
                 float precision     = 100f;
                 float maxSmokeSpeed = 0f;
