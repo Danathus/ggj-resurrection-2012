@@ -1,3 +1,1 @@
-Write down notes and anything to be done here
-
-Make schedule
+I don't know if anyone will check here, but has anyone tried installing the published version of the game? I tried earlier and the game wouldn't start. I think it has to do with lifeworld.txt. It doesn't seem to be included in the release build.
