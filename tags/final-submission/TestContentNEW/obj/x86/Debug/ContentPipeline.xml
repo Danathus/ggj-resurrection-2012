@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>Enemy\EnemyScout.png</Source>
+      <Name>Enemy\EnemyScout</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\Enemy\EnemyScout.xnb</Output>
+      <Time>2011-02-27T20:45:42.4418674-08:00</Time>
+    </Item>
+    <Item>
+      <Source>Sentinel.png</Source>
+      <Name>Sentinel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\Sentinel.xnb</Output>
+      <Time>2011-02-27T20:45:42.9748979-08:00</Time>
+    </Item>
+    <Item>
+      <Source>Sentinelmk2.png</Source>
+      <Name>SentinelMk2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\SentinelMk2.xnb</Output>
+      <Time>2011-02-27T20:45:43.3409189-08:00</Time>
+    </Item>
+    <Item>
+      <Source>Background\layer2.png</Source>
+      <Name>Background\layer2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\Background\layer2.xnb</Output>
+      <Time>2011-02-27T20:45:36.89155-08:00</Time>
+    </Item>
+    <Item>
+      <Source>Background\layer3.png</Source>
+      <Name>Background\layer3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\Background\layer3.xnb</Output>
+      <Time>2011-02-28T13:15:08.4532259-08:00</Time>
+    </Item>
+    <Item>
+      <Source>Background\layer1.png</Source>
+      <Name>Background\layer1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\Background\layer1.xnb</Output>
+      <Time>2011-02-28T13:15:08.0492028-08:00</Time>
+    </Item>
+    <Item>
+      <Source>Bitmap1.bmp</Source>
+      <Name>particle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\particle.xnb</Output>
+      <Time>2011-02-27T20:45:42.9958991-08:00</Time>
+    </Item>
+    <Item>
+      <Source>HUD\playerhud.png</Source>
+      <Name>HUD\playerhud</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\HUD\playerhud.xnb</Output>
+      <Time>2011-03-02T19:57:51.9966871-08:00</Time>
+    </Item>
+    <Item>
+      <Source>HUD\reddot.png</Source>
+      <Name>HUD\reddot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\HUD\reddot.xnb</Output>
+      <Time>2011-03-02T20:11:42.619196-08:00</Time>
+    </Item>
+    <Item>
+      <Source>SpriteFont1.spritefont</Source>
+      <Name>Font</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\Font.xnb</Output>
+      <Time>2011-03-03T03:35:33.3933891-08:00</Time>
+    </Item>
+    <Item>
+      <Source>HUD\mapback.png</Source>
+      <Name>HUD\stuff</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\HUD\stuff.xnb</Output>
+      <Time>2011-03-02T13:54:32.8997442-08:00</Time>
+    </Item>
+    <Item>
+      <Source>HUD\Radar.png</Source>
+      <Name>HUD\mapback</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\HUD\mapback.xnb</Output>
+      <Time>2011-03-02T23:41:31.4602365-08:00</Time>
+    </Item>
+    <Item>
+      <Source>HUD\HUD.png</Source>
+      <Name>HUD\HUD</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\HUD\HUD.xnb</Output>
+      <Time>2011-03-03T02:19:07.4210865-08:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>Windows</TargetPlatform>
+      <TargetProfile>HiDef</TargetProfile>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGameContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGameContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\RiceofEarth\Documents\UCSC '10 '11\CMPS20\Thrust Game\trunk\ThrustGame\ThrustGame\ThrustGame\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2010-08-23T13:41:18-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2010-08-23T13:41:18-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2010-08-23T13:41:18-07:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2011-01-25T22:45:38.2393181-08:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>
