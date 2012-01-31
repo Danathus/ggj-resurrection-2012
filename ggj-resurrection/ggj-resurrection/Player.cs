@@ -47,29 +47,6 @@ namespace ggj_resurrection
 
         private static float mPlayerDamageVolume = .15f;
         private static float mCollectSoulVolume = .15f;
-
-        // controls
-        /*
-        Keys mWalkNorth = Keys.Up;
-        Keys mWalkEast  = Keys.Right;
-        Keys mWalkSouth = Keys.Down;
-        Keys mWalkWest  = Keys.Left;
-        //
-        Keys mAttackNorth = Keys.W;
-        Keys mAttackEast  = Keys.D;
-        Keys mAttackSouth = Keys.S;
-        Keys mAttackWest  = Keys.A;
-        /*/
-        Keys mWalkNorth = Keys.W;
-        Keys mWalkEast  = Keys.D;
-        Keys mWalkSouth = Keys.S;
-        Keys mWalkWest  = Keys.A;
-        //
-        Keys mAttackNorth = Keys.Up;
-        Keys mAttackEast  = Keys.Right;
-        Keys mAttackSouth = Keys.Down;
-        Keys mAttackWest  = Keys.Left;
-        //*/
         
 
         public Player(World world, Vector2 initPos)   //this is never called. We need it for physics object
@@ -217,35 +194,7 @@ namespace ggj_resurrection
         {
             Vector2 rightStick = mCurrControllerState.ThumbSticks.Right;
 
-            if (!mCurrControllerState.IsConnected)
-            {
-                if (mCurrKeyboardState.IsKeyDown(mAttackEast))
-                {
-                    rightStick.X += +1f;
-                }
-
-                if (mCurrKeyboardState.IsKeyDown(mAttackWest))
-                {
-                    rightStick.X += -1f;
-                }
-
-                if (mCurrKeyboardState.IsKeyDown(mAttackNorth))
-                {
-                    rightStick.Y += +1f;
-                }
-
-                if (mCurrKeyboardState.IsKeyDown(mAttackSouth))
-                {
-                    rightStick.Y += -1f;
-                }
-
-                if (rightStick.Length() > 0.1f)
-                {
-                    rightStick.Normalize();
-                }
-            }
-
-            if (rightStick.Length() > .25)
+            if (mCurrControllerState.IsConnected && rightStick.Length() > .25)
             {
                 if (bats.Count <= 4)
                 {
@@ -366,22 +315,22 @@ namespace ggj_resurrection
                 }
             }
 
-            if (mCurrKeyboardState.IsKeyDown(mWalkEast))
+            if (mCurrKeyboardState.IsKeyDown(Keys.Right))
             {
                 direction.X += +1f;
             }
 
-            if (mCurrKeyboardState.IsKeyDown(mWalkWest))
+            if (mCurrKeyboardState.IsKeyDown(Keys.Left))
             {
                 direction.X += -1f;
             }
 
-            if (mCurrKeyboardState.IsKeyDown(mWalkNorth))
+            if (mCurrKeyboardState.IsKeyDown(Keys.Up))
             {
                 direction.Y += +1f;
             }
 
-            if (mCurrKeyboardState.IsKeyDown(mWalkSouth))
+            if (mCurrKeyboardState.IsKeyDown(Keys.Down))
             {
                 direction.Y += -1f;
             }
