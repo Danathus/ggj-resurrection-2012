@@ -32,11 +32,17 @@ void Shutdown()
 ////////////////////////////////////////////////////////////////////////////////
 
 float rotZ = 0.0f;
+float posX = 0, posY = 0;
 
 void Update(const float deltaTime)
 {
 	// rotate at a speed of 100 degrees per second
 	rotZ += 100 * deltaTime;
+
+	// keyboard controls
+	unsigned char *keys = SDL_GetKeyState(NULL);
+	posX += (keys['d'] - keys['a']) * 100 * deltaTime; // direction * speed * time
+	posY += (keys['w'] - keys['s']) * 100 * deltaTime; // direction * speed * time
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +56,8 @@ void Draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	// spin!
+	// transform into place
+	glTranslatef(posX, posY, 0);
 	glRotatef(rotZ, 0, 0, 1);
 
 	// draw a white square in the center
