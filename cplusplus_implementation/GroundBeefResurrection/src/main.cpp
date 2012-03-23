@@ -31,8 +31,12 @@ void Shutdown()
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void Update()
+float rotZ = 0.0f;
+
+void Update(const float deltaTime)
 {
+	// rotate at a speed of 100 degrees per second
+	rotZ += 100 * deltaTime;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +50,10 @@ void Draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	// draw content here -- for starters, a white square in the center
+	// spin!
+	glRotatef(rotZ, 0, 0, 1);
+
+	// draw a white square in the center
 	glColor3f(1, 1, 1);
 	glBegin(GL_QUADS);
 	glVertex2f(-100, -100);
@@ -96,6 +103,7 @@ int main(int argc, char *argv[])
 
 	// main loop
 	bool done = false;
+	unsigned int nowTicks = SDL_GetTicks(), thenTicks = SDL_GetTicks(); // in tickets (milliseconds)
 	while (!done)
 	{
 		// process SDL events
@@ -109,8 +117,13 @@ int main(int argc, char *argv[])
 			break;
 		}
 
+		// update time
+		nowTicks = SDL_GetTicks();
+		const float deltaTime = float(nowTicks - thenTicks) / 1000; // in seconds
+		thenTicks = nowTicks; // set up for next time
+
 		// update and draw
-		Update();
+		Update(deltaTime);
 		Draw();
 	}
 
